@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>Concurrency in iOS | Liang Yu&#39;s Website</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Concurrency,GCD,Pthread,NSOperation," />
+  
+
+  <meta name="description" content="基础 进程与线程 进程是一个正在执行的程序实例 进程作为线程的容器，如果某个线程因为I/O操作阻塞，可以去执行其他线程从而最大化利用进程时间片 进程有独立受保护的内存空间，用来保存程序，正文和数据以及其打开的文件，子线程，即将发生的报警，信号/处理程序，全局变量，账户信息。 线程只拥有程序计数器，寄存器，堆栈，状态但与其他线程共享该进程的整个内存空间 线程切换比进程块10到100倍   并发与并行">
+<meta name="keywords" content="Concurrency,GCD,Pthread,NSOperation">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Concurrency in iOS">
+<meta property="og:url" content="http://www.yuliang.xyz/2017/04/30/ios-concurrency/index.html">
+<meta property="og:site_name" content="Liang Yu&#39;s Website">
+<meta property="og:description" content="基础 进程与线程 进程是一个正在执行的程序实例 进程作为线程的容器，如果某个线程因为I/O操作阻塞，可以去执行其他线程从而最大化利用进程时间片 进程有独立受保护的内存空间，用来保存程序，正文和数据以及其打开的文件，子线程，即将发生的报警，信号/处理程序，全局变量，账户信息。 线程只拥有程序计数器，寄存器，堆栈，状态但与其他线程共享该进程的整个内存空间 线程切换比进程块10到100倍   并发与并行">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2017-10-31T04:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Concurrency in iOS">
+<meta name="twitter:description" content="基础 进程与线程 进程是一个正在执行的程序实例 进程作为线程的容器，如果某个线程因为I/O操作阻塞，可以去执行其他线程从而最大化利用进程时间片 进程有独立受保护的内存空间，用来保存程序，正文和数据以及其打开的文件，子线程，即将发生的报警，信号/处理程序，全局变量，账户信息。 线程只拥有程序计数器，寄存器，堆栈，状态但与其他线程共享该进程的整个内存空间 线程切换比进程块10到100倍   并发与并行">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#进程与线程"><span class="toc-text">进程与线程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#并发与并行"><span class="toc-text">并发与并行</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#为什么使用多线程"><span class="toc-text">为什么使用多线程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#多线程应用实例"><span class="toc-text">多线程应用实例</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PThreads介绍"><span class="toc-text">PThreads介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#NSThread接口说明"><span class="toc-text">NSThread接口说明</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GCD的概念"><span class="toc-text">GCD的概念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#NSOperation接口说明"><span class="toc-text">NSOperation接口说明</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Stand-on-the-Giant’shoulder"><span class="toc-text">Stand on the Giant’shoulder</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-ios-concurrency" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Concurrency in iOS</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2017.04.30</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Liang Yu</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://www.yuliang.xyz/2017/04/30/ios-concurrency/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p><strong>基础</strong></p>
+<h1 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h1><ul>
+<li>进程是一个正在执行的程序实例</li>
+<li>进程作为线程的容器，如果某个线程因为I/O操作阻塞，可以去执行其他线程从而最大化利用进程时间片</li>
+<li>进程有独立受保护的内存空间，用来保存程序，正文和数据以及其打开的文件，子线程，即将发生的报警，信号/处理程序，全局变量，账户信息。</li>
+<li>线程只拥有程序计数器，寄存器，堆栈，状态但与其他线程共享该进程的整个内存空间</li>
+<li>线程切换比进程块10到100倍 </li>
+</ul>
+<h1 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h1><h1 id="为什么使用多线程"><a href="#为什么使用多线程" class="headerlink" title="为什么使用多线程"></a>为什么使用多线程</h1><h1 id="多线程应用实例"><a href="#多线程应用实例" class="headerlink" title="多线程应用实例"></a>多线程应用实例</h1><h1 id="PThreads介绍"><a href="#PThreads介绍" class="headerlink" title="PThreads介绍"></a>PThreads介绍</h1><h1 id="NSThread接口说明"><a href="#NSThread接口说明" class="headerlink" title="NSThread接口说明"></a>NSThread接口说明</h1><h1 id="GCD的概念"><a href="#GCD的概念" class="headerlink" title="GCD的概念"></a>GCD的概念</h1><p>GCD, short for Grand Central Dispath, is used to replace the C based API by Apple. It thinks the concurrency from task and queue, instead of thread and thread functions.</p>
+<p>GCD uses queue to dispatch task (block). Queues are serial and concurrency. And Dispatch can be synchronzied or asynchronized.</p>
+<h1 id="NSOperation接口说明"><a href="#NSOperation接口说明" class="headerlink" title="NSOperation接口说明"></a>NSOperation接口说明</h1><p><strong>扩展</strong><br>Lock</p>
+<h6 id="Stand-on-the-Giant’shoulder"><a href="#Stand-on-the-Giant’shoulder" class="headerlink" title="Stand on the Giant’shoulder"></a>Stand on the Giant’shoulder</h6><ol>
+<li><a href="http://xuyafei.cn/post/draft/ios-thread" target="_blank" rel="noopener">iOS中的多线程技术-xuyafei</a></li>
+</ol>
+
+    
+  </div>
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Liang Yu</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/some_wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/some_alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2017/03/28/her-boston-t/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2017/08/08/design-pattern-delegate/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://www.yuliang.xyz/2017/04/30/ios-concurrency/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+
+
+
+    
+
+    
+	
+    
+	
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

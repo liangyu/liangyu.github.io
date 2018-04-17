@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>Implementing Server Cookies to block DOS in DTLS | Liang Yu&#39;s Website</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Security,Networking,DOS_Attack," />
+  
+
+  <meta name="description" content="What is the DTLSDTLS is the abbreviation for Datagram Transport Level Security. DTLS provides a secure way to transport message in UDP method. It can prevent message from being eavesdropped(intercepte">
+<meta name="keywords" content="Security,Networking,DOS_Attack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Implementing Server Cookies to block DOS in DTLS">
+<meta property="og:url" content="http://www.yuliang.xyz/2016/08/09/dos-attack-in-dtls/index.html">
+<meta property="og:site_name" content="Liang Yu&#39;s Website">
+<meta property="og:description" content="What is the DTLSDTLS is the abbreviation for Datagram Transport Level Security. DTLS provides a secure way to transport message in UDP method. It can prevent message from being eavesdropped(intercepte">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-03-21T21:34:20.861Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Implementing Server Cookies to block DOS in DTLS">
+<meta name="twitter:description" content="What is the DTLSDTLS is the abbreviation for Datagram Transport Level Security. DTLS provides a secure way to transport message in UDP method. It can prevent message from being eavesdropped(intercepte">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-the-DTLS"><span class="toc-text">What is the DTLS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Four-way-Handshake"><span class="toc-text">Four-way Handshake</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#00e0-00-00-09-00-23-00-00-00-0f-00-01-01-…-……"><span class="toc-text">00e0 00 00 09 00 23 00 00 00 0f 00 01 01 ….#…….</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0050-0f-19-c9-06-19-54-from-a8-to-54-is-the-cookie-content-…-T"><span class="toc-text">0050 0f 19 c9 06 19 54 [from a8 to 54 is the cookie content] …..T</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#00f0-00-00-09-00-23-00-00-00-0f-00-01-01-…-……"><span class="toc-text">00f0 00 00 09 00 23 00 00 00 0f 00 01 01 ….#…….</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#critical-Algorithms"><span class="toc-text">critical Algorithms</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#If-the-four-way-handshake-is-not-implemented-properly"><span class="toc-text">If the four-way handshake is not implemented properly</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Difference-from-TLS"><span class="toc-text">Difference from TLS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Attachking-demo"><span class="toc-text">Attachking demo</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-dos-attack-in-dtls" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Implementing Server Cookies to block DOS in DTLS</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.08.09</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Liang Yu</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/Security/">Security</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://www.yuliang.xyz/2016/08/09/dos-attack-in-dtls/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="What-is-the-DTLS"><a href="#What-is-the-DTLS" class="headerlink" title="What is the DTLS"></a>What is the DTLS</h2><p>DTLS is the abbreviation for Datagram Transport Level Security. DTLS provides a secure way to transport message in UDP method. It can prevent message from being eavesdropped(intercepted)，tampered orforgered. The DTLS is intended to provide the similar security guarantees as the TLS does. </p>
+<h2 id="Four-way-Handshake"><a href="#Four-way-Handshake" class="headerlink" title="Four-way Handshake"></a>Four-way Handshake</h2><p>Step 1: Client Sends the server a ‘Hello’ packet with cookie length field set to zero<br>Cookie length is marked in sqaure brackets below.</p>
+<p>No. Time Source Destination Protocol Length Info<br>3 0.000825779 192.168.0.1 192.168.0.2 DTLSv1.0 236 Client Hello</p>
+<p>Frame 3: 236 bytes on wire (1888 bits), 236 bytes captured (1888 bits) on interface 0</p>
+<p>Datagram Transport Layer Security<br>DTLSv1.0 Record Layer: Handshake Protocol: Client Hello<br>Content Type: Handshake (22)<br>Version: DTLS 1.0 (0xfeff)</p>
+<p>Handshake Protocol: Client Hello<br>Handshake Type: Client Hello (1)</p>
+<p>Cookie Length: 0 <verified></verified></p>
+<blockquote>
+<p>0000 00 08 25 a3 51 23 00 21 f6 f1 03 17 08 00 45 00 ..%.Q#.!……E.<br>0010 00 de d3 e8 40 00 40 11 7a 6e c0 a8 35 3f c0 a8 ….@.@.zn..5?..<br>0020 35 28 b2 dc 01 bb 00 ca ec 93 16 fe ff 00 00 00 5(…………..<br>0030 00 00 00 00 00 00 b5 01 00 00 a9 00 00 00 00 00 …………….<br>0040 00 00 a9 fe ff 53 23 e3 e5 ee 68 44 b4 2d 44 2d …..S#…hD.D<br>0050 05 dd 56 30 95 c1 39 c5 26 f6 55 6e fb 9f 30 cf ..V0..9.&amp;.Un..0.<br>0060 4b 9e 54 37 5b 00 <strong>00</strong> 00 76 c0 14 c0 0a c0 22 c0 K.T7[…v…..”.  // [00] is the cookie lenght<br>0070 21 00 39 00 38 00 88 00 87 c0 19 c0 20 00 3a 00 !.9.8……. .:.<br>0080 89 c0 0f c0 05 00 35 00 84 c0 12 c0 08 c0 1c c0 ……5………<br>0090 1b 00 16 00 13 c0 17 c0 1a 00 1b c0 0d c0 03 00 …………….<br>00a0 0a c0 13 c0 09 c0 1f c0 1e 00 33 00 32 00 9a 00 ……….3.2…<br>00b0 99 00 45 00 44 c0 18 c0 1d 00 34 00 9b 00 46 c0 ..E.D…..4…F.<br>00c0 0e c0 04 00 2f 00 96 00 41 00 07 00 15 00 12 00 …./…A…….<br>00d0 1a 00 09 00 14 00 11 00 19 00 08 00 06 00 ff 01 …………….</p>
+<h2 id="00e0-00-00-09-00-23-00-00-00-0f-00-01-01-…-……"><a href="#00e0-00-00-09-00-23-00-00-00-0f-00-01-01-…-……" class="headerlink" title="00e0 00 00 09 00 23 00 00 00 0f 00 01 01 ….#……."></a>00e0 00 00 09 00 23 00 00 00 0f 00 01 01 ….#…….</h2></blockquote>
+<p>Step 2: The server responds with a “Hello Verify” Packet with 1 16 byte random cookie field.<br>Cookie length and content are marked in sqaure brackets below.</p>
+<p>No. Time Source Destination Protocol Length Info<br>4 0.001338430 192.168.0.2 192.168.0.1 DTLSv1.0 86 Hello Verify Request</p>
+<p>Frame 4: 86 bytes on wire (688 bits), 86 bytes captured (688 bits) on interface 0</p>
+<p>Datagram Transport Layer Security<br>DTLSv1.0 Record Layer: Handshake Protocol: Hello Verify Request<br>Content Type: Handshake (22)<br>Version: DTLS 1.0 (0xfeff)</p>
+<p>Handshake Protocol: Hello Verify Request<br>Handshake Type: Hello Verify Request (3)</p>
+<p>Cookie Length: 16<br>Cookie (16 bytes)</p>
+<blockquote>
+<p>0000 00 21 f6 f1 03 17 00 08 25 a3 51 23 08 00 45 00 .!……%.Q#..E.<br>0010 00 48 01 16 00 00 7f 11 4e d7 c0 a8 35 28 c0 a8 .H……N…5(..<br>0020 35 3f 01 bb b2 dc 00 34 e4 a3 16 fe ff 00 00 00 5?…..4……..<br>0030 00 00 00 00 00 00 1f 03 00 00 13 00 00 00 00 00 …………….<br>0040 00 00 13 fe ff 10[10 is the cookie length] a8 67 16 60 24 39 94 73 b6 98 …….g.`$9.s..</p>
+<h2 id="0050-0f-19-c9-06-19-54-from-a8-to-54-is-the-cookie-content-…-T"><a href="#0050-0f-19-c9-06-19-54-from-a8-to-54-is-the-cookie-content-…-T" class="headerlink" title="0050 0f 19 c9 06 19 54 [from a8 to 54 is the cookie content] …..T"></a>0050 0f 19 c9 06 19 54 [from a8 to 54 is the cookie content] …..T</h2></blockquote>
+<p>Step 3: Client resends the “Client Hello” with the same cookie it just receives from server.<br>Cookie length and content are marked in sqaure brackets below.</p>
+<p>No. Time Source Destination Protocol Length Info<br>5 0.007287248 192.168.0.1 192.168.0.2 DTLSv1.0 252 Client Hello</p>
+<p>Frame 5: 252 bytes on wire (2016 bits), 252 bytes captured (2016 bits) on interface 0</p>
+<p>Datagram Transport Layer Security<br>DTLSv1.0 Record Layer: Handshake Protocol: Client Hello<br>Content Type: Handshake (22)<br>Version: DTLS 1.0 (0xfeff)</p>
+<p>Handshake Protocol: Client Hello<br>Handshake Type: Client Hello (1)</p>
+<p>Cookie Length: 16<br>Cookie (16 bytes)</p>
+<blockquote>
+<p>0000 00 08 25 a3 51 23 00 21 f6 f1 03 17 08 00 45 00 ..%.Q#.!……E.<br>0010 00 ee d3 e9 40 00 40 11 7a 5d c0 a8 35 3f c0 a8 ….@.@.z]..5?..<br>0020 35 28 b2 dc 01 bb 00 da ec a3 16 fe ff 00 00 00 5(…………..<br>0030 00 00 00 00 01 00 c5 01 00 00 b9 00 01 00 00 00 …………….<br>0040 00 00 b9 fe ff 53 23 e3 e5 ee 68 44 b4 2d 44 2d …..S#…hD.D<br>0050 05 dd 56 30 95 c1 39 c5 26 f6 55 6e fb 9f 30 cf ..V0..9.&amp;.Un..0.<br>0060 4b 9e 54 37 5b 00 <strong>10</strong>[cookie length 16 bits] <strong>a8 67 16 60 24 39 94 73 b6 K.T7[…g.`$9.s.<br>0070 98 0f 19 c9 06 19 54</strong>[a8 - 54 is the cookie content, same as the one server sends] 00 76 c0 14 c0 0a c0 22 c0 ……T.v…..”.<br>0080 21 00 39 00 38 00 88 00 87 c0 19 c0 20 00 3a 00 !.9.8……. .:.<br>0090 89 c0 0f c0 05 00 35 00 84 c0 12 c0 08 c0 1c c0 ……5………<br>00a0 1b 00 16 00 13 c0 17 c0 1a 00 1b c0 0d c0 03 00 …………….<br>00b0 0a c0 13 c0 09 c0 1f c0 1e 00 33 00 32 00 9a 00 ……….3.2…<br>00c0 99 00 45 00 44 c0 18 c0 1d 00 34 00 9b 00 46 c0 ..E.D…..4…F.<br>00d0 0e c0 04 00 2f 00 96 00 41 00 07 00 15 00 12 00 …./…A…….<br>00e0 1a 00 09 00 14 00 11 00 19 00 08 00 06 00 ff 01 …………….</p>
+<h2 id="00f0-00-00-09-00-23-00-00-00-0f-00-01-01-…-……"><a href="#00f0-00-00-09-00-23-00-00-00-0f-00-01-01-…-……" class="headerlink" title="00f0 00 00 09 00 23 00 00 00 0f 00 01 01 ….#……."></a>00f0 00 00 09 00 23 00 00 00 0f 00 01 01 ….#…….</h2></blockquote>
+<p>Step 4: Server completes the handshake by responding with a “Server Hello” message</p>
+<p>No. Time Source Destination Protocol Length Info<br>7 0.014155400 192.168.0.2 192.168.0.1 DTLSv1.0 1202 Server Hello, Certificate, Server Key Exchange, Server Hello Done</p>
+<p>Frame 7: 1202 bytes on wire (9616 bits), 1202 bytes captured (9616 bits) on interface 0</p>
+<p>Datagram Transport Layer Security<br>DTLSv1.0 Record Layer: Handshake Protocol: Server Hello<br>Content Type: Handshake (22)<br>Version: DTLS 1.0 (0xfeff)</p>
+<p>Handshake Protocol: Server Hello<br>Handshake Type: Server Hello (2)</p>
+<p>Cipher Suite: TLS_DHE_RSA_WITH_AES_256_CBC_SHA (0x0039)</p>
+<p>DTLSv1.0 Record Layer: Handshake Protocol: Certificate<br>Content Type: Handshake (22)<br>Version: DTLS 1.0 (0xfeff)</p>
+<p>DTLSv1.0 Record Layer: Handshake Protocol: Server Key Exchange<br>Content Type: Handshake (22)</p>
+<p>Handshake Protocol: Server Key Exchange<br>Handshake Type: Server Key Exchange (12)</p>
+<p>DTLSv1.0 Record Layer: Handshake Protocol: Server Hello Done<br>Content Type: Handshake (22)<br>Version: DTLS 1.0 (0xfeff)</p>
+<p>Handshake Protocol: Server Hello Done<br>Handshake Type: Server Hello Done (14)</p>
+<h2 id="critical-Algorithms"><a href="#critical-Algorithms" class="headerlink" title="critical Algorithms"></a>critical Algorithms</h2><p>The Alogrithms set it supports is a subset of the TLS alogorithms.</p>
+<h2 id="If-the-four-way-handshake-is-not-implemented-properly"><a href="#If-the-four-way-handshake-is-not-implemented-properly" class="headerlink" title="If the four-way handshake is not implemented properly"></a>If the four-way handshake is not implemented properly</h2><h2 id="Difference-from-TLS"><a href="#Difference-from-TLS" class="headerlink" title="Difference from TLS"></a>Difference from TLS</h2><h2 id="Attachking-demo"><a href="#Attachking-demo" class="headerlink" title="Attachking demo"></a>Attachking demo</h2><ol>
+<li>Client sends the server a “Hello” packet with cookie length field set to 0.</li>
+<li>Server responds with a “Hello Verify” packet with a 16 bytes random cookie field.</li>
+<li>The client then resends the “Hello” packet incorporating the cookie value</li>
+<li>Server responds with a “Server Hello” message and completes the handshake.</li>
+</ol>
+<p>If the server does not send the “Hello Verify”, it might in the risk of DTLS server Dential of server attacks. The steps 2 and 3 are essential to prevent it from happening.</p>
+<p>Reason:</p>
+<ol>
+<li>DTLS uses UDP, every Hello message can come from a different source IP address. And the address can be spoofed. If the bad guys create thousands of sessions to server from a single computer, the server is forced to track those tremendous numbers of sessions. Therefore, the server has a difficult to tell whether they are normal requests, or it is under attack.</li>
+</ol>
+
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="">RFC4347 section 4.2.2</a><br><a href="http://www.cnblogs.com/littleatp/p/6358261.html" target="_blank" rel="noopener">DTLS技术要点解析</a> Zale Zhang<br><a href="https://tools.ietf.org/html/rfc6347" target="_blank" rel="noopener">DTLS1.2 Definition</a></p>
+
+    
+  </div>
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Liang Yu</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/some_wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/some_alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2015/11/26/cs183c-class6-jennifer-pahlka/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2016/08/20/layoffs/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://www.yuliang.xyz/2016/08/09/dos-attack-in-dtls/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+
+
+
+    
+
+    
+	
+    
+	
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

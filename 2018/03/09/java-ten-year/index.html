@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>Java in Ten Years | Liang Yu&#39;s Website</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Java," />
+  
+
+  <meta name="description" content="Java Fundamental HashMap的源码，实现原理，JDK8中对HashMap做了怎样的优化。 HaspMap扩容是怎样扩容的，为什么都是2的N次幂的大小。 HashMap，HashTable，ConcurrentHashMap的区别。 极高并发下HashTable和ConcurrentHashMap哪个性能更好，为什么，如何实现的。 HashMap在高并发下如果没有处理线程安全会有">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java in Ten Years">
+<meta property="og:url" content="http://www.yuliang.xyz/2018/03/09/java-ten-year/index.html">
+<meta property="og:site_name" content="Liang Yu&#39;s Website">
+<meta property="og:description" content="Java Fundamental HashMap的源码，实现原理，JDK8中对HashMap做了怎样的优化。 HaspMap扩容是怎样扩容的，为什么都是2的N次幂的大小。 HashMap，HashTable，ConcurrentHashMap的区别。 极高并发下HashTable和ConcurrentHashMap哪个性能更好，为什么，如何实现的。 HashMap在高并发下如果没有处理线程安全会有">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-03-21T21:34:20.883Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java in Ten Years">
+<meta name="twitter:description" content="Java Fundamental HashMap的源码，实现原理，JDK8中对HashMap做了怎样的优化。 HaspMap扩容是怎样扩容的，为什么都是2的N次幂的大小。 HashMap，HashTable，ConcurrentHashMap的区别。 极高并发下HashTable和ConcurrentHashMap哪个性能更好，为什么，如何实现的。 HashMap在高并发下如果没有处理线程安全会有">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-Fundamental"><span class="toc-text">Java Fundamental</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Data-Structure-and-Algorithm"><span class="toc-text">Data Structure and Algorithm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM"><span class="toc-text">JVM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Multi-threading"><span class="toc-text">Multi-threading</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Database"><span class="toc-text">Database</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Networking"><span class="toc-text">Networking</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Design-Pattern"><span class="toc-text">Design Pattern</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Distrubuted-System"><span class="toc-text">Distrubuted System</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cache"><span class="toc-text">Cache</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Framework"><span class="toc-text">Framework</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Something-Novice"><span class="toc-text">Something Novice</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Miscellaneous"><span class="toc-text">Miscellaneous</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Help-Links"><span class="toc-text">Help Links</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-java-ten-year" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Java in Ten Years</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.03.09</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Liang Yu</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/总结/">总结</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://www.yuliang.xyz/2018/03/09/java-ten-year/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="Java-Fundamental"><a href="#Java-Fundamental" class="headerlink" title="Java Fundamental"></a>Java Fundamental</h2><ol>
+<li>HashMap的源码，实现原理，JDK8中对HashMap做了怎样的优化。</li>
+<li>HaspMap扩容是怎样扩容的，为什么都是2的N次幂的大小。</li>
+<li>HashMap，HashTable，ConcurrentHashMap的区别。</li>
+<li>极高并发下HashTable和ConcurrentHashMap哪个性能更好，为什么，如何实现的。</li>
+<li>HashMap在高并发下如果没有处理线程安全会有怎样的安全隐患，具体表现是什么。</li>
+<li>java中四种修饰符的限制范围。</li>
+<li>Object类中的方法。</li>
+<li>接口和抽象类的区别，注意JDK8的接口可以有实现。</li>
+<li>动态代理的两种方式，以及区别。</li>
+<li>Java序列化的方式。</li>
+<li>传值和传引用的区别，Java是怎么样的，有没有传值引用。</li>
+<li>一个ArrayList在循环过程中删除，会不会出问题，为什么。</li>
+<li>@transactional注解在什么情况下会失效，为什么。</li>
+</ol>
+<h2 id="Data-Structure-and-Algorithm"><a href="#Data-Structure-and-Algorithm" class="headerlink" title="Data Structure and Algorithm"></a>Data Structure and Algorithm</h2><ol>
+<li>B+树</li>
+<li>快速排序，堆排序，插入排序（其实八大排序算法都应该了解</li>
+<li>一致性Hash算法，一致性Hash算法的应用</li>
+</ol>
+<h2 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h2><ol>
+<li>JVM的内存结构。</li>
+<li>JVM方法栈的工作过程，方法栈和本地方法栈有什么区别。</li>
+<li>JVM的栈中引用如何和堆中的对象产生关联。</li>
+<li>可以了解一下逃逸分析技术。</li>
+<li>GC的常见算法，CMS以及G1的垃圾回收过程，CMS的各个阶段哪两个是Stop the world的，CMS会不会产生碎片，G1的优势。</li>
+<li>标记清除和标记整理算法的理解以及优缺点。</li>
+<li>eden survivor区的比例，为什么是这个比例，eden survivor的工作过程。</li>
+<li>JVM如何判断一个对象是否该被GC，可以视为root的都有哪几种类型。</li>
+<li>强软弱虚引用的区别以及GC对他们执行怎样的操作。</li>
+<li>Java是否可以GC直接内存。</li>
+<li>Java类加载的过程。</li>
+<li>双亲委派模型的过程以及优势。</li>
+<li>常用的JVM调优参数。</li>
+<li>dump文件的分析。</li>
+<li>Java有没有主动触发GC的方式（没有)</li>
+</ol>
+<h2 id="Multi-threading"><a href="#Multi-threading" class="headerlink" title="Multi-threading"></a>Multi-threading</h2><ol>
+<li>Java实现多线程有哪几种方式。</li>
+<li>Callable和Future的了解。</li>
+<li>线程池的参数有哪些，在线程池创建一个线程的过程。</li>
+<li>volitile关键字的作用，原理。</li>
+<li>synchronized关键字的用法，优缺点。</li>
+<li>Lock接口有哪些实现类，使用场景是什么。</li>
+<li>可重入锁的用处及实现原理，写时复制的过程，读写锁，分段锁（ConcurrentHashMap中的segment）。</li>
+<li>悲观锁，乐观锁，优缺点，CAS有什么缺陷，该如何解决。</li>
+<li>ABC三个线程如何保证顺序执行。</li>
+<li>线程的状态都有哪些。</li>
+<li>sleep和wait的区别。</li>
+<li>notify和notifyall的区别。</li>
+<li>ThreadLocal的了解，实现原理。</li>
+</ol>
+<h2 id="Database"><a href="#Database" class="headerlink" title="Database"></a>Database</h2><ol>
+<li>常见的数据库优化手段</li>
+<li>索引的优缺点，什么字段上建立索引</li>
+<li>数据库连接池。</li>
+<li>durid的常用配置。</li>
+</ol>
+<h2 id="Networking"><a href="#Networking" class="headerlink" title="Networking"></a>Networking</h2><ol>
+<li>TCP，UDP区别。</li>
+<li>三次握手，四次挥手，为什么要四次挥手。</li>
+<li>长连接和短连接。</li>
+<li>连接池适合长连接还是短连接。</li>
+</ol>
+<h2 id="Design-Pattern"><a href="#Design-Pattern" class="headerlink" title="Design Pattern"></a>Design Pattern</h2><ol>
+<li>观察者模式</li>
+<li>代理模式</li>
+<li>单例模式，有五种写法，可以参考文章<a href="https://segmentfault.com/a/1190000010755849" target="_blank" rel="noopener">Java中单例模式的五种实现方式</a></li>
+<li>可以考Spring中使用了哪些设计模式</li>
+</ol>
+<h2 id="Distrubuted-System"><a href="#Distrubuted-System" class="headerlink" title="Distrubuted System"></a>Distrubuted System</h2><ol>
+<li>分布式事务的控制。</li>
+<li>分布式锁如何设计。</li>
+<li>分布式session如何设计。</li>
+<li>dubbo的组件有哪些，各有什么作用。</li>
+<li>zookeeper的负载均衡算法有哪些。</li>
+<li>dubbo是如何利用接口就可以通信的。</li>
+</ol>
+<h2 id="Cache"><a href="#Cache" class="headerlink" title="Cache"></a>Cache</h2><ol>
+<li>redis和memcached的区别。</li>
+<li>redis支持哪些数据结构。</li>
+<li>redis是单线程的么，所有的工作都是单线程么。</li>
+<li>redis如何存储一个String的。</li>
+<li>redis的部署方式，主从，集群。</li>
+<li>redis的哨兵模式，一个key值如何在redis集群中找到存储在哪里。</li>
+<li>redis持久化策略。</li>
+</ol>
+<h2 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h2><ol>
+<li>SpringMVC的Controller是如何将参数和前端传来的数据一一对应的。</li>
+<li>Mybatis如何找到指定的Mapper的，如何完成查询的。</li>
+<li>Quartz是如何完成定时任务的。</li>
+<li>自定义注解的实现。</li>
+<li>Spring使用了哪些设计模式。</li>
+<li>Spring的IOC有什么优势。</li>
+<li>Spring如何维护它拥有的bean。</li>
+</ol>
+<h2 id="Something-Novice"><a href="#Something-Novice" class="headerlink" title="Something Novice"></a>Something Novice</h2><ol>
+<li>JDK8的新特性，流的概念及优势，为什么有这种优势。</li>
+<li>区块链了解</li>
+<li>如何设计双11交易总额面板，要做到高并发高可用。</li>
+</ol>
+<h2 id="Miscellaneous"><a href="#Miscellaneous" class="headerlink" title="Miscellaneous"></a>Miscellaneous</h2><ol>
+<li>可以去leetcode上刷题换换思路。</li>
+<li>八大排序算法一定要手敲一遍（快排，堆排尤其重要）。</li>
+<li>了解一些新兴的技术。</li>
+<li>面试之后面试官都会问你有没有什么问题，千万不要没问题，也别傻乎乎的问一些敏感问题。</li>
+<li>了解你要面试的公司的产品及竞争产品。</li>
+</ol>
+<h2 id="Help-Links"><a href="#Help-Links" class="headerlink" title="Help Links"></a>Help Links</h2><ol>
+<li><a href="https://segmentfault.com/a/1190000013550405" target="_blank" rel="noopener">一个两年Java的面试总结</a></li>
+</ol>
+
+    
+  </div>
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Liang Yu</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/some_wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/some_alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/02/24/google-distributed-database/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/03/14/learning-redis/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://www.yuliang.xyz/2018/03/09/java-ten-year/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+
+
+
+    
+
+    
+	
+    
+	
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
