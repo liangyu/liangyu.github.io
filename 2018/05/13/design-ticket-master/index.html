@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>Design an online ticket ordering system | Liang Yu&#39;s Website</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="System-Design," />
+  
+
+  <meta name="description" content="Similar existed websevices:  Ticket Master Stubhub 12306.com  Problem Description一个类似ticket master的网站。 说某个时间段开放某明星演唱会订票，大概会同时有500K QPS 的访问量，一共只有50K张票。 订票的过程是用户打开订票网页（不用考虑认证等问题），填一个textbox 说要订几张票，然后cli">
+<meta name="keywords" content="System-Design">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Design an online ticket ordering system">
+<meta property="og:url" content="http://www.yuliang.xyz/2018/05/13/design-ticket-master/index.html">
+<meta property="og:site_name" content="Liang Yu&#39;s Website">
+<meta property="og:description" content="Similar existed websevices:  Ticket Master Stubhub 12306.com  Problem Description一个类似ticket master的网站。 说某个时间段开放某明星演唱会订票，大概会同时有500K QPS 的访问量，一共只有50K张票。 订票的过程是用户打开订票网页（不用考虑认证等问题），填一个textbox 说要订几张票，然后cli">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-14T02:18:47.700Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Design an online ticket ordering system">
+<meta name="twitter:description" content="Similar existed websevices:  Ticket Master Stubhub 12306.com  Problem Description一个类似ticket master的网站。 说某个时间段开放某明星演唱会订票，大概会同时有500K QPS 的访问量，一共只有50K张票。 订票的过程是用户打开订票网页（不用考虑认证等问题），填一个textbox 说要订几张票，然后cli">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Problem-Description"><span class="toc-text">Problem Description</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Steps-to-Solution"><span class="toc-text">Steps to Solution</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#A-workable-solution"><span class="toc-text">A workable solution</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Scenario-设计些啥"><span class="toc-text">Scenario 设计些啥:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Needs-设计得多牛？"><span class="toc-text">Needs 设计得多牛？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#后台-Application-应用与服务"><span class="toc-text">后台 Application 应用与服务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Kilobyte-数据如何存储与访问"><span class="toc-text">Kilobyte 数据如何存储与访问</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Enhance-for-500K-QPS"><span class="toc-text">Enhance for 500K QPS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从头理一下"><span class="toc-text">从头理一下</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#超时的票回收"><span class="toc-text">超时的票回收</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结如何攻破-500k-QPS的核心点"><span class="toc-text">总结如何攻破 500k QPS的核心点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一些可能的疑惑和可以继续进化的地方"><span class="toc-text">一些可能的疑惑和可以继续进化的地方</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#我非常喜欢老师的“设计Ticket-Master”的答案。"><span class="toc-text">我非常喜欢老师的“设计Ticket Master”的答案。</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-design-ticket-master" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Design an online ticket ordering system</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.05.13</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Liang Yu</span>
+        </span>
+      
+
+      
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://www.yuliang.xyz/2018/05/13/design-ticket-master/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <p>Similar existed websevices:</p>
+<ol>
+<li>Ticket Master</li>
+<li>Stubhub</li>
+<li>12306.com</li>
+</ol>
+<h2 id="Problem-Description"><a href="#Problem-Description" class="headerlink" title="Problem Description"></a>Problem Description</h2><p>一个类似ticket master的网站。 说某个时间段开放某明星演唱会订票，大概会同时有500K QPS 的访问量，一共只有50K张票。 订票的过程是用户打开<br>订票网页（不用考虑认证等问题），填一个textbox 说要订几张票，然后click一个button就打开一个page，那个page会不停的spin直到系统能够预留那几张票，<br>如果预留成功，用户会有几分钟时间填写用户信息已经完成支付，如果到期未支付，这些票就自动被系统收回了。每张票都是一样的，没有位置信息什么的。</p>
+<p>怎么design这个系统，</p>
+<h2 id="Steps-to-Solution"><a href="#Steps-to-Solution" class="headerlink" title="Steps to Solution"></a>Steps to Solution</h2><h3 id="A-workable-solution"><a href="#A-workable-solution" class="headerlink" title="A workable solution"></a>A workable solution</h3><p>Required features:</p>
+<ul>
+<li>票的预留</li>
+<li>票的回收</li>
+</ul>
+<h4 id="Scenario-设计些啥"><a href="#Scenario-设计些啥" class="headerlink" title="Scenario 设计些啥:"></a>Scenario 设计些啥:</h4><ol>
+<li>用户提交订票请求</li>
+<li>客户端等待订票</li>
+<li>预留票，用户完成支付</li>
+<li>票过期，回收票</li>
+<li>限制一场演唱会的票数。</li>
+</ol>
+<h4 id="Needs-设计得多牛？"><a href="#Needs-设计得多牛？" class="headerlink" title="Needs 设计得多牛？"></a>Needs 设计得多牛？</h4><p>500k QPS，面试官已经给出<br>分析<strong>响应时间</strong> —— 是在用户点击的一瞬间就要完成预定么？不是，可以让用户等个几分钟。也就是说，500K的请求，可以在若干分钟内完成就好了。因此所谓的 500k QPS，并不是Average QPS，只是说峰值是 500k QPS。而你要做的事情并不是在1秒之内完成500k的预定，而是把确认你收到了购票申请就好了。</p>
+<h4 id="后台-Application-应用与服务"><a href="#后台-Application-应用与服务" class="headerlink" title="后台 Application 应用与服务"></a>后台 Application 应用与服务</h4><ul>
+<li>ReservationService —— 用户提交一个预定请求，查询自己的预定状态</li>
+<li>TicketService —— 系统帮一个预定完成预定，生成具体的票</li>
+</ul>
+<h4 id="Kilobyte-数据如何存储与访问"><a href="#Kilobyte-数据如何存储与访问" class="headerlink" title="Kilobyte 数据如何存储与访问"></a>Kilobyte 数据如何存储与访问</h4><ol>
+<li>ReservationService —— 用户提交了一个订票申请之后，把一条预定的数据写到数据库里。所以需要一个Reservation的table。<br>大概包含的columns有：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">id(primary_key)</span><br><span class="line">created_at(timestamp)</span><br><span class="line">concert_id(foreign key)</span><br><span class="line">user_id(foreign key)</span><br><span class="line">tickets_count(int)</span><br><span class="line">status(int)</span><br></pre></td></tr></table></figure>
+<p>简单的说就是谁在什么时刻预定了哪个演唱会，预定了几张，当前预定状态是什么（等待，成功，失败）。</p>
+<ol>
+<li>TicketService —— 系统从数据库中按照顺序选出预定，完成预定，预定成功的，生成对应的Ticket。表结构如下：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">id (primary key)</span><br><span class="line">created_at (timestamp)</span><br><span class="line">user_id (fk)</span><br><span class="line">concert_id (fk)</span><br><span class="line">reservation_id (fk)</span><br><span class="line">status (int) // 是否退票之类的</span><br></pre></td></tr></table></figure>
+<ol>
+<li>还需要一个Concert的table，主要记录总共有多少票：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">id (primary key)</span><br><span class="line">title (string)</span><br><span class="line">description (text)</span><br><span class="line">start_at (timestamp)</span><br><span class="line">tickets_amount (int)</span><br><span class="line">remain_tickets_amount (int)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>具体的一个Work Solution 的流程如下：</p>
+<ol>
+<li>用户提交一个预定，ReservationService 收到预定，存在数据库里，status=pending</li>
+<li>用户提交预定之后，跳转到一个等待订票结果的界面，该界面每隔5-10秒钟像服务器发送一个请求查询当前的预定状态</li>
+<li>TicketService是一个单独执行的程序，你可以认为是一个死循环，不断检查数据库里是否有pending状态的票，取出一批票，<br>比如1k张，然后顺利处理，创建对应的Tickets，修改对应的Reservation的status。</li>
+</ol>
+<h3 id="Enhance-for-500K-QPS"><a href="#Enhance-for-500K-QPS" class="headerlink" title="Enhance for 500K QPS"></a>Enhance for 500K QPS</h3><p>分析一下上述的每个操作在10个用户和500k qps的情况下有什么不同？会发生什么？以及该如何解决？</p>
+<ol>
+<li><strong>scenario: 用户提交一个预定，ReservationService 收到预定，存在数据库里，status=pending</strong></li>
+</ol>
+<p>requirement: 在一秒钟之内，我们要同时处理500k的预定请求<br>hardware: </p>
+<p>web server:<br>一台web server的大概一秒钟同时可以处理1k的请求，所以需要大概500台</p>
+<p>database:<br>数据库如果只有一台的话，也很难承受这样大的请求。并且SQL和NoSQL这种数据库处理这个问题也会非常吃力。<br>可以选用Redis这种既是内存级访问速度，又可以做持久化的key-value数据库。<br>Redis自带一个队列的功能，非常适合我们订票的这个模型。<br>Redis的存取效率大概是每秒钟几十k，要大概20台Redis。</p>
+<p>可以按照 user_id 作为 shard key，分配到各个redis上。(解释怎么sharing)</p>
+<ol>
+<li><strong>scenario: 用户提交预定之后，跳转到一个等待订票结果的界面，该界面每隔5-10秒钟像服务器发送一个请求查询当前的预定状态</strong></li>
+</ol>
+<p>问题一：使用了redis的队列之后，如何查询一个预定信息是否在队列里呢？<br>方法： reservation的基本信息除了放到队列里，还需要同时继续存一份在redis里。队列里可以只放reservation_id。<br>此时reservation_id可以用user_id+concert_id+timestamp来表示。</p>
+<ol>
+<li><strong>TicketService是一个单独执行的程序，你可以认为是一个死循环，不断检查数据库里是否有pending状态的票，取出一批票，<br>比如1k张，然后顺利处理，创建对应的Tickets，修改对应的Reservation的status。</strong></li>
+</ol>
+<p>为每个Redis的数据库后面添加一个TicketService的程序（在某台机器上跑着），每个TicketService负责一个Redis数据库。<br>该程序每次从Redis的队列中读出最多1k的数据，然后计算一下有需要多少张票，比如2k，然后访问Concert的数据库。<br>问Concert要2k的票，如果还剩有那么多，那么就remain_tickets_amount - 2k，如果不够的话，就返回还有多少张票，<br>并把remain_tickets_acount 清零。</p>
+<p>这个过程要对数据库进行加锁，可以用数据库自己带的锁，也可以用zookeeper之类的分布式锁。<br>因为现在是1k为一组进行处理，所以这个过程不会很慢，存Concert的数据库也不需要很多，一台就够了。<br>因为我们只有20个跑着TicketService的机器（对应20台Redis），也就是个20 qps的峰值，数据库处理起来绰绰有余额。</p>
+<p>假如得到了2k张票的额度之后，就顺序处理这1k个reservation，然后对每个reservation生成对应的tickets，<br>并在redis中标记reservation的状态，这里的话，tickets的table大概就会产生2k条的insert，所以tickets的数据库需要<br>大概能够承受 20 x 1k = 20k 的并发写。这个的话，大概 20 台 SQL数据库也就搞定了。</p>
+<h2 id="从头理一下"><a href="#从头理一下" class="headerlink" title="从头理一下"></a>从头理一下</h2><ol>
+<li>开放订票，500k的请求从世界各地涌来</li>
+<li>通过 Load Balancer 纷发给500台 Web Server 。每台Web Server大概一秒钟处理1k的请求</li>
+<li>Web Server 将1k的请求，按照 user_id 进行 shard，丢给对应的 redis 服务器里的队列，并把 Reservation 信息也丢给 Redis存储。</li>
+<li>此时，20台 Redis，每台 Redis 约收到 25k 的 排队订票记录</li>
+<li>每台 Redis 背后对应一个 TicketService 的程序，不断的查看 Redis 里的队列是否有订票记录，如果有的话，一次拿出1k个订票记录进行处理，问Concert 要额度，然后把1k的reservation对应的创建出2k左右的tickets出来（假如一个reservation有2张票平均）。假如这个部分的处理能力是1k/s的话，那么这个过程完成需要25秒。也就是说，对于用户来说，最慢大概25秒之后，就知道自己有没有订上票了，平均等待时间应该低于10秒，因为当concert的票卖完了的时候，就无需生成1-2k条新的tickets，那么这个时候速度会快很多。</li>
+<li>存储tickets的数据库需要多台，因为需要处理的请求大概是20k的qps，所以大概20台左右的Ticket数据库。</li>
+</ol>
+<h2 id="超时的票回收"><a href="#超时的票回收" class="headerlink" title="超时的票回收"></a>超时的票回收</h2><p>增加一个RecycleService。这个RecycleService 不断访问 Tickets 的数据库，看看有没有超时的票，如果超时了，那么就回收，并且去Concert的数据库里把remain_tickets_acount 增加。</p>
+<h2 id="总结如何攻破-500k-QPS的核心点"><a href="#总结如何攻破-500k-QPS的核心点" class="headerlink" title="总结如何攻破 500k QPS的核心点"></a>总结如何攻破 500k QPS的核心点</h2><p>核心点就是，500k QPS 我只要做到收，不需要做到处理，那么500台web服务器+20台Redis就可以了。<br>处理的的时候，分成1k一组进行处理，让用户多等个几秒钟，问题不大。用户等10秒钟的话，我们需要的服务器数目就降低10-20倍，这是个tradeoff，需要好好权衡的。</p>
+<h2 id="一些可能的疑惑和可以继续进化的地方"><a href="#一些可能的疑惑和可以继续进化的地方" class="headerlink" title="一些可能的疑惑和可以继续进化的地方"></a>一些可能的疑惑和可以继续进化的地方</h2><p>问：500台Web服务器很多，而且除了订票的那几秒种，大部分的时候都是闲置浪费的，怎么办？<br>答：用AWS的弹性计算服务，为每场演唱会的火爆指数进行评估，然后预先开好机器，用完之后就可以销毁掉。</p>
+<p>问：为什么不直接用Redis也来存储所有的数据信息？<br>答：因为是针对通同一个Concert的预定，大家需要访问同一条数据（remain_tickets_acount)，shard是不管用的，Redis也承受不住500k QPS 对同一条数据进行读写，并且还要加锁之类的保证一致性。所以这个对 remain_tickets_acount 的值进行修改，创建对应的 tickets 的过程，是不能在用户请求的时候，实时完成的，需要延迟进行。</p>
+<p>问：redis又用来做队列，又用来做Reservation 表的存储，是否有点乱？<br>答：是的，所以一个更好的办法是，只把redis当做队列来用 和 Reservation 信息的Cache来用。当一个Reservation 被处理的时候，再到SQL数据库里生成对应的持久化记录。这样的好处是，Redis 这种结构其实不是很擅长做持久化数据的存储，我们一般都还是拿来当队列和cache用得比较多。</p>
+<h2 id="我非常喜欢老师的“设计Ticket-Master”的答案。"><a href="#我非常喜欢老师的“设计Ticket-Master”的答案。" class="headerlink" title="我非常喜欢老师的“设计Ticket Master”的答案。"></a>我非常喜欢老师的“设计Ticket Master”的答案。</h2><p>我想请教下“设计Ticket Master”这题里隐含的最难的部分。<br>假设这个ticker master 是给中国的铁路，高铁用的。或者这个ticker master的每个座位是和订票的人一一对应的，订票人可以自己选位置。<br>那么，当每一次订票的时候，都要查询这个座位是不是还有。好像就不能用“一次申请2k张票的额度”的方法了。就是说数据库要接受500K/sec的查询，某个位置现在是不是available的。这个要如何处理呢？<br>这个算是个一个follow up 的问题。 因为有些系统里是有类似需要的。但是我没有好点的想法。就借着老师的题，拿来问。</p>
+<p>有想了想，我问的也是“如何设计12306”的最难的部分。</p>
+<p>下面是老师部分回答：<br>“中国的铁路也不是让你对于给定的位置看有没有。也是说给你安排一个位置。我同样可以一个请求得到这辆车的2000个有效位置，然后对于2k的订票请求一个个处理”</p>
+<p><a href="https://www.jiuzhang.com/qa/630" target="_blank" rel="noopener">Original Article 原文</a></p>
+
+    
+  </div>
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Liang Yu</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/some_wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/some_alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/03/21/hello-world/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://www.yuliang.xyz/2018/05/13/design-ticket-master/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+
+
+
+    
+
+    
+	
+    
+	
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

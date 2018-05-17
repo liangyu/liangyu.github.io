@@ -24,7 +24,7 @@
 <meta property="og:description" content="What is the System DesignSystem Design 101What kinds of Question You Should Expect in the Interviewinterviewee  v.s. interviewer  a web facing service a RESTfule API a peer-to-peer desktop app Design">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://www.yuliang.xyz/2018/01/05/system-design-101/radar_chart.png">
-<meta property="og:updated_time" content="2018-03-23T04:33:20.023Z">
+<meta property="og:updated_time" content="2018-05-17T19:48:57.027Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="101 Introduction to System Design">
 <meta name="twitter:description" content="What is the System DesignSystem Design 101What kinds of Question You Should Expect in the Interviewinterviewee  v.s. interviewer  a web facing service a RESTfule API a peer-to-peer desktop app Design">
@@ -162,7 +162,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#What-is-the-System-Design"><span class="toc-text">What is the System Design</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#System-Design-101"><span class="toc-text">System Design 101</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#What-kinds-of-Question-You-Should-Expect-in-the-Interview"><span class="toc-text">What kinds of Question You Should Expect in the Interview</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Common-System-Design-Question"><span class="toc-text">Common System Design Question</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Common-Errors"><span class="toc-text">Common Errors</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#What-You-should-Achieve-in-30-Minutes"><span class="toc-text">What You should Achieve in 30 Minutes</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#How-to-Crack-the-Question-with-4S-Method"><span class="toc-text">How to Crack the Question with 4S Method</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Give-a-Scenario"><span class="toc-text">1. Give a Scenario</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-List-possible-Service"><span class="toc-text">2. List possible Service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Analyze-required-Storage"><span class="toc-text">3. Analyze required Storage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Leave-space-for-Scale"><span class="toc-text">4. Leave space for Scale</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Commone-Design-Questions"><span class="toc-text">Commone Design Questions:</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#What-is-the-System-Design"><span class="toc-text">What is the System Design</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#System-Design-101"><span class="toc-text">System Design 101</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#What-kinds-of-Question-You-Should-Expect-in-the-Interview"><span class="toc-text">What kinds of Question You Should Expect in the Interview</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Common-System-Design-Question"><span class="toc-text">Common System Design Question</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Common-Errors"><span class="toc-text">Common Errors</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#What-You-should-Achieve-in-30-Minutes"><span class="toc-text">What You should Achieve in 30 Minutes</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#How-to-Crack-the-Question-with-4S-Method"><span class="toc-text">How to Crack the Question with 4S Method</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Give-a-Scenario"><span class="toc-text">1. Give a Scenario</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-List-possible-Service"><span class="toc-text">2. List possible Service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Analyze-required-Storage"><span class="toc-text">3. Analyze required Storage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Leave-space-for-Scale"><span class="toc-text">4. Leave space for Scale</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Commone-Design-Questions"><span class="toc-text">Commone Design Questions:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么Google三驾马车（MapReduce-BigTable-GFS-奠定了云计算的基础？"><span class="toc-text">为什么Google三驾马车（MapReduce, BigTable, GFS)奠定了云计算的基础？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Prepare-for-System-Design"><span class="toc-text">Prepare for System Design</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#套路五步"><span class="toc-text">套路五步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进阶"><span class="toc-text">进阶</span></a></li></ol></li></ol></li></ol>
   </div>
 
 
@@ -502,10 +502,12 @@ Write: 1
 </li>
 </ol>
 <hr>
-<p>13). Waral 鍗氬鏈夋洿澶氭枃绔�,<br>Design a simple message system.  是个国男大哥，很严肃，但估计也没有刁难我。就是基本的怎么发信息，怎么收信息，然后怎么通知receiver，如果有新的消息了<br>.鐣欏璁哄潧-涓€浜�-涓夊垎鍦�<br>(14)<br>design: design fb inbox search    —&gt; just focus the post</p>
+<p>13).<br>Design a simple message system.  是个国男大哥，很严肃，但估计也没有刁难我。就是基本的怎么发信息，怎么收信息，然后怎么通知receiver，如果有新的消息了</p>
+<p>(14)<br>design: design fb inbox search    —&gt; just focus the post</p>
 <p>(15)<br>设计一个 hack pokemon go的 app。 用户不用出门就能抓到pokemon</p>
-<p>(16) 鏉ユ簮涓€浜�.涓夊垎鍦拌鍧�.<br>(16.1)<br>一个找最近朋友系统</p>
-<p>设计推荐好友的service end to end. design的问题比如算一下这个service read和write的throughput，database partitioning，怎么存好友推荐要用到的数据，怎么更新权重（比如有些被推荐的好友从来不被点击，那下次就不应该在排在前列），粗略的讲讲如何进行好友推荐的排序（哪些因素可以影响推荐的权重）<br>. 1point3acres.com/bbs<br>(17)<br>(17.1)<br>(17.2).<br>(17.3)<br>设计个类似yelp的东西</p>
+<p>(16)<br>(16.1)<br>一个找最近朋友系统</p>
+<p>设计推荐好友的service end to end. design的问题比如算一下这个service read和write的throughput，database partitioning，怎么存好友推荐要用到的数据，怎么更新权重（比如有些被推荐的好友从来不被点击，那下次就不应该在排在前列），粗略的讲讲如何进行好友推荐的排序（哪些因素可以影响推荐的权重）</p>
+<p>(17)<br>(17.1)<br>(17.2).<br>(17.3)<br>设计个类似yelp的东西</p>
 <p>设计 poi</p>
 <p>我当时答geohash是可以的，剩下的就是sql存，找公共前缀，然后再是算空间，机器数，再就是怎么sharding 分布式，建index找，pre/cache result，底层怎么存。 整个flow差不多就是这样，中间有些细节和面试官讨论了下</p>
 <p>我答得应该不算好，因为比较糊涂面试官到底想看啥。<br>基本idea就是geohash。把地表分成小的rectangle，比如10 square ft。里面存这块区域的point of interest比如商店，邮局等等。区域构成树的结构，大的区域下面子节点是小的区域。按区域shard。这样由client发的request得到position，然后找到对应的rectangle，再从这个rectangle 向周围BFS一定量的步数找到所有POI按远近排，然后同样距离内按其他的criteria如用户preference排。返回数量由client端决定。比如web端可以返回多一些，比如100个，mobile端返回少点，比如20个<br>这个感觉没那么好因为面试官喜怒不形于色，反馈比较少，让我不清楚他想要什么，或者该往哪方面展开</p>
@@ -513,17 +515,24 @@ Write: 1
 <p>设计一个系统可以查询10 miles之内的建筑物。我就说用geohash，将建筑物存在key-value类的NoSQL中。查询时查prefix。面试官并没有质疑什么，然而feedback却不好。现在回想起来，可能是我分析column familar NoSQL和Key Value NoSQL的tradeoff的时候没有讲清楚。我也不是很清楚到底应该用哪种更适合，如果大神们看见了请解释解释</p>
 <p>design POI, geoHash解之。要求先估算需要多少machine，再说geohash。白板画需要几部分和之间关系，写backend POI meta data，算需要多少machine来存。最后有拍照</p>
 <p>(18)<br>设计谷歌搜索，涉及 表， 文件系统，缓存，脸书专用缓存论文，分片，备份</p>
+<h3 id="为什么Google三驾马车（MapReduce-BigTable-GFS-奠定了云计算的基础？"><a href="#为什么Google三驾马车（MapReduce-BigTable-GFS-奠定了云计算的基础？" class="headerlink" title="为什么Google三驾马车（MapReduce, BigTable, GFS)奠定了云计算的基础？"></a>为什么Google三驾马车（MapReduce, BigTable, GFS)奠定了云计算的基础？</h3><p>答： 这三个系统正好在distributed环境下拆解了传统数据库的三大基本功能：</p>
+<ul>
+<li>GFS: distributed persistent storage， </li>
+<li>BigTable: distributed structured data access/indexing，</li>
+<li>MapReduce：distributed data processing</li>
+</ul>
+<p>而Cassandra/Dynamo本质上也是为了实现distributed structured data access and persistent storage，因此功能上和BigTable+GFS是近似的。<br>再回到NoSQL的基本原则之一，不保证数据的consistency，由业务层来完成数据的join/processing，这就是MapReduce上场的地方了。<br>因此这三家马车组合起来，正好是distributed环境下的一个database。</p>
 <p>(19)<br>(19.1)<br>设计一个单机的KV缓存<br>Design memcache. 答LRU应该可以, 但问了很多bottleneck和threadsafe<br>. 鐗涗汉浜戦泦,涓€浜╀笁鍒嗗湴<br>首先给了一堆数据：机器72G内存，16个core，10T硬盘.<br>需要实现的API是：get(key), put(key, value), delete(key)-google 1point3acres<br>key max size 1k, average 100bytes, value max size 1M, average size 1k.<br>考虑用啥protocol，locking，memory management。如何lock，如何减少lock提高performance<br>如何保证顺序</p>
 <hr>
 <p>(20)<br>短url，全程我在说，他也没问什么问题</p>
 <p>(21)<br>Design twitter feed system</p>
 <p>news feed就是问 - 比如这些是用户写的一条post，有用户基本信息，内容，图片，时间等等（当时还画了一下基本ui），如何拿到这些信息，如何存储. 还问了如果有新的feature，比如加了一个button，如何让没有update app的人仍然流畅使用他们现有的。scale倒是没细问。时间有点长了也记不起来剩下问了什么了。。<br>. Waral 鍗氬鏈夋洿澶氭枃绔�,<br>(22). more info on 1point3acres.com<br>设计一个上传video, 可以看自己或者朋友的video的. 说实话, 整个过程, 不是特别清楚, 他到底想看什么…所以就是他想看哪块, 我就细讲一下那块. 我自己感觉沟通不是太畅, 最后, 时间到了. 系统设计这种东西, 本身就是开放型的讨论, 运气, 人缘很重要, 这也不是我能把握的</p>
 <p>(23)<br>设计一个在线游戏的排名系统。游戏是回合制的，每一回合结束后都会获得一个分数。玩家可以在游戏中添加好友，每个玩家有任意个好友。在每一回合结束后，游戏界面需要弹出两个排序的表格：（1）玩家及其所有好友的最高分数排序top 10；（2）玩家的分数在所有用户（million级别）最高分数中的排名，以及该排名的前十位、后十位的玩家及分数<br>. 1point3acres.com/bbs<br>(24). 鐣欏鐢宠璁哄潧-涓€浜╀笁鍒嗗湴<br>design ETF arbitrage system: 每一个ETF由许多不同的stock组成， ETF有两个价格， 一个是underlying asset price, 就是所有stock加起来的价格， 一个是市场目前报价， 也就是</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ETF</span>&#123;</span></span><br><span class="line">     <span class="keyword">double</span> market_price;. 鐣欏鐢宠璁哄潧-涓€浜╀笁鍒嗗湴</span><br><span class="line">     <span class="keyword">double</span> underlying_asset_price;</span><br><span class="line">     <span class="built_in">vector</span>&lt;pair&lt;ticker, qty&gt;&gt; underlying_asset</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ETF</span>&#123;</span></span><br><span class="line">     <span class="keyword">double</span> market_price;. </span><br><span class="line">     <span class="keyword">double</span> underlying_asset_price;</span><br><span class="line">     <span class="built_in">vector</span>&lt;pair&lt;ticker, qty&gt;&gt; underlying_asset</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>有feed不断提供所有ETF的报价和每个stock的报价， 寻找arbitrage的机会（当underlying_asset_price 不等于market_price的时候就可以arbitrage ）<br>这道题没见过还按照之前的正常想法设计不同的service group， 面试官不太满意， 后来才反应过来这个是要设计一个ultra low latency system， 而不是设计分布式系统. Waral 鍗氬鏈夋洿澶氭枃绔�,</p>
 <p>(25)<br>Design 一个 status post 系统，支持存储status和搜索包含某一个string或者某几个string的所有statuses</p>
-<p>(26).1point3acres缃�<br>design是设计post和friend的搜索 支持多个关键词</p>
-<p>(27)<br>Desgin an Advertisement (AD) statistic system. 每次用户登录的时候，系统都会show几个广告给他。广告总共有K种类别，可以认为K&lt;=10。用户看到广告可能会点击，Click Through Ratio (CTR) = 用户点的广告数量/给用户看的广告数量。注意若同一个广告被用户点击了多次，只算一个click。设计一个系统，answer the following two types of queries: 鏉ユ簮涓€浜�.涓夊垎鍦拌鍧�. </p>
+<p>(26)<br>design是设计post和friend的搜索 支持多个关键词</p>
+<p>(27)<br>Desgin an Advertisement (AD) statistic system. 每次用户登录的时候，系统都会show几个广告给他。广告总共有K种类别，可以认为K&lt;=10。用户看到广告可能会点击，Click Through Ratio (CTR) = 用户点的广告数量/给用户看的广告数量。注意若同一个广告被用户点击了多次，只算一个click。设计一个系统，answer the following two types of queries: </p>
 <ol>
 <li>Given a user, return his CTR for all types of ADs.. </li>
 <li>Given an AD type, return its average CTR ovre all the users.<br>Follow ups:.<br>a. What if K becomes very large? for example, we consider each product as one type, thus K  can be as large as 10000.<br>b. New query type:  Given an AD type, return the top-X users with highest CTR. 1&lt; X &lt; 100<br>个人感觉这个题似乎更偏向数据库设计？我当时其实有点懵，花了很多时间解释如何设计relationalDB, 处理这些query,以及可能的优化，e.g., 这个application明显是write-heavy的，所以caching(delayed write)会很有用。答完没有什么感觉，但面试官表示满意”Looks your design works well”. 但是面无表情所以不知道是不是套话<br>评分</li>
@@ -575,6 +584,52 @@ Write: 1
 <li>Design Whatsapp</li>
 </ol>
 <p>– Location Based, Realtime System</p>
+<h2 id="Prepare-for-System-Design"><a href="#Prepare-for-System-Design" class="headerlink" title="Prepare for System Design"></a>Prepare for System Design</h2><p>考察的要点：The distributed backend service design under heavy traffic。每天的request都是billion级别的。而design的核心就是tradeoff。在有限的时间内，给出几个方案，在列出每种方案的时候，<br>同时给出该方案的优点和缺点。并结合当前的场景，给出该方案是否可行，并选择处一个最合适的方案。</p>
+<h3 id="套路五步"><a href="#套路五步" class="headerlink" title="套路五步"></a>套路五步</h3><ol>
+<li><p>User case:<br>面试官讨论该系统需要实现什么功能，大部分设计都需要实现“读”和“写”两个基本功能。这样就确定了功能边界。</p>
+</li>
+<li><p>System constraint: – 确定性能边界，也会决定你的设计框架。<br>和面试官明确max requests/day, QPS, storage size, latency，availability<br>或者，需要结合Facebook本身的traffic, active user 等数值进行估算（这就要求对各家的这些number要有大概认知</p>
+</li>
+<li><p>Abstract design:<br>先给出high level的design，自顶向下逐步细化。high level都是三层：</p>
+</li>
+</ol>
+<ul>
+<li><p><strong>API</strong><br>API是interface，负责和调用方打交道。</p>
+</li>
+<li><p><strong>Application layer</strong><br>Application layer实现所有业务逻辑，为了实现distributed和scalability，要求application layer是stateless的（无状态：即server不保存任何request相关的data, 所有server的code base完全一致）. 这样，如果application不能host更多request时，简单的增加更多机器即可（horizontal scalability)。</p>
+</li>
+</ul>
+<p>为了实现load balance和failover, 在application layer入口加入load balancer（比如ZooKeeper)。</p>
+<ul>
+<li><strong>Data layer</strong><br>Data layer实现所有业务数据的读写。一般分为cache和persistant storage两层。<ul>
+<li>Cache 让high request data能够快速读写(write through/write back)，</li>
+<li>Persistant storage保证所有数据不会丢失。</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>Drill down：针对具体部分展开深入讨论<br>针对业务逻辑的实现方案<ul>
+<li>比如timeline到底是用fan-out-write还是fan-out-read。<ul>
+<li>Twitter用fan-out-write（将new feed直接写到follower的timeline里)</li>
+<li>Facebook却用fan-out-read（在读的时候实时抓取相关用户的feeds并merge/rank)。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>这两个timeline是有本质不同的，twitter的timeline是比较传统的按时间顺序呈现你follow的人的feeds，<br>而Facebook的news feeds更像一个timeline + social graph search, 不仅有好友最新的post，还有基于social graph搜索之后的相关结果（可能是你朋友的朋友，或者朋友赞过的照片，等），并且可能会有个性化结果。</p>
+<p>回归到fan-out-read/fan-out-write一个本质区别是，如果request/answer pattern越不确定<br>（比如web search就是一个极端例子，query pattern趋近无限），或者answer features 需要agile的变化，那么用fan-out-read越好（read所有candidate后，灵活的组织结果）。</p>
+<p>References:<br><a href="https://www.quora.com/What-is-fan-out-write-and-fan-out-read-in-scalability" target="_blank" rel="noopener">What is fan out write and fan out read in scalability?</a><br><a href="https://toutiao.io/posts/125383/app_preview" target="_blank" rel="noopener">几个大型网站的 Feeds (Timeline) 设计简单对比</a></p>
+<p>针对data layer的实现方案(</p>
+<ul>
+<li>cache的设计，比如从基本的LRU问到distributed cache，</li>
+<li>或者是cache+storage设计，比如BigTable+GFS or Cassandra or Dynamo</li>
+</ul>
+<p>当你给出每个idea时，需要同时给出这种方案本身的优缺点，并最终结合我们之前确定的1,2(功能边界和系统约束），选择最适合的方案。</p>
+<ol>
+<li>Bottlenect<br>如果还有时间，可以回顾我们已经设计好的系统，提出这个系统从整体上看，最可能出现瓶颈的地方，并和面试官互动的讨论。</li>
+</ol>
+<h3 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h3><p>有了以上框架，就需要针对框架里提到的各种主流技术去进行深入了解。在看文档或paper时，要多思考总结，互相比较，抽象理解。</p>
 
     
   </div>
