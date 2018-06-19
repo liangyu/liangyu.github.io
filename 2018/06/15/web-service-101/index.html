@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>web-service-101 | Liang Yu&#39;s Website</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Java, Swift, C, Objective-C, C++, Python, macOS, CentOS, Red Hat, Networking, Security, SIP, Web Development, iOS, Android, Backend, Adobe Illustrator, LaTeX, test, debug, shell" />
+  
+
+  <meta name="description" content="什么是 Web Service？Web Service 是一个软件服务，它提供很多API，而客户端通过Web协议进行调用从而完成相关的功能 两种架构方式 RESTful 和 SOAP 和 RPCRESTful: Representational state transfer面向资源标准:   用URI来表示资源， 比如 http://example.com/user/1 用标准的HTTP方法 GE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="web-service-101">
+<meta property="og:url" content="http://www.yuliang.xyz/2018/06/15/web-service-101/index.html">
+<meta property="og:site_name" content="Liang Yu&#39;s Website">
+<meta property="og:description" content="什么是 Web Service？Web Service 是一个软件服务，它提供很多API，而客户端通过Web协议进行调用从而完成相关的功能 两种架构方式 RESTful 和 SOAP 和 RPCRESTful: Representational state transfer面向资源标准:   用URI来表示资源， 比如 http://example.com/user/1 用标准的HTTP方法 GE">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-16T20:07:10.556Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="web-service-101">
+<meta name="twitter:description" content="什么是 Web Service？Web Service 是一个软件服务，它提供很多API，而客户端通过Web协议进行调用从而完成相关的功能 两种架构方式 RESTful 和 SOAP 和 RPCRESTful: Representational state transfer面向资源标准:   用URI来表示资源， 比如 http://example.com/user/1 用标准的HTTP方法 GE">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是-Web-Service？"><span class="toc-text">什么是 Web Service？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#两种架构方式-RESTful-和-SOAP-和-RPC"><span class="toc-text">两种架构方式 RESTful 和 SOAP 和 RPC</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RESTful-Representational-state-transfer"><span class="toc-text">RESTful: Representational state transfer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SOAP：-Simple-Object-Access-Protocol"><span class="toc-text">SOAP： Simple Object Access Protocol</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RPC：-Remote-Procedure-Call"><span class="toc-text">RPC： Remote Procedure Call</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#如何构建W-eb-Service-服务，比如雷是Amazon-S3的一个-KV-Storage-Service"><span class="toc-text">如何构建W eb Service 服务，比如雷是Amazon S3的一个 KV Storage Service</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#KV-Storage-Service"><span class="toc-text">KV Storage Service</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-Server"><span class="toc-text">Web Server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Storage-Server"><span class="toc-text">Storage Server,</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#负载均衡"><span class="toc-text">负载均衡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#API"><span class="toc-text">API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Replication"><span class="toc-text">Replication</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#水平扩展"><span class="toc-text">水平扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他"><span class="toc-text">其他</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-web-service-101" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">web-service-101</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.06.15</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Liang Yu</span>
+        </span>
+      
+
+      
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://www.yuliang.xyz/2018/06/15/web-service-101/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="什么是-Web-Service？"><a href="#什么是-Web-Service？" class="headerlink" title="什么是 Web Service？"></a>什么是 Web Service？</h1><p>Web Service 是一个软件服务，它提供很多API，而客户端通过Web协议进行调用从而完成相关的功能</p>
+<h3 id="两种架构方式-RESTful-和-SOAP-和-RPC"><a href="#两种架构方式-RESTful-和-SOAP-和-RPC" class="headerlink" title="两种架构方式 RESTful 和 SOAP 和 RPC"></a>两种架构方式 RESTful 和 SOAP 和 RPC</h3><h4 id="RESTful-Representational-state-transfer"><a href="#RESTful-Representational-state-transfer" class="headerlink" title="RESTful: Representational state transfer"></a>RESTful: Representational state transfer</h4><p>面向资源<br>标准: </p>
+<ol>
+<li>用URI来表示资源， 比如 <a href="http://example.com/user/1" target="_blank" rel="noopener">http://example.com/user/1</a></li>
+<li>用标准的HTTP方法 GET POST PUT DELETE 来操作资源， 比如 GET <a href="http://example.com/user/1" target="_blank" rel="noopener">http://example.com/user/1</a></li>
+<li>支持资源的多种表现形式，比如在GET 中设置 Content-Type 为 json，让服务端返回json格式的 user 信息</li>
+</ol>
+<ol>
+<li><p>Client-Server</p>
+</li>
+<li><p>Stateless</p>
+</li>
+</ol>
+<ol>
+<li>Cacheable</li>
+</ol>
+<ol>
+<li>Layered System</li>
+</ol>
+<ol>
+<li>Code on demand</li>
+</ol>
+<ol>
+<li>Uniform interface</li>
+</ol>
+<ul>
+<li>命名风格一致性</li>
+<li>数据一次性，多次相同请求 不会产生副作用</li>
+</ul>
+<h4 id="SOAP：-Simple-Object-Access-Protocol"><a href="#SOAP：-Simple-Object-Access-Protocol" class="headerlink" title="SOAP： Simple Object Access Protocol"></a>SOAP： Simple Object Access Protocol</h4><p>SOAP严格规定了如何发现和描述API，传输的消息也有统一的格式，传输的窄体是XML有严格的格式规范。<br>消息机制</p>
+<h3 id="RPC：-Remote-Procedure-Call"><a href="#RPC：-Remote-Procedure-Call" class="headerlink" title="RPC： Remote Procedure Call"></a>RPC： Remote Procedure Call</h3><p>面向动作</p>
+<h1 id="如何构建W-eb-Service-服务，比如雷是Amazon-S3的一个-KV-Storage-Service"><a href="#如何构建W-eb-Service-服务，比如雷是Amazon-S3的一个-KV-Storage-Service" class="headerlink" title="如何构建W eb Service 服务，比如雷是Amazon S3的一个 KV Storage Service"></a>如何构建W eb Service 服务，比如雷是Amazon S3的一个 KV Storage Service</h1><h4 id="KV-Storage-Service"><a href="#KV-Storage-Service" class="headerlink" title="KV Storage Service"></a>KV Storage Service</h4><p>Interface:</p>
+<ul>
+<li>GET <a href="http://kv.com/key" target="_blank" rel="noopener">http://kv.com/key</a></li>
+<li>POST <a href="http://kv.com/key" target="_blank" rel="noopener">http://kv.com/key</a></li>
+<li>PUT <a href="http://kv.com/key" target="_blank" rel="noopener">http://kv.com/key</a></li>
+<li>DELETE <a href="http://kv.com/key" target="_blank" rel="noopener">http://kv.com/key</a></li>
+</ul>
+<p>Architecture:</p>
+<h3 id="Web-Server"><a href="#Web-Server" class="headerlink" title="Web Server"></a>Web Server</h3><p>可以是 HTTP server 帮助处理HTTP 请求，ngnix， apache，也可以用go 或者python直接写一个。 Ngnix是一个无状态的服务，</p>
+<h3 id="Storage-Server"><a href="#Storage-Server" class="headerlink" title="Storage Server,"></a>Storage Server,</h3><p>mysql 或者 redis</p>
+<h3 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h3><ul>
+<li>DNS 或者 LVS来做</li>
+</ul>
+<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><p>不要忽略http header中的Content-Type<br>URL Rules：</p>
+<ol>
+<li>Version your API</li>
+<li>Use nous, not verbs</li>
+<li>GET should always be safe<br>e.g. bad example:<br>GET /api/deleteArticle/id=1</li>
+<li>Pagination<br>对于资源集合，分页获取比较合理。<br>范围的集合包含分页有关数据</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    "page"     : 1,      // 当前第几页，默认1</span><br><span class="line">    "pages"    : 3,      // 一共多少页</span><br><span class="line">    "per_page" : 10,     // 每页多少数据，最大为per_page_max，如果大于它，则默认为最大值</span><br><span class="line">    "has_next" : true,   // 是否有下一页数据</span><br><span class="line">    "has_prev" : false,  // 是否有前一页数据</span><br><span class="line">    "total"    : 27      // 共有多少页数据</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>URL区分大小写，URL后面加 back forword slash /<br>默认用/结尾，如果GET请求中不带/，则重定向到以/结尾的API上去</li>
+</ol>
+<p><strong>Request</strong></p>
+<p>请求有问题，如果校验数据的时候发现错误，返回状态码400 BAD REQUEST</p>
+<ul>
+<li><p>Validation：<br>数据类型校验， 比如要求int，给了string<br>数据格式校验， 比如邮箱或者密码，需要满足相应的正则表达式<br>数据逻辑校验， 比如数据包含出生日期和年龄两个字段，如果这两个字段不一match，则数据校验失败</p>
+</li>
+<li><p>Authentication/Permission<br>API请求需要用户认证时， 如果request中的认证信息不正确，需要返回状态吗401， NOT AUTHORIZED<br>API请求需要验证用户权限时，如果当前用户无相应权限，要返回状态码403，FORBIDDEN</p>
+</li>
+</ul>
+<p>常用的认证机制是：<br>Basic Auth： 很简单<br>OAuth： 企业级</p>
+<p>限制机制是对API请求的更近一步限制，只有通过认证的用户符合权限要求，才能访问API<br>分全局型和对象型。全局型就是分组，然后给不同的组不同的权限。</p>
+<p><strong>Response</strong><br>GET, PUT, succeed  &lt;– 200 SUCCESS &amp; 返回对应数据<br>GET       Fail     &lt;– 404 NOT FOUND<br>POST      succeed  &lt;– 201 CREATED &amp; 返回创建的数据<br>DELETE    succeed  &lt;– 204 NO CONTENT &amp; 不返回数据</p>
+<p><strong>CAP</strong><br>不能同时满足CAP，P必须在 分布式中满足，所以要在C和A中权衡</p>
+<ul>
+<li>Consistency</li>
+<li>Avaliability</li>
+<li>Partition tolerance</li>
+</ul>
+<p>对于一半的NoSQL， 倾向于支持 A &amp; P，对于C，可以允许短时间内数据不一致，但是很快能够达到一致。<br>对于需要强一致的系统，则可以考虑牺牲A来满足 C P，比如很多系统必须写多份才算成功</p>
+<h3 id="Replication"><a href="#Replication" class="headerlink" title="Replication"></a>Replication</h3><p>数据备份到不同的机器上，采用异步的方法，在一段时间内，不能满足数据一致性，但是最终能够达到一致性。</p>
+<p>支持同步的replication，确保数据不能丢失，方法有</p>
+<ul>
+<li>2PC, 3PC</li>
+<li>Paxos, Raft</li>
+</ul>
+<h3 id="水平扩展"><a href="#水平扩展" class="headerlink" title="水平扩展"></a>水平扩展</h3><p>将一个数据的里面的数据拆分到多个机器</p>
+<ol>
+<li>hash % num， num是机器数量， 在添加或者删除机器的时候会造成rehash，导致大量的数据迁移</li>
+<li>一致性 hash，</li>
+<li>路由映射表，外部维护一张路由表，添加删除节点的时候，只需要更改路由表，</li>
+</ol>
+<p>预分配 + 路由表方式来进行水平扩展，<br>预分配就是将数据切分到 n 个 shard，开始这些shard可以在一个node里面， 随着node增加，只需要迁移相关的shard，同时更新路由表。要求能写出resharding的健壮代码</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
+<li>Cache<br><a href="">Facebook - Scaling Memcache at Facebook 简介cache设计</a></li>
+<li>消息队列， 当并发量大了以后，光靠同步的API调用无法满足整个系统的性能需求，可以使用 MQ，比如Rabbit MQ</li>
+</ul>
+
+    
+  </div>
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Liang Yu</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/some_wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/some_alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/05/21/wright-brother-nm/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/06/18/ios-sel-imp-class/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://www.yuliang.xyz/2018/06/15/web-service-101/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
+
+
+
+    
+
+
+
+
+    
+
+    
+	
+    
+	
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

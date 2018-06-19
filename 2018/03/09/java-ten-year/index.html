@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Liang Yu&#39;s Website">
 <meta property="og:description" content="Java Fundamental HashMap的源码，实现原理，JDK8中对HashMap做了怎样的优化。 HaspMap扩容是怎样扩容的，为什么都是2的N次幂的大小。 HashMap，HashTable，ConcurrentHashMap的区别。 极高并发下HashTable和ConcurrentHashMap哪个性能更好，为什么，如何实现的。 HashMap在高并发下如果没有处理线程安全会有">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-03-21T21:34:20.883Z">
+<meta property="og:updated_time" content="2018-06-03T20:45:51.917Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java in Ten Years">
 <meta name="twitter:description" content="Java Fundamental HashMap的源码，实现原理，JDK8中对HashMap做了怎样的优化。 HaspMap扩容是怎样扩容的，为什么都是2的N次幂的大小。 HashMap，HashTable，ConcurrentHashMap的区别。 极高并发下HashTable和ConcurrentHashMap哪个性能更好，为什么，如何实现的。 HashMap在高并发下如果没有处理线程安全会有">
@@ -324,6 +324,73 @@
 <h2 id="Help-Links"><a href="#Help-Links" class="headerlink" title="Help Links"></a>Help Links</h2><ol>
 <li><a href="https://segmentfault.com/a/1190000013550405" target="_blank" rel="noopener">一个两年Java的面试总结</a></li>
 </ol>
+<ol>
+<li>Declarations and Access Control</li>
+</ol>
+<p>1.1 Declare Classes &amp; Interfaces:<br>Class — A template that describes the kinds of state and behavior that objects of its type support.<br>Object — At runtime, when the Java virtual Machine encounters the new keyword, it will use the appropriate class to make an object which is an instance of that class. That object will have its own state, and access to all of the behaviors defined by its class.<br>State (instance variables) — Each object will have its own unique set of instance variables as defined in the class. Collectively, the value assigned to an object’s instance variables make up the object’s state.<br>Behavior (methods) — </p>
+<p>1.2 identifiers and keywords<br>Identifiers must start with a letter, a currency character ($), or a connecting character such as the underscore (_). Identifiers cannot start with a number!</p>
+<p>Some keywords:<br>strictfp, transient, const, volatile</p>
+<p>1.3 Inheritance<br>Inheritance allows code defined in one class to be reused in other classes.<br>In Java, I can define a general, more abstract superclass, and then extend it with more specific subclasses by using the keyword “extend”.<br>The superclass knows nothing of the classes that inherit from it, but all of the subclasses that inherit from the superclass must explicitly declare the inheritance relationship.<br>A subclass that inherits from a superclass is automatically given accessible instance variables and methods defined by the superclass, but is also free to override superclass methods to define more specific behavior.</p>
+<p>1.4 Interfaces<br>Interfaces are like a 100-percent abstract superclass that defines the methods a subclass must support, but not how they must be supported.</p>
+<p>Interfaces can be implemented by any class, from any inheritance tree. This lets you take radically different classes and give them a common characteristic. Typing in the public and abstract modifiers on the methods is redundant, though, since all interface methods are implicitly public and abstract.</p>
+<p>The public modifier is required if you want the interface to have public rather then default access.</p>
+<p>Interface can have only abstract methods.<br>All interface methods are implicitly public and abstract.<br>All variables defined in an interface must be public, static, and final — in other words, interfaces can declare only constants, not instance variables.<br>Interface methods must not be static.<br>Interface methods cannot be marked final, strictfp or native.<br>An interface can extend one or more other interfaces. It cannot extend anything else.<br>An interface cannot implement another interface or class.<br>An interface must be declared with the keyword interface.<br>Interface types can be used polymorphically </p>
+<p>All interface constants must be declared public, static and final, and by default, they are.</p>
+<p>1.5 Class Declarations and Modifiers<br>Access modifiers: public, protected, private, default(package access)<br>Non-access modifiers (including strictfp, final, and abstract)</p>
+<p>Although all four access controls work for most method and variable declarations, a class can be declared with only public or default access.</p>
+<p>1.6 Class Access<br>When we say code from class A has access to class B, it means class A can do one of three things:<br>Create an instance of class B<br>Extend class B ( in other words, become a subclass of class B)<br>Access certain methods and variables within class B, depending on the access control of those methods and variables.<br>Default Access: or package-level access. A class with default access can be seen only by classes within the same package.<br>Public Access: A class declaration with the public keyword gives all classes from all packages access to the public class.</p>
+<p>You can modify a class declaration using the keyword final, abstract, or strictfp.</p>
+<p>Final Class: when used in a class declaration, the final keyword means the class can’t be subclassed. e.g. The String class cannot be subclassed. </p>
+<p>Abstract Class: An abstract class can never be instantiated, it is only for being extended. If the method end in a semicolon, then both the method and the class must be marked abstract. But you can put non abstract methods in an abstract class.</p>
+<p>Polymorphism gives you the greatest degree of flexibility and extensibility.</p>
+<p>1.7 Two access issues:<br>Whether method code in one class can access a member of another class<br>Whether a subclass can inherit a member of its superclass (example, by using this.superClassMethod())</p>
+<p>Three ways to access a method:<br>Invoking a method declared in the same class<br>Invoking a method using a reference of the class<br>Invoking an inherited method</p>
+<p>Public Members:<br>When a method or variable member is declared public, it means all other classes can access the member.</p>
+<p>Private Members:<br>Members marked private can’t be accessed by code in any class other than the class in which the private member was declared.<br>When a member is declared private, a subclass can’t inherit it.</p>
+<p>Protected and Default Members:<br>The protected and default access control levels are almost identical, but with one critical difference.</p>
+<p>A default member may be accessed only if the class accessing the member belongs to the same package,<br>A protected member can be accessed (through inheritance) by a subclass even if the subclass is in a different package.</p>
+<p>Default and protected behavior differ only when we talk about subclasses. If the protected keyword is used to define a member, any subclass of the class declaring the member can access it through inheritance. </p>
+<p>For a subclass outside the package, the protected member can be accessed only through inheritance.</p>
+<p>Local Variables and Access Modifiers<br>Access modifiers cannot be applied to local variables. e.g. private int x = 7. Only final can be applied to local variables.</p>
+<p>Nonaccess Member Modifiers<br>Modifiers applied to methods<br>modifiers applied to instance variables.</p>
+<p>Final:<br>Final Methods: the final keyword prevents a method from being overridden in a subclass, and is often used to enforce the API functionality of a method.</p>
+<p>Abstract:<br>Abstract Methods: An abstract method is a method that’s been declared (as abstract) but not implemented.<br>The abstract method ends with a semicolon instead of curly braces.<br>It is illegal to have even a single abstract method in a class that is not explicitly declared abstract!<br>Any class that extends an abstract class must implement all abstract methods of the superclass, unless the subclass is also abstract.</p>
+<p>Transient:<br>If you make an instance variable as transient, you’re telling the JVM to skip this variable when you attempt to serialize the object containing it.</p>
+<p>Volatile Variables:<br>The volatile modifier tells the JVM that a thread accessing the variable must always reconcile its own private copy of the variable with the master copy in memory.</p>
+<p>Volatile, as with transient, can be applied only to instance variables.</p>
+<p>Synchronized:<br>The synchronized keyword indicates that a method can be accessed by only one thread at a time.<br>The synchronized modifier can be applied only to methods — not variables, not classes, just methods.<br>The synchronized modifier can be matched with any of the four access control levels.<br>e.g. public synchronized Record retrieveUserInfo (int id) {}</p>
+<p>Native:<br>The native modifier indicates that a method is implemented in platform-dependent code, often in C. It can only be applied to methods - not classes, not variables, just methods. Note that a native method’s body must be semicolon ;</p>
+<p>Strictfp:<br>strictfp forces floating points( and any floating-point operations) to adhere to the IEEE 754 standard. With strictfp, you can predict how your floating points will behave regardless of the underlying platform the JVM is running on.</p>
+<p>Static:<br>The static modifier is used to create variables and methods that will exist independently of any instances created for the class.<br>All static members exist before you ever make a new instance of a class, and there will be only one copy of a static member regardless of the number of instance of that class.</p>
+<p>Things you can mark as static:<br>methods<br>Variables<br>A class nested within another class, but not within a method<br>Initialization blocks</p>
+<p>Things you cannot mark as static:<br>Constructors<br>Classes, unless they are nested<br>Interfaces<br>method local inner classes<br>Inner class methods and instance variables<br>Local variables</p>
+<p>Variable Declarations:<br>Primitives:<br>8 types: char, boolean, byte, short, int, long, double, float.<br>Once declared, its primitive type can never change, although in most cases its value can change.<br>All six number types(except char and boolean) in Java are made up of a certain number of 8-bit bytes, and are signed. The leftmost bit (the most significant digit) is used to represent the sign, where a 1 means negative and 0 means positive).</p>
+<p>Reference variables:<br>A reference variable is used to refer to ( or access) an object.<br>A reference variable can be used to refer to any object of the declared type, or of a subtype of the declared type ( a compatible type).</p>
+<p>Declaring Reference Variables<br>Reference variables can be declared as static variables, instance variables, method parameters, or local variables.</p>
+<p>Instance variables are defined inside the class, but outside of any method, and are only initialized when the class is instantiated.</p>
+<p>Local (Automatic/Stack/Method) Variables:</p>
+<p>Local variables are variables declared within a method.<br>It is not just initialized within the method, but also declared within the method.<br>Its life start inside the method, and is destroyed when the method has completed.<br>The local variable is on the stack, if the variable is an object reference, the object itself will still be created on the heap.<br>Before a local variable can be used, it must be initialized with a value.<br>A local variable can’t be referenced in any code outside the method in which it’s declared.</p>
+<p>Array Declarations:<br>How to make an array reference variable (declare)<br>How to make an array object (construct)<br>How to populate the array with elements (initialize)</p>
+<p>Final Variables:<br>Primitive: the value cannot be altered<br>Reference variable: cannot be reassigned to refer to a different object</p>
+<p>Final modifier can be applied to classes, methods, and variables. And examples.</p>
+<p>Declaring Enums:</p>
+<p>Enums can be declared as their own separate class, or as a class member, however they must not be declared within a method.<br>An enum that isn’t  enclosed in a class can be declared with only the public or default modifier, just like a non-inner class.<br>Declaring Constructors, Methods, and Variables in an enum.</p>
+<p>E.g. enum CoffeeSize {BIG, HUGE, OVERWHELMING};<br>CoffeeSize cs = CoffeeSize.BIG;</p>
+<p>Switch’s expression:<br>A switch’s expression  must evaluate to a char, byte, short, int or as Java 6, an enum.</p>
+<p>the CASE constant must be a compile time constant. E.g. a constant or final variable that is assigned a literal value. </p>
+<p>so final int a = 1; is OK.  Final int b; b=2 ; is not OK.</p>
+<p>The power of boxing<br>Once a case constant is matched, the JVM will execute the associated code block, and ALL subsequent code blocks (barring a break statement) too.</p>
+<p>fall-through logic</p>
+<p>The default case can be located at the end, middle or top.</p>
+<p>Evaluating the iteration expression and then evaluating the conditional expression are always the last two things that happened in a FOR loop.</p>
+<p>Causes of Early Loop Termination:<br>Break, return, and System.exit()</p>
+<p>Enhanced For Loop in Java 6</p>
+<p>String:</p>
+<p>subtle differences between the various methods of creating a String.<br>String s = “abc”. // creates one String object and one reference variable, so “abc” will gain the pool and s will refer to it.<br>String s = new String(“abc”) // creates two objects, and one reference variable. Because we used the new keyword, java will create a new String object in normal (non pool) memory, and s will refer to it. In addition, the literal “abc” will be placed in the pool.</p>
+<p>Important methods:</p>
+<p>public char charAt(int index)<br>public String concat(String s)<br>public boolean equalsIgnoreCase(String s)<br>public int length()<br>public String replace(char old, char new)<br>public String substring(int begin)<br>public String substring(int begin, int end)<br>public String toLowerCase()<br>public String toString()</p>
+<p>e.g. String x = “big surprise”;<br>System.out.println (x.toString());</p>
+<p>StringBuilder is not thread safe, Java 5<br>StringBuffer is thread safe but slow</p>
 
     
   </div>

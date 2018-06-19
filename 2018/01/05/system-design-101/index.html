@@ -24,7 +24,7 @@
 <meta property="og:description" content="What is the System DesignSystem Design 101What kinds of Question You Should Expect in the Interviewinterviewee  v.s. interviewer  a web facing service a RESTfule API a peer-to-peer desktop app Design">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://www.yuliang.xyz/2018/01/05/system-design-101/radar_chart.png">
-<meta property="og:updated_time" content="2018-05-17T19:48:57.027Z">
+<meta property="og:updated_time" content="2018-05-18T01:15:32.836Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="101 Introduction to System Design">
 <meta name="twitter:description" content="What is the System DesignSystem Design 101What kinds of Question You Should Expect in the Interviewinterviewee  v.s. interviewer  a web facing service a RESTfule API a peer-to-peer desktop app Design">
@@ -617,9 +617,15 @@ Write: 1
 </ul>
 </li>
 </ol>
-<p>这两个timeline是有本质不同的，twitter的timeline是比较传统的按时间顺序呈现你follow的人的feeds，<br>而Facebook的news feeds更像一个timeline + social graph search, 不仅有好友最新的post，还有基于social graph搜索之后的相关结果（可能是你朋友的朋友，或者朋友赞过的照片，等），并且可能会有个性化结果。</p>
+<p>If you tweet then that is a write and twitter delivers that to all the subscribers feeds as soon as it is written, fan out write. The work is all done at the time of write to figure out who will get this tweet.</p>
+<p>Facebook does not immediately deliver a written post. It waits until users are actually consuming their feed. Facebook at this time looks for posts that have been written that this user is eligible to read; fan out read. The processing of whether a user has permission to read a particular post is done at read time.</p>
+<p>这两个timeline是有本质不同的，The answer is in these two cases complexity versus real time. </p>
+<ul>
+<li>Twitter的timeline是比较传统的按时间顺序呈现你follow的人的feeds，Twitter emphasized real time delivery of tweets</li>
+<li>Facebook的news feeds更像一个timeline + social graph search, 不仅有好友最新的post，还有基于social graph搜索之后的相关结果（可能是你朋友的朋友，或者朋友赞过的照片，等），并且可能会有个性化结果。Facebook has lots of complexity about who can see what. Facebook has prioritized the complex analysis needed to decide if a particular post is available to a particular user only when the particular user is ready to see it, which saves up front processing when the post is first written.</li>
+</ul>
 <p>回归到fan-out-read/fan-out-write一个本质区别是，如果request/answer pattern越不确定<br>（比如web search就是一个极端例子，query pattern趋近无限），或者answer features 需要agile的变化，那么用fan-out-read越好（read所有candidate后，灵活的组织结果）。</p>
-<p>References:<br><a href="https://www.quora.com/What-is-fan-out-write-and-fan-out-read-in-scalability" target="_blank" rel="noopener">What is fan out write and fan out read in scalability?</a><br><a href="https://toutiao.io/posts/125383/app_preview" target="_blank" rel="noopener">几个大型网站的 Feeds (Timeline) 设计简单对比</a></p>
+<p>References:<br><a href="https://en.wikipedia.org/wiki/Fan-out_(software" target="_blank" rel="noopener">Fan-out (software) Wiki</a>)<br><a href="https://www.quora.com/What-is-fan-out-write-and-fan-out-read-in-scalability" target="_blank" rel="noopener">What is fan out write and fan out read in scalability?</a><br><a href="https://toutiao.io/posts/125383/app_preview" target="_blank" rel="noopener">几个大型网站的 Feeds (Timeline) 设计简单对比</a></p>
 <p>针对data layer的实现方案(</p>
 <ul>
 <li>cache的设计，比如从基本的LRU问到distributed cache，</li>
@@ -630,6 +636,16 @@ Write: 1
 <li>Bottlenect<br>如果还有时间，可以回顾我们已经设计好的系统，提出这个系统从整体上看，最可能出现瓶颈的地方，并和面试官互动的讨论。</li>
 </ol>
 <h3 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h3><p>有了以上框架，就需要针对框架里提到的各种主流技术去进行深入了解。在看文档或paper时，要多思考总结，互相比较，抽象理解。</p>
+<p>关注的系统和技术：</p>
+<ul>
+<li>Google三驾马车的paper（MapReduce, BigTable, GFS） 对应Hadoop, HBase, HDFS</li>
+<li>Cassandra, Dynamo paper (关注点：consistent hash, decentralized system design(gossip))</li>
+<li>Memcached (distributed cache)</li>
+<li>Redis (all-in-memory solution)</li>
+<li>ZooKeeper (load balancer/configuration center/name service/distributed lock etc..) </li>
+<li>Thrift(cross language interface and RPC)</li>
+<li>Storm(realtime streaming processing, 应对类似统计过去1分钟的count一类的题目), spark</li>
+</ul>
 
     
   </div>
@@ -660,7 +676,7 @@ Write: 1
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2017/10/22/design-pattern-command/">
+    <a class="show pull-left" href="/2017/11/04/ios-objective-c-runtime/">
         <i class="icon icon-angle-left"></i>
     </a>
     <a class="show pull-right" href="/2018/01/06/news-feed-system/">
