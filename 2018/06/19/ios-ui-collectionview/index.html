@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>ios-block | Liang Yu&#39;s Website</title>
+  <title>ios-ui-collectionview | Liang Yu&#39;s Website</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,17 +15,17 @@
     <meta name="keywords" content="Java, Swift, C, Objective-C, C++, Python, macOS, CentOS, Red Hat, Networking, Security, SIP, Web Development, iOS, Android, Backend, Adobe Illustrator, LaTeX, test, debug, shell" />
   
 
-  <meta name="description" content="Block 类型 NSConcreteGlobalBlock: 全局变量区 NSConcreteStackBlock: 栈区 NSConcreteMallocBlock: 堆区">
+  <meta name="description" content="11、UICollectionView自定义layout如何实现？ 实现一个自定义layout的常规做法是继承UICollectionViewLayout类，然后重载下列方法： -(CGSize)collectionViewContentSize返回collectionView的内容的尺寸-(NSArray )layoutAttributesForElementsInRect:(CGRect)re">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ios-block">
-<meta property="og:url" content="http://www.yuliang.xyz/2018/06/18/ios-block/index.html">
+<meta property="og:title" content="ios-ui-collectionview">
+<meta property="og:url" content="http://www.yuliang.xyz/2018/06/19/ios-ui-collectionview/index.html">
 <meta property="og:site_name" content="Liang Yu&#39;s Website">
-<meta property="og:description" content="Block 类型 NSConcreteGlobalBlock: 全局变量区 NSConcreteStackBlock: 栈区 NSConcreteMallocBlock: 堆区">
+<meta property="og:description" content="11、UICollectionView自定义layout如何实现？ 实现一个自定义layout的常规做法是继承UICollectionViewLayout类，然后重载下列方法： -(CGSize)collectionViewContentSize返回collectionView的内容的尺寸-(NSArray )layoutAttributesForElementsInRect:(CGRect)re">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-19T23:52:34.397Z">
+<meta property="og:updated_time" content="2018-06-20T05:09:11.902Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ios-block">
-<meta name="twitter:description" content="Block 类型 NSConcreteGlobalBlock: 全局变量区 NSConcreteStackBlock: 栈区 NSConcreteMallocBlock: 堆区">
+<meta name="twitter:title" content="ios-ui-collectionview">
+<meta name="twitter:description" content="11、UICollectionView自定义layout如何实现？ 实现一个自定义layout的常规做法是继承UICollectionViewLayout类，然后重载下列方法： -(CGSize)collectionViewContentSize返回collectionView的内容的尺寸-(NSArray )layoutAttributesForElementsInRect:(CGRect)re">
 
   
 
@@ -157,22 +157,17 @@
 </div>
 
 
-  <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Block-类型"><span class="toc-text">Block 类型</span></a></li></ol>
-  </div>
-
 
 
 <div class="content content-post CENTER">
-   <article id="post-ios-block" class="article article-type-post" itemprop="blogPost">
+   <article id="post-ios-ui-collectionview" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">ios-block</h1>
+    <h1 class="post-title">ios-ui-collectionview</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2018.06.18</span>
+        <span>2018.06.19</span>
       </span>
 
       
@@ -188,7 +183,7 @@
       
         <span>
           <i class="icon-comment"></i>
-          <a href="http://www.yuliang.xyz/2018/06/18/ios-block/#disqus_thread"></a>
+          <a href="http://www.yuliang.xyz/2018/06/19/ios-ui-collectionview/#disqus_thread"></a>
         </span>
       
 
@@ -207,11 +202,9 @@
 
   <div class="article-content">
     
-      <h2 id="Block-类型"><a href="#Block-类型" class="headerlink" title="Block 类型"></a>Block 类型</h2><ol>
-<li>NSConcreteGlobalBlock: 全局变量区</li>
-<li>NSConcreteStackBlock: 栈区</li>
-<li>NSConcreteMallocBlock: 堆区</li>
-</ol>
+      <p>11、UICollectionView自定义layout如何实现？</p>
+<p>实现一个自定义layout的常规做法是继承UICollectionViewLayout类，然后重载下列方法：</p>
+<p>-(CGSize)collectionViewContentSize<br>返回collectionView的内容的尺寸<br>-(NSArray <em>)layoutAttributesForElementsInRect:(CGRect)rect<br>返回rect中的所有的元素的布局属性<br>返回的是包含UICollectionViewLayoutAttributes的NSArray<br>UICollectionViewLayoutAttributes可以是cell，追加视图或装饰视    图的信息，通过不同的UICollectionViewLayoutAttributes初始化方法可以得到不同类型的UICollectionViewLayoutAttributes：<br>   layoutAttributesForCellWithIndexPath:<br>   layoutAttributesForSupplementaryViewOfKind:withIndexPath:<br>layoutAttributesForDecorationViewOfKind:withIndexPath:<br>  -(UICollectionViewLayoutAttributes )layoutAttributesForItemAtIndexPath:(NSIndexPath )indexPath<br>返回对应于indexPath的位置的cell的布局属性<br>-(UICollectionViewLayoutAttributes )layoutAttributesForSupplementaryViewOfKind:(NSString )kind atIndexPath:(NSIndexPath </em>)indexPath<br>返回对应于indexPath的位置的追加视图的布局属性，如果没有追加视图可不重载<br>-(UICollectionViewLayoutAttributes * )layoutAttributesForDecorationViewOfKind:(NSString)decorationViewKind atIndexPath:(NSIndexPath )indexPath<br>返回对应于indexPath的位置的装饰视图的布局属性，如果没有装饰视图可不重载<br>-(BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds<br>当边界发生改变时，是否应该刷新布局。如果YES则在边界变化（一般是scroll到其他地方）时，将重新计算需要的布局信息。</p>
 
     
   </div>
@@ -242,10 +235,10 @@
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2018/06/18/ios-memory-management/">
+    <a class="show pull-left" href="/2018/06/19/ios-core-location/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2018/06/18/ios-ui-tableview/">
+    <a class="show pull-right" href="/2018/06/19/ios-swift/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
@@ -370,7 +363,7 @@
   <script>
     var disqus_shortname = 'forsigner';
     
-    var disqus_url = 'http://www.yuliang.xyz/2018/06/18/ios-block/';
+    var disqus_url = 'http://www.yuliang.xyz/2018/06/19/ios-ui-collectionview/';
     
     (function(){
       var dsq = document.createElement('script');
