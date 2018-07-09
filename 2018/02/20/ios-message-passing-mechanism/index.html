@@ -15,18 +15,18 @@
     <meta name="keywords" content="-iOS_Runtime," />
   
 
-  <meta name="description" content="通知： 一对多代理block， iOS4.0target action：通过将对象传递到另外一个类中，在另一个类中将该对象当做target到方式，来用来调用该对象到方法，从内存角度来说和代理类似1234567// 为button制定时间处理, 对象target为self，事件处理方法为buttonPressed[Button addTarget: self action: @selector(bu">
+  <meta name="description" content="Ｃ++中的方法调用可能是动态的，也可能是静态的；而ObjC中的消息都为动态的。 通知： 一对多代理block， iOS4.0target action：通过将对象传递到另外一个类中，在另一个类中将该对象当做target到方式，来用来调用该对象到方法，从内存角度来说和代理类似1234567// 为button制定时间处理, 对象target为self，事件处理方法为buttonPressed[But">
 <meta name="keywords" content="-iOS_Runtime">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ios-message-passing-mechanism">
 <meta property="og:url" content="http://www.yuliang.xyz/2018/02/20/ios-message-passing-mechanism/index.html">
 <meta property="og:site_name" content="Liang Yu&#39;s Website">
-<meta property="og:description" content="通知： 一对多代理block， iOS4.0target action：通过将对象传递到另外一个类中，在另一个类中将该对象当做target到方式，来用来调用该对象到方法，从内存角度来说和代理类似1234567// 为button制定时间处理, 对象target为self，事件处理方法为buttonPressed[Button addTarget: self action: @selector(bu">
+<meta property="og:description" content="Ｃ++中的方法调用可能是动态的，也可能是静态的；而ObjC中的消息都为动态的。 通知： 一对多代理block， iOS4.0target action：通过将对象传递到另外一个类中，在另一个类中将该对象当做target到方式，来用来调用该对象到方法，从内存角度来说和代理类似1234567// 为button制定时间处理, 对象target为self，事件处理方法为buttonPressed[But">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-16T03:36:30.529Z">
+<meta property="og:updated_time" content="2018-06-23T01:43:32.140Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ios-message-passing-mechanism">
-<meta name="twitter:description" content="通知： 一对多代理block， iOS4.0target action：通过将对象传递到另外一个类中，在另一个类中将该对象当做target到方式，来用来调用该对象到方法，从内存角度来说和代理类似1234567// 为button制定时间处理, 对象target为self，事件处理方法为buttonPressed[Button addTarget: self action: @selector(bu">
+<meta name="twitter:description" content="Ｃ++中的方法调用可能是动态的，也可能是静态的；而ObjC中的消息都为动态的。 通知： 一对多代理block， iOS4.0target action：通过将对象传递到另外一个类中，在另一个类中将该对象当做target到方式，来用来调用该对象到方法，从内存角度来说和代理类似1234567// 为button制定时间处理, 对象target为self，事件处理方法为buttonPressed[But">
 
   
 
@@ -208,7 +208,8 @@
 
   <div class="article-content">
     
-      <p>通知： 一对多<br>代理<br>block， iOS4.0<br>target action：通过将对象传递到另外一个类中，在另一个类中将该对象当做target到方式，来用来调用该对象到方法，从内存角度来说和代理类似<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 为button制定时间处理, 对象target为self，事件处理方法为buttonPressed</span><br><span class="line">[Button addTarget: self action: @selector(buttonPressed) forControlEvents: UIControlEvent]; </span><br><span class="line"></span><br><span class="line">- (void) buttonPressed &#123;</span><br><span class="line">    // 但其实通过代理处理</span><br><span class="line">    [_myDelegate print:@&quot;This is a view&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+      <p>Ｃ++中的方法调用可能是动态的，也可能是静态的；而ObjC中的消息都为动态的。</p>
+<p>通知： 一对多<br>代理<br>block， iOS4.0<br>target action：通过将对象传递到另外一个类中，在另一个类中将该对象当做target到方式，来用来调用该对象到方法，从内存角度来说和代理类似<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 为button制定时间处理, 对象target为self，事件处理方法为buttonPressed</span><br><span class="line">[Button addTarget: self action: @selector(buttonPressed) forControlEvents: UIControlEvent]; </span><br><span class="line"></span><br><span class="line">- (void) buttonPressed &#123;</span><br><span class="line">    // 但其实通过代理处理</span><br><span class="line">    [_myDelegate print:@&quot;This is a view&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h1 id="检测网络是否存在："><a href="#检测网络是否存在：" class="headerlink" title="检测网络是否存在："></a>检测网络是否存在：</h1><p>Reachablility lib 苹果收购后，提供<br>WWAN: 2G, 3G, 4G 网络</p>
 <p>以通知的模式去监听: NSNotificationCenter:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[[NSNotificationCenter defaultCenter] addObserver: self</span><br><span class="line">	selector: @selector(changeStatus)</span><br><span class="line">	name: kReachabilityChangedNotification</span><br><span class="line">	object: nil]</span><br></pre></td></tr></table></figure></p>
 <p>changeStatus是方法</p>

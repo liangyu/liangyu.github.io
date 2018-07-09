@@ -15,18 +15,18 @@
     <meta name="keywords" content="Java," />
   
 
-  <meta name="description" content="Java Fundamental HashMap的源码，实现原理，JDK8中对HashMap做了怎样的优化。 HaspMap扩容是怎样扩容的，为什么都是2的N次幂的大小。 HashMap，HashTable，ConcurrentHashMap的区别。 极高并发下HashTable和ConcurrentHashMap哪个性能更好，为什么，如何实现的。 HashMap在高并发下如果没有处理线程安全会有">
+  <meta name="description" content="Java Fundamental HashMap的源码，实现原理，JDK8中对HashMap做了怎样的优化。 HaspMap扩容是怎样扩容的，为什么都是2的N次幂的大小。 HashMap，HashTable，ConcurrentHashMap的区别。  HashMap, HashTable都实现了Map接口，HashMap是HashTable的轻量级实现，非线程安全。HashMap允许 null">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java in Ten Years">
 <meta property="og:url" content="http://www.yuliang.xyz/2018/03/09/java-ten-year/index.html">
 <meta property="og:site_name" content="Liang Yu&#39;s Website">
-<meta property="og:description" content="Java Fundamental HashMap的源码，实现原理，JDK8中对HashMap做了怎样的优化。 HaspMap扩容是怎样扩容的，为什么都是2的N次幂的大小。 HashMap，HashTable，ConcurrentHashMap的区别。 极高并发下HashTable和ConcurrentHashMap哪个性能更好，为什么，如何实现的。 HashMap在高并发下如果没有处理线程安全会有">
+<meta property="og:description" content="Java Fundamental HashMap的源码，实现原理，JDK8中对HashMap做了怎样的优化。 HaspMap扩容是怎样扩容的，为什么都是2的N次幂的大小。 HashMap，HashTable，ConcurrentHashMap的区别。  HashMap, HashTable都实现了Map接口，HashMap是HashTable的轻量级实现，非线程安全。HashMap允许 null">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-03T20:45:51.917Z">
+<meta property="og:updated_time" content="2018-06-30T21:40:29.249Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java in Ten Years">
-<meta name="twitter:description" content="Java Fundamental HashMap的源码，实现原理，JDK8中对HashMap做了怎样的优化。 HaspMap扩容是怎样扩容的，为什么都是2的N次幂的大小。 HashMap，HashTable，ConcurrentHashMap的区别。 极高并发下HashTable和ConcurrentHashMap哪个性能更好，为什么，如何实现的。 HashMap在高并发下如果没有处理线程安全会有">
+<meta name="twitter:description" content="Java Fundamental HashMap的源码，实现原理，JDK8中对HashMap做了怎样的优化。 HaspMap扩容是怎样扩容的，为什么都是2的N次幂的大小。 HashMap，HashTable，ConcurrentHashMap的区别。  HashMap, HashTable都实现了Map接口，HashMap是HashTable的轻量级实现，非线程安全。HashMap允许 null">
 
   
 
@@ -217,16 +217,36 @@
 <li>HashMap的源码，实现原理，JDK8中对HashMap做了怎样的优化。</li>
 <li>HaspMap扩容是怎样扩容的，为什么都是2的N次幂的大小。</li>
 <li>HashMap，HashTable，ConcurrentHashMap的区别。</li>
+</ol>
+<p>HashMap, HashTable都实现了Map接口，HashMap是HashTable的轻量级实现，非线程安全。<br>HashMap允许 null key 作为key或者value，效率高于HashTable，因为不是线程安全的<br>HashMap在多线程情况下，需要提供而外的同步。</p>
+<p>Hashtable有contains方法，hashmap有containsValue和containsKey。</p>
+<p>HashTable继承自Dictionary类，HashMap是Java1.2 中Map interface的一个实现</p>
+<ol>
 <li>极高并发下HashTable和ConcurrentHashMap哪个性能更好，为什么，如何实现的。</li>
 <li>HashMap在高并发下如果没有处理线程安全会有怎样的安全隐患，具体表现是什么。</li>
 <li>java中四种修饰符的限制范围。</li>
 <li>Object类中的方法。</li>
 <li>接口和抽象类的区别，注意JDK8的接口可以有实现。</li>
+</ol>
+<p>Override 重写 是父类和子类之间多态性的一种表现，子类中定义的方法与其父类有相同的名称和参数，则是重写<br>Overloade 重载 是一个类中多态性的一种表现， 一个类中定义多个同名的方法，它们有不同的参数个数或者不同的参数类型，则是重载</p>
+<ol>
 <li>动态代理的两种方式，以及区别。</li>
 <li>Java序列化的方式。</li>
 <li>传值和传引用的区别，Java是怎么样的，有没有传值引用。</li>
 <li>一个ArrayList在循环过程中删除，会不会出问题，为什么。</li>
 <li>@transactional注解在什么情况下会失效，为什么。</li>
+<li>你所知道的集合类都有哪些，主要方法</li>
+</ol>
+<p>List 和 Map，List的实现有ArrayList和 Vector。 它们是可变大小的列表，适合构建，存储和操作任何类型对象的元素列表。<br>List适用于按数值索引访问元素的情况。Map提供了一个更通用的元素存储方法，Map集合类用于存储元素对（键和值），其中每个键<br>映射到一个值。</p>
+<ol>
+<li>ArrayList, Vector, LinkedList 的储存性能和特性<br>ArrayList 和 Vector都是用数组方式储存数据，此数组的元素大于实际存储的数据，以便增加和插入元素。<br>都允许直接按序号索引元素，但是插入元素需要涉及元素移动等内存操作，所以索引数据快，而插入数据慢</li>
+</ol>
+<p>vector使用了synchronized方法而线程安全，性能通常比Arraylist差，而LinkedList 使用双向链表实现存储，按序号<br>索引数据需要进行前向或后向便利，但是插入数据时候，只需要记录本项都前后项即可，所以插入快。    </p>
+<ol>
+<li><p>Collection 和 Collections等区别<br>Collection是集合类的上级接口，继承它的接口有Set和List<br>Collections是针对集合类的一个帮助类，他提供一系列的静态方法实现对各种集合对搜索，排序，线程安全化的操作。</p>
+</li>
+<li><p>final, finally, finalize 的区别<br>final用于声明属性，方法和类，分别表示属性不可变， 方法不可覆盖，类不可继承<br>finally是异常处理的一个部分，在catch后，总是执行的那些操作需要放在finally的这个block块中，<br>finalize是Ojbect类的一个方法，在垃圾收集器执行时时候，会调用被回收对象的此方法，可以覆盖此方法<br>提供垃圾收集时候的其他资源回收，例如关闭文件。</p>
+</li>
 </ol>
 <h2 id="Data-Structure-and-Algorithm"><a href="#Data-Structure-and-Algorithm" class="headerlink" title="Data Structure and Algorithm"></a>Data Structure and Algorithm</h2><ol>
 <li>B+树</li>
@@ -257,6 +277,9 @@
 <li>volitile关键字的作用，原理。</li>
 <li>synchronized关键字的用法，优缺点。</li>
 <li>Lock接口有哪些实现类，使用场景是什么。</li>
+</ol>
+<p>Lock能完成synchronzied所实现的所有功能。<br>Lock比synchronized更精细的线程语义和更好的性能。<br>Synchronized会自动释放锁，而Lock一定要求程序员手工释放，并且必须在finally block中释放</p>
+<ol>
 <li>可重入锁的用处及实现原理，写时复制的过程，读写锁，分段锁（ConcurrentHashMap中的segment）。</li>
 <li>悲观锁，乐观锁，优缺点，CAS有什么缺陷，该如何解决。</li>
 <li>ABC三个线程如何保证顺序执行。</li>
