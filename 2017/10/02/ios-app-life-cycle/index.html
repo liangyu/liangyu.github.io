@@ -24,7 +24,7 @@
 <meta property="og:description" content="iOS程序的完整启动过程 程序一开始会执行main函数：main(int argc, char* argv[]) { }  再执行UIApplicationMain 函数:UIApplicationMain(int argc, char argv[], NSString principalClassName, NSString* delegateClassName){ }  2.1 根据参数pri">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://www.yuliang.xyz/2017/10/02/ios-app-life-cycle/view_load_mode.png">
-<meta property="og:updated_time" content="2018-03-21T21:34:20.879Z">
+<meta property="og:updated_time" content="2018-08-20T23:20:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="The iOS App Life Cycle">
 <meta name="twitter:description" content="iOS程序的完整启动过程 程序一开始会执行main函数：main(int argc, char* argv[]) { }  再执行UIApplicationMain 函数:UIApplicationMain(int argc, char argv[], NSString principalClassName, NSString* delegateClassName){ }  2.1 根据参数pri">
@@ -224,8 +224,9 @@
 <li>2.2 根据参数delegateClassName 创建 UIApplication的delegate对象</li>
 </ul>
 </li>
-<li><p>delegate对象开始处理监听事件</p>
-<ul>
+</ol>
+<ol>
+<li>delegate对象开始处理监听事件<ul>
 <li>3.1 没有storyboard<ul>
 <li>3.1.1 程序启动完成后，会调用代理的 application: didFinishLaunchingWithOptions 方法</li>
 <li>3.1.2 在didFinishLaunchingWithOptions 中创建 UIWindow</li>
