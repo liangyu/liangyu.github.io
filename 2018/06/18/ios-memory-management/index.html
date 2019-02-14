@@ -1,0 +1,34 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> iOS MRC/ARC 内存管理 · Liang Yu's Website</title><meta name="description" content="iOS MRC/ARC 内存管理 - Liang Yu"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.yuliang.xyz/atom.xml" title="Liang Yu's Website"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">iOS MRC/ARC 内存管理</h1><div class="post-info">Jun 18, 2018</div><div class="post-content"><h3 id="Reference-Count"><a href="#Reference-Count" class="headerlink" title="Reference Count"></a>Reference Count</h3><p>必须要提出这个概念。解释是表示对象被引用的次数。OC中每一个对象都会有一个记录引用次数的属性叫做retainCount， 可以用[ojbect valueForKey:@”retainCount”]等方式获取对象的引用次数。</p>
+<h3 id="OC中管理内存的三个方式"><a href="#OC中管理内存的三个方式" class="headerlink" title="OC中管理内存的三个方式"></a>OC中管理内存的三个方式</h3><h4 id="MRC中内存管理"><a href="#MRC中内存管理" class="headerlink" title="MRC中内存管理"></a>MRC中内存管理</h4><ul>
+<li>alloc ,new创建一个对象obj1,会自动让对象的引用计数为1</li>
+<li>当我们需要用一个新的指针pointer1指向上面创建的对象obj1的时候, 除了赋值, 还需要手动调用[obj1 retain] 或者 [obj1 copy] 手动修改对象的引用计数加1</li>
+<li>在要超出指针pointer1的作用域的时候,我们需要让手动调用[pointer1 release],让引用计数减1</li>
+</ul>
+<h4 id="Autorelease和Autoreleasepool方式"><a href="#Autorelease和Autoreleasepool方式" class="headerlink" title="Autorelease和Autoreleasepool方式"></a>Autorelease和Autoreleasepool方式</h4><p>autoreleased 对象释放时机: 是在当前的runloop迭代结束时释放的，而它能够释放的原因是系统在每个runloop迭代中都加入了自动释放池Push和Pop.</p>
+<p>Autoreleasepool理解:</p>
+<ul>
+<li>每一个线程的 autoreleasepool 其实就是一个指针的堆栈</li>
+<li>每一个指针代表一个需要 release 的对象或者 POOL_SENTINEL（哨兵对象，代表一个 autoreleasepool 的边界</li>
+<li>一个 pool token 就是这个 pool 所对应的 POOL_SENTINEL 的内存地址。当这个 pool 被 pop 的时候，所有内存地址在 pool token 之后的对象都会被 release ；</li>
+<li>这个堆栈被划分成了一个以 page 为结点的双向链表。pages 会在必要的时候动态地增加或删除；</li>
+<li>ARC下，我们使用@autoreleasepool{} 来使用一个AutoreleasePool，随后编译器将其改写成下面的样子,而这两个函数都是对AutoreleasePoolPage的简单封装，所以自动释放机制的核心就在于这个类</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// &#123;&#125;中的代码</span><br><span class="line">void *context = objc_autoreleasePoolPush();</span><br><span class="line">objc_autoreleasePoolPop(context);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>AutoreleasePool并没有单独的结构，而是由若干个AutoreleasePoolPage以双向链表<br>的形式组合而成</p>
+</li>
+<li><p>一个空的 AutoreleasePoolPage 的内存结构如下图所示:</p>
+<img src="/2018/06/18/ios-memory-management/autoreleasepool.png" title="[]">
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">AutoreleasePoolPage Instance</span><br><span class="line"></span><br><span class="line">// high memory address</span><br><span class="line">    </span><br><span class="line">    magic_t const magic; // magic 用来校验 AutoreleasePoolPage 的结构是否完整；</span><br><span class="line">    id *next; // next 指向最新添加的 autoreleased 对象的下一个位置，初始化时指向 begin() ；</span><br><span class="line">    pthread_t const thread; // thread 指向当前线程,所以AutoreleasePool是按线程一一对应的</span><br><span class="line">	AutoreleasePoolPage * const parent; // parent 指向父结点，第一个结点的 parent 值为 nil ；</span><br><span class="line">	AutoreleasePoolPage * child; // child 指向子结点，最后一个结点的 child 值为 nil ；</span><br><span class="line">	uint32_t const depth; // depth 代表深度，从 0 开始，往后递增 1；</span><br><span class="line">	uint32_t hiwat; // hiwat 代表 high water mark </span><br><span class="line"></span><br><span class="line">// low memory address</span><br></pre></td></tr></table></figure>
+<p>另外，当 next == begin() 时，表示 AutoreleasePoolPage 为空；当 next == end() 时，表示 AutoreleasePoolPage 已满。</p>
+<h3 id="ARC中内存管理"><a href="#ARC中内存管理" class="headerlink" title="ARC中内存管理"></a>ARC中内存管理</h3><p>底层还是应用计数的东西，只不过编译器在适当的位置添加了MRC中管理引用计数的代码。<br>编译器会在编译阶段在合适的时间和位置帮忙填上原本需要手写的retain，release，autorelease等内存管理代码。ARC不是运行时的特性，也不是Java中GC运行时的垃圾回收系统，是编译器的特性。</p>
+<h3 id="3-CoreFoundation的内存管理"><a href="#3-CoreFoundation的内存管理" class="headerlink" title="3. CoreFoundation的内存管理"></a>3. CoreFoundation的内存管理</h3><p>Core Foundation 对象必须使用CFRetain和CFRelease来进行内存管理</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
+<li>alloc, new, copy, retain会让引用计数器加1 , 用release,autorelease对引用计数器做减1操作</li>
+<li>MRC中一定要在delloc中对对象做一次release,然后最后调用super dealloc; ARC中不需要, 也不能调用super dealloc.</li>
+</ul>
+<p>ARC只支持cocoa框架下面的对象, 也就是所以继承自NSObjec的类的实例对象<br>不支持CoreFoundation框架下面的东西, CF的内存管理, 需要手动管理, 调用CFRelease(&lt;#CFTypeRef cf#&gt;) 和CFRetain(&lt;#CFTypeRef cf#&gt;)等方法管理</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p><a href="https://www.jianshu.com/p/f03a4d32dc41" target="_blank" rel="noopener">iOS内存管理（MRC、ARC）深入浅出</a></p>
+</div></article></div></main><footer><div class="paginator"><a href="/2018/06/18/ios-block/" class="prev">PREV</a><a href="/2018/06/18/ios-runloop/" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2019 <a href="http://www.yuliang.xyz">Liang Yu</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

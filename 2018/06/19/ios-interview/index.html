@@ -1,0 +1,190 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> iOS Interview · Liang Yu's Website</title><meta name="description" content="iOS Interview - Liang Yu"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.yuliang.xyz/atom.xml" title="Liang Yu's Website"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">iOS Interview</h1><div class="post-info">Jun 19, 2018</div><div class="post-content"><hr>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><hr>
+<ol>
+<li>为什么说Objective-C是一门动态的语言？</li>
+</ol>
+<p>Object-c类的类型和数据变量的类型都是在运行是确定的，而不是在编译时确定。例如：多态特性，我们可以使用父类指针来指向子类对象，并且可以用来调用子类的方法。运行时(runtime)特性,我们可以动态的添加方法，或者替换方法。</p>
+<p>动态的意思是不需要在编译时确定所有的东西,在运行时也可以动态添加变量,属性,方法和类. Objective-C 可以通过Runtime这个运行时机制,在运行时动态的添加变量,方法和类等,</p>
+<p>它的动态性主要体现在3个方面：<br>1.动态类型：如id类型。实际上静态类型因为其固定性和可预知性而使用的特别广泛。静态类型是强类型，动态类型是弱类型，运行时决定接收者。<br>2.动态绑定：让代码在运行时判断需要调用什么方法，而不是在编译时。与其他面向对象语言一样，方法调用和代码并没有在编译时连接在一起，而是在消息发送时才进行连接。运行时决定调用哪个方法。<br>3.动态载入。让程序在运行时添加代码模块以及其他资源。用户可以根据需要执行一些可执行代码和资源，而不是在启动时就加载所有组件。可执行代码中可以含有和程序运行时整合的新类。</p>
+<ol>
+<li><p>讲一下MVC和MVVM，MVP？</p>
+</li>
+<li><p>为什么代理要用weak？代理的delegate和dataSource有什么区别？block和代理的区别?</p>
+</li>
+</ol>
+<ul>
+<li>代理是使用weak来修饰的。</li>
+</ul>
+<p>1.使用weak是为了避免循环引用。<br>防止循环引用。例如View有一个协议，需要一个代理实现回调。一个Controller添加这个View，并且遵守协议，成为View的代理。如果不用week，用strong，Controller -&gt;View -&gt; delegate -&gt; Controller，就循环引用了。</p>
+<p>2.当使用weak修饰的属性，当对象释放的时候，系统会对属性赋值nil,object-c有个特性就是对nil对象发送消息也就是调用方法，不会cash。</p>
+<ul>
+<li><p>delegate:传递的是事件(even)，偏重于与用户交互的回调。代理可以让A对象通知B对象，我(A)发生的变化，前提B遵循了A的代理，并且实现了A的代理方法。</p>
+</li>
+<li><p>dataSource: 传递的是数据。如果A对象声明了数据源，当我们创建A对象的时候，我们就该实现数据源，来告诉A，他所需要的一些数据。例如：tableView数据源方法，需要告诉它，我要实现几组cell，每组cell多少行cell，实现的cell什么样式，什么内容</p>
+</li>
+<li><p>同样delegate和  dataSource,都是可以使用require和optional来修饰的。</p>
+</li>
+</ul>
+<ol>
+<li>代理和Block的区别<br>相同点：代理和Block大多是我们都可以用来做倒序传值的。我们都得注意避免循环引用。不然我们去使用代理还是Block的时候，都需要判断它们是否实现</li>
+</ol>
+<p>不同点：代理使用weak修饰，代理必须先声明方法。当我们调用代理的时候要判断是否已经实现。</p>
+<p>block：使用的是copy来修饰，block保存的是一段代码，其实也就是一个函数。并且可以自动捕捉自动变量，如果想修改此自动变量，还必须使用__block修饰。</p>
+<p>在 iOS中， block一共分三种。<br>  (1)全局静态 block，不会访问任何外部变量，执行完就销毁。</p>
+<pre><code>^{
+    NSLog(@&quot;Hello World!&quot;);
+}();
+</code></pre><p>(2)保存在栈中的 block，当函数返回时会被销毁，和第一种的区别就是调用了外部变量。</p>
+<pre><code>[UIView animateWithDuration:3 animations:^{
+
+    self.view.backgroundColor = [UIColor redColor];
+}];
+</code></pre><p>(3)保存在堆中的 block，当引用计数为 0 时会被销毁。例如按钮的点击事件，一直存在，即使执行过，也不销毁，因为按钮还可能被点击，持有按钮的View被销毁，它才会被销毁。</p>
+<p>2.block优点<br>block的代码可读性更好。因为应用block和实现block的地方在一起。代理的声明和实现就分开来了，在两个类中。代理使用起来也更麻烦，因为要声明协议、声明代理、遵守协议、实现协议里的方法。block不需要声明，也不需要遵守，只需要声明和实现就可以了。<br>  block是一种轻量级的回调，可以直接访问上下文，由于block的代码是内联的，运行效率更高。block就是一个对象，实现了匿名函数的功能。所以我们可以把block当做一个成员变量、属性、参数使用，使用起来非常灵活。像用AFNetworking请求数据和GCD实现多线程，都使用了block回调。</p>
+<p>3.block缺点<br>blcok的运行成本高。block出栈需要将使用的数据从栈内存拷贝到堆内存，当然对象的话就是引用计数加1，使用完或者block置nil后才销毁。delegate只是保存了一个对象指针(一定要用week修饰delegate，不然也会循环引用)，直接回调，没有额外消耗。就像C的函数指针，只多做了一个查表动作。<br>  block容易造成循环引用，而且不易察觉。因为为了blcok不被系统回收，所以我们都用copy关键字修饰，实行强引用。block对捕获的变量也都是强引用，所以就会造成循环引用。</p>
+<p>4.如何使用<br>优先使用block。<br>  如果回调函数很多，多余三个使用代理。<br>  如果回调的很频繁，次数很多，像UITableview，每次初始化、滑动、点击都会回调，使用代理。 
+   </p>
+<h4 id="4-属性"><a href="#4-属性" class="headerlink" title="4. 属性"></a>4. 属性</h4><ul>
+<li><p>实质是什么？<br>属性是描述类的特征，也就是具备什么特性。</p>
+</li>
+<li><p>包括哪几个部分？<br>三个部分，带下划线的成员变量，get、setter方法</p>
+</li>
+<li><p>属性默认的关键字都有哪些？<br>默认关键字：readwrite，assign, atomic; – 是针对基本类型(NSInteger, BOOL, NSUInteger, int, 等)<br>针对引用类型(普通的 OC 对象), 默认:strong, readwrite, atomic （例如：NSString, NSArray, NSDictory等）</p>
+</li>
+<li><p>@dynamic关键字是用来做什么的？<br>@dynamic :修饰的属性，其getter和setter方法编译器是不会自动帮你生成。必须自己是实现的。</p>
+</li>
+<li><p>@synthesize关键字是用来做什么的？<br>@synthesize：修饰的属性，其getter和setter方法编译器是会自动帮你生成，不必自己实现。且指定与属性相对应的成员变量。</p>
+</li>
+</ul>
+<h4 id="6-NSString为什么要用copy关键字，如果用strong会有什么问题？（注意：这里没有说用strong就一定不行。使用copy和strong是看情况而定的）"><a href="#6-NSString为什么要用copy关键字，如果用strong会有什么问题？（注意：这里没有说用strong就一定不行。使用copy和strong是看情况而定的）" class="headerlink" title="6. NSString为什么要用copy关键字，如果用strong会有什么问题？（注意：这里没有说用strong就一定不行。使用copy和strong是看情况而定的）"></a>6. NSString为什么要用copy关键字，如果用strong会有什么问题？（注意：这里没有说用strong就一定不行。使用copy和strong是看情况而定的）</h4><ul>
+<li>什么是copy？</li>
+<li><p>什么是strong？</p>
+</li>
+<li><p>为什么要用copy？ 安全，在初始化时,如果来源是NSMutableString的话,会对来源进行一次深拷贝,将来源的内存地址复制一份,这样,两个对象就一点关系就没有了,无论你怎么操作来源,都不会对自己的NSString有任何影响</p>
+</li>
+<li><p>为什么不都用copy？<br>既然copy安全,那为什么不都用copy?<br>这里我们需要了解一点,copy修饰的NSString在进行set操作时,底层是这样实现的:<br>我们还是举上面那个例子,进行str = sourceStr操作时,内部会执行一个操作:<br>str = [sourceStr copy];<br>那么这个copy里面做了什么呢?<br>if ([str isMemberOfClass:[str class]])<br>没错,就是进行一次判断,判断来源是可变的还是不可变的,如果是不可变,那么好,接下来的操作就跟strong修饰的没有区别,进行浅拷贝;如果是可变的,那么会进行一次深拷贝<br>所以,copy操作内部会进行判断,你别小看了这个if操作所消耗的内存,一次不重要,十次可能也可以忽略不计,但当你的项目十分庞大时,有成百上千个个NSString对象,多多少少会对你的app的性能造成一定的影响.</p>
+</li>
+<li><p>什么时候才用copy？<br>你只需要记住一点,当你给你的的NSString对象赋值时,如果来源是NSMutableString,那么这种情况就必须要用copy;如果你确定来源是不可变类型的,比如@”<a href="http://www.jianshu.com/users/691d9ed740cf/latest_articles&quot;这种固定的字符串,那么用strong比较好" target="_blank" rel="noopener">http://www.jianshu.com/users/691d9ed740cf/latest_articles&quot;这种固定的字符串,那么用strong比较好</a></p>
+</li>
+</ul>
+<p>我们知道copy的含义是指当重新赋值时深拷贝新对象再赋值给self.name, 相反当修饰符为strong时，因为strong的意思是指针指向原对象，并且引用计数+1，<br>所以为了避免NSString类型的值被修改，一般建议用copy修饰符修饰。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface Person: NSObject</span><br><span class="line"></span><br><span class="line">@property (copy) NSString *name;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation Person</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    </span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        Person *xiaoMing = [[Person alloc] init];</span><br><span class="line">        NSMutableString *name1 = [[NSMutableString alloc] initWithString: @&quot;xiaoming&quot;];</span><br><span class="line">        xiaoMing.name = name1;</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;%@&quot;, xiaoMing.name);</span><br><span class="line">        </span><br><span class="line">        [name1 appendString:@&quot;one more thing&quot;];</span><br><span class="line">        // 如果peron的name属性没有用 copy，而是默认的strong来修饰，那么name1变了，person的name的值也会变</span><br><span class="line">        NSLog(@&quot;%@&quot;, xiaoMing.name);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line">NSLog(@&quot;%@&quot;, xiaoMing.name);</span><br></pre></td></tr></table></figure>
+<p>NSString 默认是 Strong修饰的</p>
+<p>如果用Copy来修饰name这个属性不会改变。如果使用Strong，当name这个字符串改变的时候，name这个属性也会随着改变。</p>
+<p>补充：这其实也是看需求，看被赋值的字符串是否需要随着赋值字符串的变化而变化，而大多数情况下我们不希望<br>被赋值的字符串如某个对象的某个字符串类型的属性会随着赋值字符串的变化而变化。 反之，如果我们希望被赋值的字符串随着赋值字符串的变化而变化，那么我们也可以使用strong来修饰字符串</p>
+<p>至于其底层原理区别则是两种修饰方式让指针指向的内存地址不同。使用copy修饰被赋值字符串，被修饰字符串会对赋值字符串（可变字符串）进行一次深拷贝，那么被赋值字符串和赋值字符串指向的是完全不同的两块内存地址，反之两者指向的同一块内存地址。</p>
+<p>当我们确定赋值字符串是不可变字符串的时候我们是可以使用strong来修饰字符串。</p>
+<h4 id="7、如何令自己所写的对象具有拷贝功能"><a href="#7、如何令自己所写的对象具有拷贝功能" class="headerlink" title="7、如何令自己所写的对象具有拷贝功能?"></a>7、如何令自己所写的对象具有拷贝功能?</h4><p>需实现 NSCopying 协议。如果自定义的对象分为可变版本与不可变版本，那么就要同时实现 NSCopying与 NSMutableCopying协议。<br>具体步骤：<br>需声明该类遵从 NSCopying 协议<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">实现 NSCopying 协议。该协议只有一个方法: </span><br><span class="line">- (id)copyWithZone:(NSZone *)zone; </span><br><span class="line"></span><br><span class="line">注意：一提到让自己的类用 copy 修饰符，我们总是想覆写copy方法，其实真正需要实现的却是 “copyWithZone” 方法。 </span><br><span class="line">至于如何重写带 copy 关键字的 setter这个问题， </span><br><span class="line">如果抛开本例来回答的话，如下：</span><br><span class="line"></span><br><span class="line">- (void)setName:(NSString *)name &#123;</span><br><span class="line">    //[_name release];</span><br><span class="line">    _name = [name copy];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="8、可变集合类-和-不可变集合类的-copy-和-mutablecopy有什么区别？如果是集合是内容复制的话，集合里面的元素也是内容复制么？"><a href="#8、可变集合类-和-不可变集合类的-copy-和-mutablecopy有什么区别？如果是集合是内容复制的话，集合里面的元素也是内容复制么？" class="headerlink" title="8、可变集合类 和 不可变集合类的 copy 和 mutablecopy有什么区别？如果是集合是内容复制的话，集合里面的元素也是内容复制么？"></a>8、可变集合类 和 不可变集合类的 copy 和 mutablecopy有什么区别？如果是集合是内容复制的话，集合里面的元素也是内容复制么？</h4><p>使用copy时 可变集合的指针地址以及内存地址都不相同 深复制<br>使用copy时 不可变集合的指针地址不一样但是内存地址一样 属于浅复制 </p>
+<p>使用mutableCopy的时候无论是可变集合还是不可变集合的指针地址和内存地址都不同 都属于深复制</p>
+<h4 id="9-为什么IBOutlet修饰的UIView也适用weak关键字？"><a href="#9-为什么IBOutlet修饰的UIView也适用weak关键字？" class="headerlink" title="9. 为什么IBOutlet修饰的UIView也适用weak关键字？"></a>9. 为什么IBOutlet修饰的UIView也适用weak关键字？</h4><p>在xib或者Sb拖控件时，其实控件就加载到了父控件的subviews数组里面，进行了强引用，即使使用了weak，也不造成对象的释放。</p>
+<h4 id="10-在定义-property-的时候-nonatomic-和-atomic的区别？"><a href="#10-在定义-property-的时候-nonatomic-和-atomic的区别？" class="headerlink" title="10. 在定义 property 的时候 nonatomic 和 atomic的区别？"></a>10. 在定义 property 的时候 nonatomic 和 atomic的区别？</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic, retain) UITextField *userName;</span><br><span class="line">@property(atomic, retain) UITextField *userName;</span><br><span class="line">@property(retain) UITextField *userName;</span><br></pre></td></tr></table></figure>
+<p>后两行是一样的，不写的话默认就是atomic。</p>
+<p>atomic 和 nonatomic 的区别在于，系统自动生成的 getter/setter 方法不一样。如果你自己写 getter/setter，那 atomic/nonatomic/retain/assign/copy 这些关键字只起提示作用，写不写都一样。</p>
+<p>对于atomic的属性，系统生成的 getter/setter 会保证 get、set 操作的完整性，不受其他线程影响。比如，线程 A 的 getter 方法运行到一半，线程 B 调用了 setter：那么线程 A 的 getter 还是能得到一个完好无损的对象。</p>
+<p>而nonatomic就没有这个保证了。所以，nonatomic的速度要比atomic快。</p>
+<p>不过atomic可并不能保证线程安全,只是读/写安全的。如果线程 A 调了 getter，与此同时线程 B 、线程 C 都调了 setter——那最后线程 A get 到的值，3种都有可能：可能是 B、C set 之前原始的值，也可能是 B set 的值，也可能是 C set 的值。同时，最终这个属性的值，可能是 B set 的值，也有可能是 C set 的值。</p>
+<p>atomic：默认是有该属性的，这个属性是为了保证程序在多线程情况下，编译器会自动生成一些互斥加锁代码，避免该变量的读写不同步问题。<br>nonatomic：如果该对象无需考虑多线程的情况，请加入这个属性，这样会让编译器少生成一些互斥加锁代码，可以提高效率。</p>
+<p>nonatomic:表示非原子，不安全，但是效率高。<br>atomic：表示原子行，安全，但是效率低。</p>
+<ul>
+<li>atomic是绝对的线程安全么？为什么？如果不是，那应该如何实现？</li>
+<li>atomic：不能绝对保证线程的安全，当多线程同时访问的时候，会造成线程不安全。可以使用线程锁来保证线程的安全。</li>
+</ul>
+<p>Example：<br>{lock}<br>    if (property != newValue) {<br>            [property release];<br>            property = [newValue retain];<br>    }<br>{unlock}</p>
+<p>可以看出来，用atomic会在多线程的设值取值时加锁，中间的执行层是处于被保护的一种状态，atomic是oc使用的一种线程保护技术，基本上来讲，就是防止在写入未完成的时候被另外一个线程读取，造成数据错误。而这种机制是耗费系统资源的，所以在iPhone这种小型设备上，如果没有使用多线程间的通讯编程，那么nonatomic是一个非常好的选择。</p>
+<ol>
+<li>进程和线程的区别？同步异步的区别？并行和并发的区别？<br>进程：是具有一定独立功能的程序关于某个数据集合上的一次运行活动,进程是系统进行资源分配和调度的一个独立单位.</li>
+</ol>
+<p>线程：是进程的一个实体,是CPU调度和分派的基本单位,它是比进程更小的能独立运行的基本单位.线程自己基本上不拥有系统资源,只拥有一点在运行中必不可少的资源(如程序计数器,一组寄存器和栈),但是它可与同属一个进程的其他的线程共享进程所拥有的全部资源.</p>
+<p>同步：阻塞当前线程操作，不能开辟线程。</p>
+<p>异步：不阻碍线程继续操作，可以开辟线程来执行任务。</p>
+<p>并发：当有多个线程在操作时,如果系统只有一个CPU,则它根本不可能真正同时进行一个以上的线程，它只能把CPU运行时间划分成若干个时间段,再将时间 段分配给各个线程执行，在一个时间段的线程代码运行时，其它线程处于挂起状。.这种方式我们称之为并发(Concurrent)。</p>
+<p>并行：当系统有一个以上CPU时,则线程的操作有可能非并发。当一个CPU执行一个线程时，另一个CPU可以执行另一个线程，两个线程互不抢占CPU资源，可以同时进行，这种方式我们称之为并行(Parallel)。</p>
+<p>区别：并发和并行是即相似又有区别的两个概念，并行是指两个或者多个事件在同一时刻发生；而并发是指两个或多个事件在同一时间间隔内发生。在多道程序环境下，并发性是指在一段时间内宏观上有多个程序在同时运行，但在单处理机系统中，每一时刻却仅能有一道程序执行，故微观上这些程序只能是分时地交替执行。倘若在计算机系统中有多个处理机，则这些可以并发执行的程序便可被分配到多个处理机上，实现并行执行，即利用每个处理机来处理一个可并发执行的程序，这样，多个程序便可以同时执行。</p>
+<h4 id="14-线程间通信？"><a href="#14-线程间通信？" class="headerlink" title="14. 线程间通信？"></a>14. 线程间通信？</h4><p>当使用dispath-async函数开辟线程执行任务的完成时，我们需要使用dispatch_async(dispatch_get_main_queue(), ^{ }); 函数会到主线程内刷新UI。并完成通信</p>
+<ol>
+<li>GCD的一些常用的函数？（group，barrier，信号量，线程同步）</li>
+</ol>
+<ul>
+<li>使用队列组来开辟线程时，队列组中的队列任务是并发，当所有的队列组中的所有任务完成时候，才可以调用队列组完成任务。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/**创建自己的队列*/</span><br><span class="line">dispatch_queue_t dispatchQueue = dispatch_queue_create(&quot;ted.queue.next&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">/**创建一个队列组*/</span><br><span class="line">dispatch_group_t dispatchGroup = dispatch_group_create();</span><br><span class="line">/**将队列任务添加到队列组中*/</span><br><span class="line">dispatch_group_async(dispatchGroup, dispatchQueue, ^()&#123;</span><br><span class="line">    NSLog(@&quot;dispatch-1&quot;);</span><br><span class="line">&#125;);</span><br><span class="line">   /**将队列任务添加到队列组中*/</span><br><span class="line">dispatch_group_async(dispatchGroup, dispatchQueue, ^()&#123;</span><br><span class="line">    NSLog(@&quot;dspatch-2&quot;);</span><br><span class="line">&#125;);</span><br><span class="line">  /**队列组完成调用函数*/</span><br><span class="line">dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^()&#123;</span><br><span class="line">    NSLog(@&quot;end&quot;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>barrier:表示栅栏，当在并发队列里面使用栅栏时候，栅栏之前的并发任务开始并发执行，执行完毕后，执行栅栏内的任务，等栅栏任务执行完毕后，再并发执行栅栏后的任务。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">dispatch_queue_t concurrentQueue = dispatch_queue_create(&quot;my.concurrent.queue&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">dispatch_async(concurrentQueue, ^()&#123;</span><br><span class="line">    NSLog(@&quot;dispatch-1&quot;);</span><br><span class="line">&#125;);</span><br><span class="line">dispatch_async(concurrentQueue, ^()&#123;</span><br><span class="line">    NSLog(@&quot;dispatch-2&quot;);</span><br><span class="line">&#125;);</span><br><span class="line">dispatch_barrier_async(concurrentQueue, ^()&#123;</span><br><span class="line">    NSLog(@&quot;dispatch-barrier&quot;); </span><br><span class="line">&#125;);</span><br><span class="line">dispatch_async(concurrentQueue, ^()&#123;</span><br><span class="line">    NSLog(@&quot;dispatch-3&quot;);</span><br><span class="line">&#125;);</span><br><span class="line">dispatch_async(concurrentQueue, ^()&#123;</span><br><span class="line">    NSLog(@&quot;dispatch-4&quot;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>信号量：Semaphore是通过‘计数’的方式来标识线程是否是等待或继续执行的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">dispatch_semaphore_create(int) // 创建一个信号，并初始化信号的计数大小</span><br><span class="line">/* 等待信号，并且判断信号量，如果信号量计数大于等于你创建时候的信号量的计数，就可以通过，继续执行，并且将你传入的信号计数减1，</span><br><span class="line"> * 如果传入的信号计数小于你创建的计数，就表示等待，等待信号计数的变化</span><br><span class="line"> *  如果等待的时间超过你传入的时间，也会继续下面操作</span><br><span class="line"> *   第一个参数：semaphore 表示信号量</span><br><span class="line"> *   第二个参数：表示等待的时间</span><br><span class="line"> *    返回int 如果传入的信号计数大于等于你创建信号的计数时候，返回0.  反之，返回的不等于0</span><br><span class="line"> */</span><br><span class="line"> int result = dispatch_semaphore_wait(dispatch_semaphore_t  semaphore,time outTime);// 表示等待，也是阻碍线程</span><br><span class="line">// 表示将信号技术+1</span><br><span class="line">dispatch_semaphore_signl(dispatch_semaphore_t semaphore);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实现线程的同步的方法：串行队列，分组，信号量。也是可以使用并发队列。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//加入队列</span><br><span class="line">dispatch_async(concurrentQueue, ^&#123;</span><br><span class="line">    //1.先去网上下载图片</span><br><span class="line">    dispatch_sync(concurrentQueue, ^&#123;</span><br><span class="line">       </span><br><span class="line">    &#125;);</span><br><span class="line">    //2.在主线程展示到界面里</span><br><span class="line">    dispatch_sync(dispatch_get_main_queue(), ^&#123;</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>如何使用队列来避免资源抢夺？<br>当我们使用多线程来访问同一个数据的时候，就有可能造成数据的不准确性。这个时候我么可以使用线程锁的来来绑定。也是可以使用串行队列来完成。如：fmdb就是使用FMDatabaseQueue，来解决多线程抢夺资源。</p>
+</li>
+<li><p>数据持久化的几个方案<br>plist, 存储字典，数组比较好用<br>preference：偏好设置，实质也是plist<br>NSKeyedArchiver：归档，可以存储对象<br>sqlite：数据库，经常使用第三方来操作，也就是fmdb<br>coreData: 也是数据库储存，苹果官方的</p>
+</li>
+</ol>
+<hr>
+<h2 id="中级"><a href="#中级" class="headerlink" title="中级"></a>中级</h2><hr>
+<h3 id="Block"><a href="#Block" class="headerlink" title="Block"></a>Block</h3><h3 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h3><ol>
+<li>objc在向一个对象发送消息时，发生了什么？<br>根据对象的isa指针找到类对象id，在查询类对象里面的methodLists方法函数列表，如果没有在好到，在沿着superClass,寻找父类，再在父类methodLists方法列表里面查询，最终找到SEL,根据id和SEL确认IMP（指针函数）,在发送消息；</li>
+</ol>
+<p>再复习C++的这个部分</p>
+<ol>
+<li>什么时候会报unrecognized selector错误？iOS有哪些机制来避免走到这一步？</li>
+</ol>
+<p>当发送消息的时候，我们会根据类里面的methodLists列表去查询我们要动用的SEL,当查询不到的时候，我们会一直沿着父类查询，当最终查询不到的时候我们会报unrecognized selector 错误</p>
+<p>当系统查询不到方法的时候，会调用+(BOOL)resolveInstanceMethod:(SEL)sel动态解释的方法来给我一次机会来添加，调用不到的方法。或者我们可以再次使用-(id)forwardingTargetForSelector:(SEL)aSelector重定向的方法来告诉系统，该调用什么方法，一来保证不会崩溃</p>
+<ol>
+<li>给类添加一个属性后，在类结构体里哪些元素会发生变化？<br>instance_size ：实例的内存大小<br><code>objc_ivar_list *ivars:属性列表</code></li>
+</ol>
+<h3 id="Runloop"><a href="#Runloop" class="headerlink" title="Runloop"></a>Runloop</h3><ol>
+<li>runloop是来做什么的？runloop和线程有什么关系？主线程默认开启了runloop么？子线程呢？</li>
+</ol>
+<ul>
+<li>runloop:字面意思就是跑圈，其实也就是一个循环跑圈，用来处理线程里面的事件和消息。</li>
+<li>runloop和线程的关系：每个线程如果想继续运行，不被释放，就必须有一个runloop来不停的跑圈，以来处理线程里面的各个事件和消息。</li>
+<li>主线程默认是开启一个runloop。也就是这个runloop才能保证我们程序正常的运行。子线程是默认没有开始runloop的</li>
+</ul>
+<ol>
+<li>runloop的mode是用来做什么的？有几种mode？</li>
+</ol>
+<ul>
+<li>model:是runloop里面的模式，不同的模式下的runloop处理的事件和消息有一定的差别。</li>
+</ul>
+<p>系统默认注册了5个Mode:<br>（1）kCFRunLoopDefaultMode: App的默认 Mode，通常主线程是在这个 Mode 下运行的。<br>（2）UITrackingRunLoopMode: 界面跟踪 Mode，用于 ScrollView 追踪触摸滑动，保证界面滑动时不受其他 Mode 影响。<br>（3）UIInitializationRunLoopMode: 在刚启动 App 时第进入的第一个 Mode，启动完成后就不再使用。<br>（4）GSEventReceiveRunLoopMode: 接受系统事件的内部 Mode，通常用不到。<br>（5）kCFRunLoopCommonModes: 这是一个占位的 Mode，没有实际作用。</p>
+<ul>
+<li>注意iOS 对以上5中model进行了封装<br>NSDefaultRunLoopMode;<br>NSRunLoopCommonModes</li>
+</ul>
+<h3 id="类结构"><a href="#类结构" class="headerlink" title="类结构"></a>类结构</h3><ol>
+<li>isa指针？（对象的isa，类对象的isa，元类的isa都要说）</li>
+</ol>
+<ol>
+<li>类方法和实例方法有什么区别？<br>调用的方式不同，类方法必须使用类调用，在方法里面不能调用属性，类方法里面也必须调用类方法。存储在元类结构体里面的methodLists里面</li>
+</ol>
+<p>实例方法必须使用实例对象调用，可以在实例方法里面使用属性，实例方法也必须调用实例方法。存储在类结构体里面的methodLists里面</p>
+<hr>
+<h2 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h2><hr>
+<hr>
+<h2 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h2><hr>
+<p>1.有已经上线的项目么？</p>
+<p>2.项目里哪个部分是你完成的？（找一个亮点问一下如何实现的）</p>
+<p>3.开发过程中遇到过什么困难，是如何解决的？</p>
+<hr>
+<h2 id="学习"><a href="#学习" class="headerlink" title="学习"></a>学习</h2><hr>
+<p>4.遇到一个问题完全不能理解的时候，是如何帮助自己理解的？举个例子？</p>
+<p>5.有看书的习惯么？最近看的一本是什么书？有什么心得？</p>
+<p>6.有没有使用一些笔记软件？会在多平台同步以及多渠道采集么？（如果没有，问一下是如何复习知识的）</p>
+<p>7.有没有使用清单类，日历类的软件？（如果没有，问一下是如何安排，计划任务的）</p>
+<p>8.平常看博客么？有没有自己写过？（如果写，有哪些收获？如果没有写，问一下不写的原因）</p>
+<hr>
+<h2 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h2><hr>
+<ul>
+<li>面试者一定要知道面试官问的点是什么。</li>
+<li>实践与理论的脱节，让人很不安。能做出来项目，但是基础知识很薄弱</li>
+<li>只依赖于公司里的项目应该是不够的，毕竟不是每个公司里都有上乘的代码和技术</li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a href="/2018/06/23/c-storage-class-keywords/" class="prev">PREV</a><a href="/2018/06/19/ios-swift/" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2019 <a href="http://www.yuliang.xyz">Liang Yu</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Session Description Protocol · Liang Yu's Website</title><meta name="description" content="Session Description Protocol - Liang Yu"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.yuliang.xyz/atom.xml" title="Liang Yu's Website"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Session Description Protocol</h1><div class="post-info">Jul 2, 2015</div><div class="post-content"><h2 id="SDP协议概述"><a href="#SDP协议概述" class="headerlink" title="SDP协议概述"></a>SDP协议概述</h2><p>SDP 完全是一种会话描述格式, 它不属于传输协议。 SDP协议是也是基于文本的协议。<br>它只使用不同的适当的传输协议，包括会话通知协议（SAP）、会话初始协议（SIP）、实时流协议（RTSP）、MIME 扩展协议的电子邮件以及超文本传输协议（HTTP）。SDP 不支持会话内容或媒体编码的协商，所以在流媒体中只用来描述媒体信息。媒体协商这一块要用RTSP来实现。</p>
+<h3 id="SDP-文本信息包括"><a href="#SDP-文本信息包括" class="headerlink" title="SDP 文本信息包括"></a>SDP 文本信息包括</h3><ul>
+<li>会话名称和意图； </li>
+<li>会话持续时间；</li>
+<li>构成会话的媒体； </li>
+<li>有关接收媒体的信息（地址等）</li>
+</ul>
+<h2 id="SDP协议结构"><a href="#SDP协议结构" class="headerlink" title="SDP协议结构"></a>SDP协议结构</h2><p>SDP协议的信息是文本信息，采用 UTF-8 编 码中的 ISO 10646 字符集。SDP描述由许多文本行组成，文本行的格式为&lt;类型&gt;=&lt;值&gt;，&lt;类型&gt;是一个字母，&lt;值&gt;是结构化的文本串，其格式依&lt;类型&gt;而定。＜type＞=<value>。 </value></p>
+<p>整个协议区分大小写, “=”两侧不允许有空格</p>
+<p>SDP会话描述分三部分：（标注 * 符号的表示可选字段）：</p>
+<ol>
+<li>Session Level Description</li>
+<li>Timing Description</li>
+<li>Media Description</li>
+</ol>
+<h3 id="1-会话正文描述："><a href="#1-会话正文描述：" class="headerlink" title="1. 会话正文描述："></a>1. 会话正文描述：</h3><p><strong>v = （协议版本）目前都为0</strong><br><strong>o = （所有者/创建者和会话标识符</strong><br>会话源 o = &lt;用户名&gt;用户在发起主机上登录名,如果主机不支持用户标识的概念,则为”-”<br>其格式为：o=<username> <sess-id> <sess-version><nettype> <addrtype> <unicast-address><br>e.g. o=mhandley 2890844526 2890842807 IN IP4 126.16.64.4 </unicast-address></addrtype></nettype></sess-version></sess-id></username></p>
+<p>mhandley：   会话发起者的名称（可不填，如果填写，就和SIP消息中from消息头的内容一致）<br>2890844526： 主叫方的会话标识符<br>2890842807： 主叫方的会话版本，会话数据有改变时，版本号递增<br>IN：         网络类型，IN表示Internet网络类型，目前仅定义该网络类型<br>IP4：        地址类型，目前支持IPV4和IPV6两种地址类型<br>126.16.64.4：表明会话发起者的IP地址，该地址为信令面的IP地址，信令PDP激活时为手机分配</p>
+<p><strong>s = （会话名称）</strong><br>e.g. s=SDP Seminar 表明本次会话的标题，或会话的名称</p>
+<p><strong>i = * （会话信息）</strong><br>e.g.  i=A Seminar on the session descriptionprotocol 会话的描述</p>
+<p><strong>u = * （URI 描述）</strong><br>e.g.  u=<a href="http://www.cs.ucl.ac.uk/staff/M.Handley/sdp.03.ps" target="_blank" rel="noopener">http://www.cs.ucl.ac.uk/staff/M.Handley/sdp.03.ps</a> 会话的URI，通过该地址可以查阅到会话的更多内容</p>
+<p><strong>e = * （Email地址）</strong><br>e.g. e=mjh@isi.edu (Mark Handley) 会话责任人的EMIAL地址</p>
+<p><strong>p = * （电话号码）</strong><br>e.g. </p>
+<p><strong>c = * （连接信息 ― 如果包含在所有媒体中，则不需要该字段）</strong><br>e.g. c=IN IP4 224.2.17.12/127<br>C行包含为多媒体会话而建立的连接的信息，其中指出了真正的媒体流使用的IP地址<br>IN:               网络类型，目前仅定义INTERNET网络类型。用“IN”表示。<br>IP4:              地址类型，目前支持两种地址类型：IPV4和IPV6<br>224.2.17.12/127:  地址，该地址为多媒体流使用的IP地址</p>
+<p>c=<nettype> <addrtype> <connection-address><br>这个连接数据，可以是传话级别的连接数据，或者是单独一个媒体数据的连接数据。在是多播时，connection-address就该是一个多播组地址，当是单播时，connection-address就该是一个单播地址。对于addrtype是IP4的情况下，connection-address不仅包含IP地址，并且还要包含a time to live value(TTL 0-255)，如：c=IN IP4 224.2.36.42/128，IP6没有这个TTL值。还允许象这样的<base multicast="" address="">[/<ttl>]/<number of="" addresses="">格式的connection-address。如：c=IN IP4 224.2.1.1/127/3等同于包含c=IN IP4 224.2.1.1/127, c=IN IP4 224.2.1.2/127, c=IN IP4 224.2.1.3/127三行内容。</number></ttl></connection-address></addrtype></nettype></p>
+<p><strong>b = * （带宽信息）</strong></p>
+<p>一个或更多时间描述（如下所示）：</p>
+<p>z = <em> （时间区域调整）<br>k = </em> （加密密钥）<br>a = * （0 个或多个会话属性行）</p>
+<p>0个或多个媒体描述（如下所示）</p>
+<h3 id="2-时间描述"><a href="#2-时间描述" class="headerlink" title="2. 时间描述"></a>2. 时间描述</h3><p><strong>t = （会话活动时间）</strong><br>e.g.  t=2873397496 2873404696 表示会话的开始时间和结束时间, 数字表明从1900年1月1日00：00以来所经过的秒数。</p>
+<p>2873397496: 第一个参数表明会话的开始时间<br>2873404696: 第二个参数表明会话的结束时间</p>
+<p><strong>r = * （0或多次重复次数）</strong></p>
+<h3 id="3-媒体描述"><a href="#3-媒体描述" class="headerlink" title="3. 媒体描述"></a>3. 媒体描述</h3><p><strong>m = （媒体名称和传输地址）</strong><br>e.g. m=audio 3458 RTP/AVP  0   96  97   m行又称媒体行，描述了发送方所支持的媒体类型等信息</p>
+<p>audio：   媒体名称：表明支持音频类型。<br>3458：    端口号，表明UE在本地端口为3458上发送音频流。<br>RTP/AVP： 传输协议，一般为RTP/AVP协议。<br>0   96  97： 四 ~ 七参数为所支持的四种净荷类型编号</p>
+<p>i = <em> （媒体标题）<br>c = </em> （连接信息 — 如果包含在会话层则该字段可选）<br>b = <em> （带宽信息）<br>k = </em> （加密密钥）<br>a = * （0 个或多个会话属性行）</p>
+<p>a行为媒体的属性行，以属性的名称：属性值的方式表示。</p>
+<p>e.g. a=rtpmap:0   PCMU<br>e.g. a=rtpmap:96  G726-32/8000<br>e.g. a=rtpmap:97  AMR-WB<br>e.g. a=rtpmap:98  MPV<br>e.g. a=rtpmap:99  H.261</p>
+<p>格式为：a=rtpmap:&lt;净荷类型&gt;&lt;编码名称&gt;<br>净荷类型0固定分配给了PCMU，<br>净荷类型96对应的编码方案为G.726,为动态分配的。<br>净荷类型97对应的编码方式为自适应多速率宽带编码（AMR-WB），为动态分配的。<br>净荷类型98对应的编码方案为MPV,为动态分配的。<br>净荷类型99对应的编码方式为H.261，为动态分配的。</p>
+<h2 id="SDP在IP电话中的使用"><a href="#SDP在IP电话中的使用" class="headerlink" title="SDP在IP电话中的使用"></a>SDP在IP电话中的使用</h2><p>SIP provides the messaging mechanism for the establishment of multimedia sessions.<br>SDP provides a structured language for describing the sessions.</p>
+</div></article></div></main><footer><div class="paginator"><a href="/2015/11/26/cs183c-class6-jennifer-pahlka/" class="prev">PREV</a><a href="/2015/07/01/SIP-101/" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2019 <a href="http://www.yuliang.xyz">Liang Yu</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

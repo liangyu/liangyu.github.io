@@ -1,0 +1,30 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> iOS Runloop · Liang Yu's Website</title><meta name="description" content="iOS Runloop - Liang Yu"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.yuliang.xyz/atom.xml" title="Liang Yu's Website"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">iOS Runloop</h1><div class="post-info">Jun 18, 2018</div><div class="post-content"><h1 id="RunLoop-是什么？"><a href="#RunLoop-是什么？" class="headerlink" title="RunLoop 是什么？"></a>RunLoop 是什么？</h1><h2 id="基本作用"><a href="#基本作用" class="headerlink" title="基本作用"></a>基本作用</h2><ul>
+<li>保持程序的持续运行（一个死循环，使app不断运行）</li>
+<li>处理App中的各种事件（触摸、定时器、Selector）</li>
+<li>节省CPU资源、提高程序性能：该做事的时候做事，该休息的时候休息。</li>
+</ul>
+<p>Runloop 接收的输入事件来自两种不同的源：<br>输入源（intput source）和<br>定时源（timer source）。</p>
+<p>输入源传递异步事件。通常消息来自于其他线程或程序。</p>
+<p>定时源则传递同步事件，发生在特定时间或者重复的时间间隔。两种源都使用程序的某一特定的处理历程来处理到达的时间</p>
+<p>e.g. UIApplicationMain函数内部就启动了一个RunLoop<br>所以UIApplicationMain 函数一直没有返回，保持了程序的持续运行<br>这个默认启动的 RunLoop 是跟主线程相关联的</p>
+<p>两类输入源的区别在于如何显示：基于端口的输入源由内核自动发送，而自定义的则需要人工从其他线程发送。</p>
+<p>、RunLoop 与线程<br>每条线程都有唯一的一个与之对应的 RunLoop 对象<br>主线程的 RunLoop 自动创建好了，子线程的 RunLoop 需要主动创建<br>RunLoop 在第一次获取时创建，在线程结束时销毁</p>
+<h3 id="Runloop"><a href="#Runloop" class="headerlink" title="Runloop"></a>Runloop</h3><ol>
+<li>runloop是来做什么的？runloop和线程有什么关系？主线程默认开启了runloop么？子线程呢？</li>
+</ol>
+<ul>
+<li>runloop:字面意思就是跑圈，其实也就是一个循环跑圈，用来处理线程里面的事件和消息。</li>
+<li>runloop和线程的关系：每个线程如果想继续运行，不被释放，就必须有一个runloop来不停的跑圈，以来处理线程里面的各个事件和消息。</li>
+<li>主线程默认是开启一个runloop。也就是这个runloop才能保证我们程序正常的运行。子线程是默认没有开始runloop的</li>
+</ul>
+<ol>
+<li>runloop的mode是用来做什么的？有几种mode？</li>
+</ol>
+<ul>
+<li>model:是runloop里面的模式，不同的模式下的runloop处理的事件和消息有一定的差别。</li>
+</ul>
+<p>系统默认注册了5个Mode:<br>（1）kCFRunLoopDefaultMode: App的默认 Mode，通常主线程是在这个 Mode 下运行的。<br>（2）UITrackingRunLoopMode: 界面跟踪 Mode，用于 ScrollView 追踪触摸滑动，保证界面滑动时不受其他 Mode 影响。<br>（3）UIInitializationRunLoopMode: 在刚启动 App 时第进入的第一个 Mode，启动完成后就不再使用。<br>（4）GSEventReceiveRunLoopMode: 接受系统事件的内部 Mode，通常用不到。<br>（5）kCFRunLoopCommonModes: 这是一个占位的 Mode，没有实际作用。</p>
+<ul>
+<li>注意iOS 对以上5中model进行了封装<br>NSDefaultRunLoopMode;<br>NSRunLoopCommonModes</li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a href="/2018/06/18/ios-memory-management/" class="prev">PREV</a><a href="/2018/06/18/ios-sel-imp-class/" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2019 <a href="http://www.yuliang.xyz">Liang Yu</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

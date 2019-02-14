@@ -1,0 +1,158 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> How To Test · Liang Yu's Website</title><meta name="description" content="How To Test - Liang Yu"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.yuliang.xyz/atom.xml" title="Liang Yu's Website"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">How To Test</h1><div class="post-info">Jul 5, 2018</div><div class="post-content"><p>面试一般分四类：<br>(1) Test a real world object, like a pen<br>(2) Test a peice of software<br>(3) Write test code for a function<br>(4) Troubleshoot an existing issue</p>
+<h2 id="Test-a-real-world-object-like-a-pen"><a href="#Test-a-real-world-object-like-a-pen" class="headerlink" title="Test a real world object (like a pen)"></a>Test a real world object (like a pen)</h2><p><strong>Question: How would you test a paperclip?</strong></p>
+<ul>
+<li><p>Step 1: Who will use it? and why?<br>e.g. by teachers, to hold papers together<br>e.g. by artists, to bend into the shape of animal</p>
+</li>
+<li><p>Step 2: What are the use cases?<br>It will be useful for you to make a list of the use cases.<br>e.g. fastening paper together in a non-damaging (to the paper) way.</p>
+</li>
+<li><p>Step 3: What are the bounds of use?</p>
+</li>
+</ul>
+<p>e.g. holding up to thirty sheets of paper in a single usage without permanent damage (bending) and thirty to fifty sheets with minimal permanent bending.<br>e.g. The bounds also extend to environmental factors, should the paperclip work during very warm temperatures? What about extreme cold?</p>
+<ul>
+<li>Step 4: What are the stress/failures conditions?<br>Analyzing failure conditions needs to be part of your testing. Need to discuss with interviewer about when it’s acceptable or even neccessary for the product to fail, and what failure should mean.</li>
+</ul>
+<p>e.g. testing the laundary machine, might decide the machine should handle at least 30 shirts or pants.<br>loading 30-45 pieces of clothing may result in minor failure, such as the clothing being inadequately cleaned.<br>at more than 45 pieces of clothing, extreme failure might be acceptable. (means the machine never turn on the water, not flood or a fire)</p>
+<ul>
+<li>Step 5: How would you perform the testing?</li>
+</ul>
+<p>e.g. a chair can withstand normal usage for five years, define “normal usage” as how many “sits” per year on the seat? In addition to doing some manual testing, you would likely want a machine to automate some of the usage.</p>
+<h2 id="Test-a-piece-of-software"><a href="#Test-a-piece-of-software" class="headerlink" title="Test a piece of software"></a>Test a piece of software</h2><p><strong>Manual V.S. Automated Testing</strong></p>
+<p>In an ideal world, we might love to automate everything, but that’s rarely feasible. Computer can generally recognize only issues that it’s been told to look for. Human observation may reveal new issues that havn’t been specifically examined.</p>
+<p><strong>Black Box Testing V.S. White Box Testing</strong></p>
+<p>This referes to the degree of access we have into the software.<br>In black box testing, we’re just given the software as-is and need to test it. With white box testing, we have additional programmatic access to test individual functions.</p>
+<ul>
+<li><p>Step 1: Are we doing Black Box Testing or White Box Testing?<br>Check with your interviewer first.</p>
+</li>
+<li><p>Step 2: Who will use it? And why?<br>Software typically has one or more target users, and the features are designed with this in mind.</p>
+</li>
+</ul>
+<p>e.g. parental controls on a web browser, target users include<br>both parents (who are implementing the blocking)<br>and children (who are the recipients of blocking)<br>and guests (who should neither be implementing nor receiving blocking)</p>
+<p><strong>Step3 and Step4</strong> should define the use cases.</p>
+<ul>
+<li>Step 3: What are the user cases?<br>e.g. use cases of the parents include<br>  installing the software<br>  updating controls<br>  removing controls<br>  their own personal internet usage</li>
+</ul>
+<p>need to discuss with your interviewer.</p>
+<ul>
+<li>Step 4: What are the bounds of use?</li>
+</ul>
+<p>figure out what exactly this means.<br>e.g. what does it mean for a website to be blocked?<br>– should just the “illegal” page be blocked<br>– or either the entire website?<br>– is the application supposed to “learn” what is bad content,<br>– or is it based on a white list or black list?<br>– if it is supposed to learn what inappropriate content is, what degree of false positives or false negatives is acceptable?</p>
+<ul>
+<li>Step 5: What are the stress conditions / failure conditions?<br>– when software fails – what should the failure look like ?<br>e.g. it should not crash the computer, instead, it’s likely that the software should just permit a blocked site, or ban an allowable site</li>
+</ul>
+<p><strong>Step 6 define the cases from 3 and 4, like how to perform the testing</strong><br><strong>what exact situations are you testing</strong><br><strong>Which of these steps can be automated?</strong><br><strong>which require human intervention</strong></p>
+<ul>
+<li>Step 6: What are the test cases? How would you perform the testing?<br>pay attention to the manual test or automated testing, black box and white box testing.</li>
+</ul>
+<h2 id="Write-test-code-for-a-function"><a href="#Write-test-code-for-a-function" class="headerlink" title="Write test code for a function"></a>Write test code for a function</h2><ul>
+<li>Validating input and output</li>
+<li><p>Discuss any assumptions with your interviewer, particularly with respect<br>to how to specific situations.</p>
+</li>
+<li><p>拿出一个栗子：<br>Test function sort(int[] array) :</p>
+</li>
+</ul>
+<p>Step 1: Define the test cases</p>
+<ul>
+<li><p>normal cases:<br>due to partitioning, input array might has odd or even numbers</p>
+</li>
+<li><p>extreme cases:<br>empty array, small array, large array</p>
+</li>
+<li><p>nulls and “illegal” input:<br>negative input</p>
+</li>
+<li><p>strange<br>passed an array already sorted<br>array sorted in reversed order</p>
+</li>
+</ul>
+<p>Step 2: Define the expected result</p>
+<ul>
+<li>the right output</li>
+<li>the original array is not changed, if return a copy of the array</li>
+</ul>
+<p>Step 3: Write the test code</p>
+<ul>
+<li>some Junit code</li>
+</ul>
+<h2 id="Troubleshoot-an-existing-issue"><a href="#Troubleshoot-an-existing-issue" class="headerlink" title="Troubleshoot an existing issue"></a>Troubleshoot an existing issue</h2><p>How would you debug or troubleshoot an existing issue.<br>E.g. You are working on the Google Chrome tesam when you receive a bug report:<br>Chrome crashes on lauch. What would you do?</p>
+<p><strong>Approach these questions in a structured manner.</strong></p>
+<p>Step 1: Understand the Scenario<br>Ask questions to understand as much about the situation as possible</p>
+<ul>
+<li>How long has the user been experiencing this issue?</li>
+<li>What version of the browser is it? what is the operating system/</li>
+<li>Does the issue happen consistently, or how often does it happen? When does it happen?</li>
+<li>Is there an error report that launches?</li>
+</ul>
+<p>Step 2: Break down the problem<br>Break down the problem into testable units.</p>
+<ol>
+<li>Go to Windows Start menu</li>
+<li>Click on Chrome icon</li>
+<li>Browser instance starts</li>
+<li>Browser loads settings</li>
+<li>Browser issues HTTP request for homepage</li>
+<li>Browser gets HTTP response</li>
+<li>Browser parses webpage</li>
+<li>Browser displays content</li>
+</ol>
+<p>Step 3: Create specific, Manageable tests<br>Give the customers instructions that they can or will do</p>
+<h2 id="符合要求的QA有下列标准："><a href="#符合要求的QA有下列标准：" class="headerlink" title="符合要求的QA有下列标准："></a>符合要求的QA有下列标准：</h2><p>(show you are a structured, methodical person)<br>Demonstrating these aspects will show that you will be a valuable member of the testing team.</p>
+<ol>
+<li>需要能够提出 a reasonable list of test cases</li>
+<li>需要有一个 Big Picture Understanding</li>
+<li>Understand hwo the pieces fit together</li>
+<li>Organization</li>
+<li>Practicality</li>
+</ol>
+<h3 id="1-Come-up-with-a-reasonable-list-of-test-cases"><a href="#1-Come-up-with-a-reasonable-list-of-test-cases" class="headerlink" title="1.Come up with a reasonable list of test cases"></a>1.Come up with a reasonable list of test cases</h3><h3 id="2-Big-picture-understanding"><a href="#2-Big-picture-understanding" class="headerlink" title="2.Big picture understanding"></a>2.Big picture understanding</h3><ul>
+<li>understand what the software is really about</li>
+<li>prioritize test cases properly</li>
+</ul>
+<p>e.g. At Amazon<br>  payments work reliably<br>  products are added to the sipment queue<br>  customers are never double charged</p>
+<p>are <strong>more important</strong> than </p>
+<p>  product images appear in the right place.<br>  although this is also very important.</p>
+<h3 id="3-Knowing-how-the-pieces-fit-togehter"><a href="#3-Knowing-how-the-pieces-fit-togehter" class="headerlink" title="3.Knowing how the pieces fit togehter"></a>3.Knowing how the pieces fit togehter</h3><ul>
+<li>Do you understand hwo software works</li>
+<li>How it might fit into a greater ecosystem?</li>
+</ul>
+<p>e.g. Test Google Spreedsheets<br>  Besides test opening, saving, and editing documents.</p>
+<p>  you need to test integration with Gmail, with plug-ins<br>  and other components because it is part of a larger<br>  ecosystem.</p>
+<h3 id="4-Organization"><a href="#4-Organization" class="headerlink" title="4.Organization"></a>4.Organization</h3><ul>
+<li>Do you approach the problem in a structured manner? </li>
+<li>Do you just spout off anything that comes to your head?</li>
+</ul>
+<p>e.g. Test the camera<br>    The structured approach will help you to do a more thorough<br>    job creating the test cases.</p>
+<pre><code>Good thinking: break down the parts into categories like Taking Photos, Image Management, Settings, and so on.
+Bad thinking: when asked to come up with test cases for a camera, will just state anything and everything that comes to their head.
+</code></pre><h3 id="5-Practicality"><a href="#5-Practicality" class="headerlink" title="5.Practicality"></a>5.Practicality</h3><p>Your testing plans need to be feasible and realistic for a company to implement</p>
+<h2 id="Some-Questions"><a href="#Some-Questions" class="headerlink" title="Some Questions"></a>Some Questions</h2><p>12.1 Find the mistakes in the following code:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">100</span>; i &gt;= <span class="number">0</span>; --i)</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, i);</span><br></pre></td></tr></table></figure></p>
+<p>12.2 You are given the source to an application which crashes when it is run. After running it<br>ten times in a debugger, you find it never crashes in the same place. The application is single<br>threaded, and uses only the C standard library. What programming errors could be causing this crash?<br>How would you test each one?</p>
+<p>12.3 We have the following method used in a chess game:<br>boolean canMoveTo(int x, int y).<br>This method is part of the Piece class and returns whether or not the piece can move to position(x, y).<br>Explain how you would test this method.</p>
+<p>12.4 How would you load test a webpage without using any test tools?</p>
+<p>12.5 How would you test a pen?</p>
+<p>12.6 How would you test an ATM in a distributed banking system?</p>
+<p>&lt;<ibm 从菜鸟到测试架构师="">&gt; 读书笔记</ibm></p>
+<ul>
+<li>构建测试</li>
+<li>安装测试</li>
+<li>单元测试</li>
+<li><p>黑盒测试</p>
+<ul>
+<li>功能模块分解测试</li>
+<li>回归测试</li>
+<li>客户化环境测试</li>
+<li>随机测试</li>
+<li>可访问性测试</li>
+<li>全球化测试</li>
+</ul>
+</li>
+<li><p>白盒测试</p>
+</li>
+<li>性能测试</li>
+<li>迁移测试</li>
+<li>成品测试</li>
+<li>补丁测试</li>
+</ul>
+<ul>
+<li>自动化测试</li>
+<li>敏捷测试</li>
+</ul>
+<p>总结时间都花在哪里， Bug 都出在哪里<br>尽量narrow down 出问题的那一块</p>
+<p><a href="">Cracking the coding interview, chapter 12</a><br><a href="https://www.chiark.greenend.org.uk/~sgtatham/bugs.html" target="_blank" rel="noopener">How to Report Bugs Effecitively</a></p>
+</div></article></div></main><footer><div class="paginator"><a href="/2018/08/18/german-grammar-conjunction/" class="prev">PREV</a><a href="/2018/06/24/networking-socket/" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2019 <a href="http://www.yuliang.xyz">Liang Yu</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

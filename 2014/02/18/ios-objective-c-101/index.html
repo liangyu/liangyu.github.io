@@ -1,0 +1,70 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Migrate from Java to Objective-C · Liang Yu's Website</title><meta name="description" content="Migrate from Java to Objective-C - Liang Yu"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.yuliang.xyz/atom.xml" title="Liang Yu's Website"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Migrate from Java to Objective-C</h1><div class="post-info">Feb 18, 2014</div><div class="post-content"><h1 id="Basic-Objective-C"><a href="#Basic-Objective-C" class="headerlink" title="Basic Objective-C"></a>Basic Objective-C</h1><p>OC headfile </p>
+<p> #import &lt;&gt; self-defined lib</p>
+<p> #import “” user-defined lib</p>
+<p>C headfile</p>
+<p> #include <string.h></string.h></p>
+<p>OC 没有命名空间<br>Command + Click  查看OC都类定义</p>
+<p>C语言下不可以移植的一个原因是int，float 在不同的平台下大小是不同的。那OC中怎么处理long，int等不同大小的问题？</p>
+<h3 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h3><h4 id="UI"><a href="#UI" class="headerlink" title="UI"></a>UI</h4><h5 id="UIKit"><a href="#UIKit" class="headerlink" title="UIKit"></a>UIKit</h5><ul>
+<li><p>Content<br>UIImageView<br>UILabel</p>
+</li>
+<li><p>Collections<br>UICollectionView<br>UITableView</p>
+</li>
+<li><p>Controls<br>UIButton<br>UISlider<br>UISwitch</p>
+</li>
+<li><p>Bar<br>UIToolBar<br>UINavigationBar<br>UITabBar</p>
+</li>
+<li><p>Input<br>UISerachBar<br>UITextView</p>
+</li>
+<li><p>Containers<br>UIView<br>UIScrollView</p>
+</li>
+<li><p>Modal<br>UIActionSheet<br>UIAlertController (iOS 8)</p>
+</li>
+</ul>
+<h4 id="Events"><a href="#Events" class="headerlink" title="Events"></a>Events</h4><ul>
+<li><p>Event passing order<br>UIApplication -&gt; UIWindow -&gt; UIViewController -&gt; UIview –&gt; View</p>
+</li>
+<li><p>Event response order<br>View -&gt; UIView -&gt; UIViewController -&gt; UIWindow -&gt; UIApplication</p>
+</li>
+</ul>
+<h4 id="Messaging"><a href="#Messaging" class="headerlink" title="Messaging"></a>Messaging</h4><ol>
+<li><p>Target - Operation 只限制一种事件，比如按下按钮，发生事件的一方会向制定的目标对象发送一个之前设定好的动作消息。针对不同的事件，需要创建不同动作消息。</p>
+</li>
+<li><p>delegate<br>一个委托可以发送多种事件消息</p>
+</li>
+<li><p>NSNotificationCenter (处理App内部调对象通信)。通过它，对象可以注册感兴趣的系统事件。<br>Low Memory –&gt; UIApplicationDidReceiveMemoryWarningNotification<br>Device Rotation –&gt; UIDeviceOrientationDidChangeNotification</p>
+</li>
+</ol>
+<h5 id="Core-Graphics"><a href="#Core-Graphics" class="headerlink" title="Core Graphics"></a>Core Graphics</h5><h5 id="Core-Animation"><a href="#Core-Animation" class="headerlink" title="Core Animation"></a>Core Animation</h5><h4 id="GAME"><a href="#GAME" class="headerlink" title="GAME"></a>GAME</h4><h5 id="GAME-Kit"><a href="#GAME-Kit" class="headerlink" title="GAME Kit"></a>GAME Kit</h5><h5 id="Sprite-Kit"><a href="#Sprite-Kit" class="headerlink" title="Sprite Kit"></a>Sprite Kit</h5><h5 id="OpenGL-ES"><a href="#OpenGL-ES" class="headerlink" title="OpenGL ES"></a>OpenGL ES</h5><h5 id="Game-Controller"><a href="#Game-Controller" class="headerlink" title="Game Controller"></a>Game Controller</h5><h4 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h4><h5 id="Core-Data"><a href="#Core-Data" class="headerlink" title="Core Data"></a>Core Data</h5><h5 id="Foundation"><a href="#Foundation" class="headerlink" title="Foundation"></a>Foundation</h5><ol>
+<li>基础类</li>
+</ol>
+<ul>
+<li><p>字符串：<br>NSString<br>NSMutableString</p>
+</li>
+<li><p>数值：<br>NSNumber</p>
+</li>
+<li><p>BOOL：</p>
+</li>
+<li><p>日期：<br>NSDate</p>
+</li>
+<li><p>二进制数据：<br>NSData<br>NSMutableData</p>
+</li>
+<li><p>包装器数据：<br>NSValue</p>
+</li>
+<li><p>数组：<br>NSArray<br>NSMutableArray<br>NSSet<br>NSMutableSet<br>NSDictionary<br>NSMutableDictionary</p>
+</li>
+</ul>
+<ol>
+<li>自定义类相关<br>接口： 头文件 .h<br>实现： 实现文件 .m<br>属性： 用@property 相当于Java的成员变量<br> 公共访问： 属性声明在接口文件中<br> 私有访问： 属性声明在实现文件中<br> 只读： 用readonly修饰</li>
+</ol>
+<p>方法：<br>    类方法， + 修饰，相当于 Java中的静态方法<br>    实例方法， - 修饰， 相当于 Java中的成员方法</p>
+<p>方法参数：<br>协议： protocol，主要用于实现回调</p>
+<p>修饰符：<br>    copy：<br>    atomic/nonatomic<br>    instancetype<br>    id</p>
+<h4 id="Media"><a href="#Media" class="headerlink" title="Media"></a>Media</h4><h5 id="AV-Foundation"><a href="#AV-Foundation" class="headerlink" title="AV Foundation"></a>AV Foundation</h5><h1 id="App-life-cycle"><a href="#App-life-cycle" class="headerlink" title="App life cycle"></a>App life cycle</h1><h2 id="Life-Cycle"><a href="#Life-Cycle" class="headerlink" title="Life Cycle"></a>Life Cycle</h2><p>Not Running –&gt; Active</p>
+<p>Active –&gt; Inactive</p>
+<p>Inactive –&gt; Background</p>
+<p>Background –&gt; Suspend</p>
+<p>Suspend –&gt; Active</p>
+<p>Suspend –&gt; Not Running</p>
+<h2 id="Status-at-each-step"><a href="#Status-at-each-step" class="headerlink" title="Status at each step"></a>Status at each step</h2><p>Is UI visible?     Can revceive event?    Can execute code?</p>
+</div></article></div></main><footer><div class="paginator"><a href="/2015/06/23/data-infrastructure-startup/" class="prev">PREV</a><a href="/2013/03/10/flight-training/" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2019 <a href="http://www.yuliang.xyz">Liang Yu</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

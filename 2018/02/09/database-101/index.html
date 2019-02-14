@@ -1,0 +1,50 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> database-101 · Liang Yu's Website</title><meta name="description" content="database-101 - Liang Yu"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.yuliang.xyz/atom.xml" title="Liang Yu's Website"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">database-101</h1><div class="post-info">Feb 9, 2018</div><div class="post-content"><h1 id="Review-SQL-Database"><a href="#Review-SQL-Database" class="headerlink" title="Review SQL Database"></a>Review SQL Database</h1><h2 id="SQL-–-Structured-Query-Language"><a href="#SQL-–-Structured-Query-Language" class="headerlink" title="SQL – Structured Query Language"></a>SQL – Structured Query Language</h2><ul>
+<li><p>DDL数据库定义语言：用于定义和管理数据库对象，包括数据库，数据表等。例如CREATE , DROP , ALTER。</p>
+</li>
+<li><p>DML数据操作语言： 用于操作数据库对象所包含的数据。例如：INSERT , UPDATE , DELETE 语句 。</p>
+</li>
+<li><p>DQL数据库查询语言: 用于查询数据库所包含的数据。能够进行单表查询，嵌套查询，集合查询，等各种复杂度不同的数据库查询。例如有SELECT语句</p>
+</li>
+<li><p>DCL数据库控制语言：是用来管理数据库的语言，包含管理权限及数据的更改。例如: GRANT , REVOKE, COMMIT ,ROLLBACK 等语句。</p>
+</li>
+</ul>
+<h2 id="Common-Database-Operations"><a href="#Common-Database-Operations" class="headerlink" title="Common Database Operations"></a>Common Database Operations</h2><h3 id="Open-Close-Connection-to-MySQL-DB"><a href="#Open-Close-Connection-to-MySQL-DB" class="headerlink" title="Open/Close Connection to MySQL DB"></a>Open/Close Connection to MySQL DB</h3><p>mysql -h 服务器主机地址 -u -p</p>
+<h3 id="Create-New-User-and-Grant"><a href="#Create-New-User-and-Grant" class="headerlink" title="Create New User and Grant"></a>Create New User and Grant</h3><p>GRANT 权限 ON 数据库.数据表 TO 用户名@登录主机 IDENTIFIED BY “密码”</p>
+<h3 id="Create-New-Database"><a href="#Create-New-Database" class="headerlink" title="Create New Database"></a>Create New Database</h3><p>mysql&gt; CREATE DATABASE [IF NIT EXISTS] bookstore； # 创建一个名为bookstore数据库</p>
+<h3 id="Delete-Database"><a href="#Delete-Database" class="headerlink" title="Delete Database"></a>Delete Database</h3><p>mysql&gt; DROP DATABASES [IF EXISTS] bookstore; #删除一个名为bookstore数据库</p>
+<h3 id="Display-Database"><a href="#Display-Database" class="headerlink" title="Display Database"></a>Display Database</h3><p>mysql&gt; SHOW DATABASES; #显示已建立的数据库名称列表</p>
+<h2 id="Common-Table-Operations"><a href="#Common-Table-Operations" class="headerlink" title="Common Table Operations"></a>Common Table Operations</h2><h3 id="Create-Table"><a href="#Create-Table" class="headerlink" title="Create Table"></a>Create Table</h3><p>mysql&gt; CREATE TABLE book &lt;</p>
+<p>-&gt; id INT NOT NULL AUTO_INCREMENT,</p>
+<p>-&gt; bookname VARCHAR(50) NOT NULL DEFAULT ‘ ‘ ,</p>
+<p>-&gt; publisher VARCHAR(50) NOT NULL DEFAULT ‘ ‘ ,</p>
+<p>-&gt; author VARCHAR(30) NOT NULL DEFAULT ‘ ‘ ,</p>
+<p>-&gt; price DOUBLE NOT NULL DEFAULT 0.00 ,</p>
+<p>-&gt; detail TEXT ,</p>
+<p>-&gt; publishdate DATE ,</p>
+<p>-&gt; PRIMARY KEY(id),</p>
+<p>-&gt; INDEX book_bookname(bookname) ,</p>
+<p>-&gt; INDEX book_price(price)</p>
+<p>-&gt; &gt; ;</p>
+<h3 id="Show-ALL-Tables-in-a-certain-Database"><a href="#Show-ALL-Tables-in-a-certain-Database" class="headerlink" title="Show ALL Tables in a certain Database"></a>Show ALL Tables in a certain Database</h3><p>mysql&gt; SHOW TABLES;</p>
+<h3 id="Show-Table-Structure-in-Details"><a href="#Show-Table-Structure-in-Details" class="headerlink" title="Show Table Structure in Details"></a>Show Table Structure in Details</h3><p>mysqk&gt; DESC book；</p>
+<h2 id="Manage-Content-in-Table"><a href="#Manage-Content-in-Table" class="headerlink" title="Manage Content in Table"></a>Manage Content in Table</h2><h3 id="INSERT"><a href="#INSERT" class="headerlink" title="INSERT"></a>INSERT</h3><p>mysql&gt; INSERT INTO BOOK VALUES(NULL , ‘C和指针’，‘人民邮电出版社’ ，‘Kenneth . Reek’ , ‘98.00’ , ‘c语言入门必备’，‘13552837281’)；</p>
+<p>mysql&gt; INSERT INTO BOOK (bookname , publisher, author , price) VALUES (‘细说PHP’ , ‘电子工业出版社’ , ‘高洛峰’ , 97.00);</p>
+<h3 id="SELECT"><a href="#SELECT" class="headerlink" title="SELECT"></a>SELECT</h3><p>mysql&gt; SELECT id, bookname, publisher, author,price FROM book;</p>
+<h3 id="UPDATE"><a href="#UPDATE" class="headerlink" title="UPDATE"></a>UPDATE</h3><p>mysql&gt; UPDATE book SET price = 79 WHERE id = 2;</p>
+<h3 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h3><p>mysql&gt;DELETE FROM book WHERE id = ‘1’;</p>
+<h2 id="Primary-Key-Foreign-Key-Index-Unique-Index"><a href="#Primary-Key-Foreign-Key-Index-Unique-Index" class="headerlink" title="Primary Key, Foreign Key, Index, Unique Index"></a>Primary Key, Foreign Key, Index, Unique Index</h2><p>数据库中的完整性约束用来防止对数据的意外破坏，来保证数据的安全性和一致性. mysql中的完整性约束主要包括主键、外键（参照完整性约束）、唯一约束、非空约束等。</p>
+<p>Normalization and Denormalization</p>
+<pre><code>这是两种设计数据库表的模式，Normalization对应的数据属于干净非冗余型，而Denormalization则允许数据冗余或者同样的数据存储于多处。下面主要列出了Normalization的优点和缺点，
+</code></pre><p>优点：1、数据更新更迅速；</p>
+<pre><code>2、数据存储空见通常更小；
+
+3、在查询时减少了distinct和group by的使用
+</code></pre><p>缺点：1、查询时可能需要设计多个表，增加了join的使用；</p>
+<pre><code>2、一些并要的值需要在每次查询时计算（比如各种率值）
+</code></pre><p>综合以上的优缺点，Normalization模式比较适合的场合是更新操作比较频繁的应用，即write-heavy。</p>
+<p>同样的Denormalization则适合于read-heavy。</p>
+<p>Normalization usually involves dividing large tables into smaller (and less redundant) tables and defining relationships between them. The objective is to isolate data so that additions, deletions, and modifications of a field can be made in just one table and then propagated through the rest of the database using the defined relationships.DenormalizationDenormalization is the process of attempting to optimize the read performance of a database by adding redundant data or by grouping data.In some cases, denormalization is a means of addressing performance or scalability in relational database software.</p>
+<p><a href="https://www.jianshu.com/p/394f8aa724f4" target="_blank" rel="noopener">https://www.jianshu.com/p/394f8aa724f4</a></p>
+<p><a href="http://blog.lifw.org/post/35110918" target="_blank" rel="noopener">http://blog.lifw.org/post/35110918</a></p>
+<p><a href="http://blog.csdn.net/xrt95050/article/details/5556411" target="_blank" rel="noopener">http://blog.csdn.net/xrt95050/article/details/5556411</a></p>
+</div></article></div></main><footer><div class="paginator"><a href="/2018/02/09/config-macOS/" class="prev">PREV</a><a href="/2018/02/09/design-pattern-singleton/" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2019 <a href="http://www.yuliang.xyz">Liang Yu</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

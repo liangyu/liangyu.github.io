@@ -1,0 +1,29 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Networking Layers · Liang Yu's Website</title><meta name="description" content="Networking Layers - Liang Yu"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.yuliang.xyz/atom.xml" title="Liang Yu's Website"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Networking Layers</h1><div class="post-info">Mar 3, 2017</div><div class="post-content"><p>Host Layer:  #7 Application   Data              High-level APIs, including resource sharing, remote file access.<br>e.g. Telnet, FTP, SMTP</p>
+<p>Host Layer:  #6 Presentation  Data              Translation of data between a networking service and an application, including character<br>                                                encoding, data compression and encryption/decryption.</p>
+<p>DNS, RIP, SNMP</p>
+<p>Host Layer:  #5 Session       Data              Managing communication sessions, i.e. continous exchange of information in the form of<br>                                                multiple back-and-forth transmissions between two nodes.</p>
+<p>Host Layer:  #4 Transport     Segement (TCP)    Reliable transmission of data segments between points on a network, including segmentation,<br>                              Datagram (UDP)    acknowledgemenbt and multiplexing.</p>
+<p>TCP, UDP</p>
+<p>Host Layer:  #3 Network       Packet            Structuring and managing a multi-node network, including addressing, routing and traffic control</p>
+<p>IP, IGMP, ICMP, ARP</p>
+<p>Host Layer:  #2 Data link     Frame             Reliable transmission of data frames between two nodes connected by a physical layer</p>
+<p>Ethernet, Token Ring, ATM</p>
+<p>Host Layer:  #1 Physical      Bit               Transmission and reception of raw bit streams over a physical medium<br>F<br>rame relay</p>
+<p>At each level, two entities at the communicating devices exchange the protocol data units by means of a layer protocol. Each PDU contains a payload, called the SDU, along with protocol-related headers or footers.</p>
+<ul>
+<li>PDU: product data unit</li>
+<li>SDU: service data unit</li>
+<li>HTTP: Hyper Text Transfer Protocol</li>
+<li>FTP: File Transfer Protocol</li>
+<li>SMTP: Simple Mail Transfer Protocal</li>
+<li>DNS: Domain Name System – 将域名转化成 IP</li>
+<li>RIP: Routing Information Protocol</li>
+<li>SNMP: Simple Network Management Protocol</li>
+<li>TCP: Transmission Control Protocol</li>
+<li>UDP: User Datagram Protocol</li>
+<li>ICMP: Internet Control Message Protocol</li>
+<li>IGMP: Internet Group Message Protocol</li>
+<li>ARP: Address Resolution Protocol</li>
+<li>IP: Internet Protocol</li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a href="/2017/03/23/ads-b-receiver/" class="prev">PREV</a><a href="/2016/08/20/layoffs/" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2019 <a href="http://www.yuliang.xyz">Liang Yu</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>

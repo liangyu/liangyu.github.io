@@ -1,0 +1,49 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> System Design class 6 - Computing with MapReduce · Liang Yu's Website</title><meta name="description" content="System Design class 6 - Computing with MapReduce - Liang Yu"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.yuliang.xyz/atom.xml" title="Liang Yu's Website"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">System Design class 6 - Computing with MapReduce</h1><div class="post-info">Jan 28, 2018</div><div class="post-content"><h2 id="一个问题引出-Map-Reduce-框架的应用"><a href="#一个问题引出-Map-Reduce-框架的应用" class="headerlink" title="一个问题引出 Map-Reduce 框架的应用"></a>一个问题引出 Map-Reduce 框架的应用</h2><blockquote>
+<p>Interviewer: Count the word frequency of a web page?<br><a href="http://www.lintcode.com/en/problem/word-count-map-reduce" target="_blank" rel="noopener">Leetcode Question:</a></p>
+</blockquote>
+<p>方法一：<br>For Loop with HashMap<string, integer=""></string,></p>
+<p>方法二：<br>多台机器 For Loop， 在merge的时候，那个机器上会有Bottle Neck</p>
+<p>方法三：<br>使用MapReduce这个框架来解决问题</p>
+<h2 id="什么是MapReduce"><a href="#什么是MapReduce" class="headerlink" title="什么是MapReduce"></a>什么是MapReduce</h2><p>MapReduce是一种集群数据并行计算的编程模型。MapReduce编程模型有Map（映射）和Reduce（规约）两个阶段。（还包括Shuffle这个过程）</p>
+<h3 id="采用的思想"><a href="#采用的思想" class="headerlink" title="采用的思想"></a>采用的思想</h3><p>假设我们手上有很多复杂的数据，那么怎样来处理呢？1.把数据分类，分类后的数据就不复杂了，这就是异化为同。2.分割，分割就是把数据切分为小块，这样就可以并发或则批量处理了，这既是大而化小。</p>
+<h3 id="MapReduce-Framework解决了什么问题"><a href="#MapReduce-Framework解决了什么问题" class="headerlink" title="MapReduce Framework解决了什么问题"></a>MapReduce Framework解决了什么问题</h3><ul>
+<li>负责把文章拆分为一小段一小段</li>
+<li>中间传输整理， 把某一个split放在哪个机器上</li>
+</ul>
+<h3 id="MapReduce-Steps"><a href="#MapReduce-Steps" class="headerlink" title="MapReduce Steps"></a>MapReduce Steps</h3><ol>
+<li>Input – 设定好输入文件</li>
+<li>Split – 系统把文件尽量平分到每个机器</li>
+<li><strong>Map</strong>            —- 实现怎么把文章切分成单词</li>
+<li>Transfer                |- 需要我们实现的两部分</li>
+<li><strong>Reduce</strong>         —- 实现怎么把单词统一在一起</li>
+<li>Output – 设定输出文件</li>
+</ol>
+<blockquote>
+<p>Map为什么不做Aggregation？</p>
+<p><a href="http://www.lintcode.com/en/problem/word-count-map-reduce/" target="_blank" rel="noopener">Google Interview Question</a></p>
+</blockquote>
+<h3 id="MapReduce的规模"><a href="#MapReduce的规模" class="headerlink" title="MapReduce的规模"></a>MapReduce的规模</h3><ol>
+<li><p>Map多少台机器？ Reduce 多少台机器？<br>课程中，老师在lab里面配置了由10台Linux机器构成的系统。工业界，一般1，000 Map Node， 1，000 Reduce Node。</p>
+</li>
+<li><p>机器越多越好么？</p>
+<ul>
+<li>Advantage<ul>
+<li>机器越多，每台机器处理的数据就越少，总处理数据就越快</li>
+</ul>
+</li>
+<li>Disadvantage <ul>
+<li>启动机器的时间相应变长</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Reduce的机器是越多就越快么？</p>
+<ul>
+<li>Reduce的上限是Key的数目，相同的key只会被分到同一个机器上</li>
+</ul>
+</li>
+</ol>
+<p>传输的截图</p>
+<p>传输整理这一步应该怎么设计？</p>
+<p>传输的细节截图</p>
+</div></article></div></main><footer><div class="paginator"><a href="/2018/02/05/user-system-db-memchachem/" class="prev">PREV</a><a href="/2018/01/20/google-distributed-file-system/" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2019 <a href="http://www.yuliang.xyz">Liang Yu</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
