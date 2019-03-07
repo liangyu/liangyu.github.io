@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>AZ-100 Azure Infrastructure and Deployment | Liang Yu&#39;s Website</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="azure," />
+  
+
+  <meta name="description" content="Test Preparation to being a full-fledged Microsoft Azure Administrator CertificateAZ-100 Azure Infrastructure and Deployment40-60 questions, exam will be around 180 minutes, pass with 700 marks Manage">
+<meta name="keywords" content="azure">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AZ-100 Azure Infrastructure and Deployment">
+<meta property="og:url" content="http://www.yuliang.xyz/2019/03/05/microsoft-az100/index.html">
+<meta property="og:site_name" content="Liang Yu&#39;s Website">
+<meta property="og:description" content="Test Preparation to being a full-fledged Microsoft Azure Administrator CertificateAZ-100 Azure Infrastructure and Deployment40-60 questions, exam will be around 180 minutes, pass with 700 marks Manage">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-05T23:49:42.409Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AZ-100 Azure Infrastructure and Deployment">
+<meta name="twitter:description" content="Test Preparation to being a full-fledged Microsoft Azure Administrator CertificateAZ-100 Azure Infrastructure and Deployment40-60 questions, exam will be around 180 minutes, pass with 700 marks Manage">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-38189205-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Test-Preparation-to-being-a-full-fledged-Microsoft-Azure-Administrator-Certificate"><span class="toc-text">Test Preparation to being a full-fledged Microsoft Azure Administrator Certificate</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#AZ-100-Azure-Infrastructure-and-Deployment"><span class="toc-text">AZ-100 Azure Infrastructure and Deployment</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Manage-Azure-subscriptions-and-resources-15-20"><span class="toc-text">Manage Azure subscriptions and resources (15-20%)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Manage-Azure-subscriptions"><span class="toc-text">Manage Azure subscriptions</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Analyze-resource-utilization-and-consumption"><span class="toc-text">Analyze resource utilization and consumption</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Manage-resource-groups"><span class="toc-text">Manage resource groups</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Implement-and-manage-storage-20-25"><span class="toc-text">Implement and manage storage (20-25%)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Create-and-configure-storage-accounts"><span class="toc-text">Create and configure storage accounts</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Import-and-export-data-to-Azure"><span class="toc-text">Import and export data to Azure</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Configure-Azure-files"><span class="toc-text">Configure Azure files</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Implement-Azure-backup"><span class="toc-text">Implement Azure backup</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-and-manage-virtual-machines-VMs-20-25"><span class="toc-text">Deploy and manage virtual machines (VMs) (20-25%)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Create-and-configure-a-VM-for-Windows-and-Linux"><span class="toc-text">Create and configure a VM for Windows and Linux</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Automate-deployment-of-VMs"><span class="toc-text">Automate deployment of VMs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Manage-Azure-VM"><span class="toc-text">Manage Azure VM</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Manage-VM-backups"><span class="toc-text">Manage VM backups</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Configure-and-manage-virtual-networks-20-25"><span class="toc-text">Configure and manage virtual networks (20-25%)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Create-connectivity-between-virtual-networks"><span class="toc-text">Create connectivity between virtual networks</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Impement-and-manage-virtual-networking"><span class="toc-text">Impement and manage virtual networking</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Configure-name-resolution"><span class="toc-text">Configure name resolution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Create-and-configure-a-Network-Security-Group-NSG"><span class="toc-text">Create and configure a Network Security Group (NSG)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Manage-identities-15-20"><span class="toc-text">Manage identities (15-20%)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Manage-Azure-Active-Directory-AD"><span class="toc-text">Manage Azure Active Directory (AD)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Manage-Azure-AD-objects-usres-groups-and-devices"><span class="toc-text">Manage Azure AD objects (usres, groups, and devices)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Implement-and-manage-hybrid-identites"><span class="toc-text">Implement and manage hybrid identites</span></a></li></ol></li></ol></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-microsoft-az100" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">AZ-100 Azure Infrastructure and Deployment</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.03.05</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Liang Yu</span>
+        </span>
+      
+
+      
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="Test-Preparation-to-being-a-full-fledged-Microsoft-Azure-Administrator-Certificate"><a href="#Test-Preparation-to-being-a-full-fledged-Microsoft-Azure-Administrator-Certificate" class="headerlink" title="Test Preparation to being a full-fledged Microsoft Azure Administrator Certificate"></a>Test Preparation to being a full-fledged Microsoft Azure Administrator Certificate</h1><h2 id="AZ-100-Azure-Infrastructure-and-Deployment"><a href="#AZ-100-Azure-Infrastructure-and-Deployment" class="headerlink" title="AZ-100 Azure Infrastructure and Deployment"></a>AZ-100 Azure Infrastructure and Deployment</h2><p>40-60 questions, exam will be around 180 minutes, pass with 700 marks</p>
+<h3 id="Manage-Azure-subscriptions-and-resources-15-20"><a href="#Manage-Azure-subscriptions-and-resources-15-20" class="headerlink" title="Manage Azure subscriptions and resources (15-20%)"></a>Manage Azure subscriptions and resources (15-20%)</h3><h4 id="Manage-Azure-subscriptions"><a href="#Manage-Azure-subscriptions" class="headerlink" title="Manage Azure subscriptions"></a>Manage Azure subscriptions</h4><pre><code>1. Assign administrator permissions
+2. Configure cost center quotas and tagging
+3. Configure Azure subscription polices at Azure subscription level
+</code></pre><h4 id="Analyze-resource-utilization-and-consumption"><a href="#Analyze-resource-utilization-and-consumption" class="headerlink" title="Analyze resource utilization and consumption"></a>Analyze resource utilization and consumption</h4><pre><code>1. Configure diagnostic settings on reources
+2. Create baseline for resources
+3. Create and test alerts
+4. Analyze alerts across subscription
+5. Analyze metrics across subscription
+6. Create action groups
+7. Monitor for unsused resources
+8. Monitor spend
+9. Report on spend
+10. utilize Log Search query functions
+11. view alerts in Log Analytics
+</code></pre><h4 id="Manage-resource-groups"><a href="#Manage-resource-groups" class="headerlink" title="Manage resource groups"></a>Manage resource groups</h4><pre><code>1. Use Azure policies for resource groups
+2. Configure resource locks
+3. Configure resource policies
+4. Implement and set tagging on resource groups
+5. Move resources across resource groups
+6. Remove resources groups
+</code></pre><h3 id="Implement-and-manage-storage-20-25"><a href="#Implement-and-manage-storage-20-25" class="headerlink" title="Implement and manage storage (20-25%)"></a>Implement and manage storage (20-25%)</h3><h4 id="Create-and-configure-storage-accounts"><a href="#Create-and-configure-storage-accounts" class="headerlink" title="Create and configure storage accounts"></a>Create and configure storage accounts</h4><pre><code>1. Configure network access to the storage account
+2. Create and configure storage account
+3. Generate shared access signature
+4. Install and use Azure Storage Explorer
+5. Manage access keys
+6. Monitor activity log by using Log Analytics
+7. Implement Azure storage replication
+</code></pre><h4 id="Import-and-export-data-to-Azure"><a href="#Import-and-export-data-to-Azure" class="headerlink" title="Import and export data to Azure"></a>Import and export data to Azure</h4><pre><code>1. Create export from Azure job
+2. Create import into Azure job
+3. Use Azure Data Box
+4. Configure and use Azure blob storage
+5. Configure Azure content delivery network (CDN) endpoints
+</code></pre><h4 id="Configure-Azure-files"><a href="#Configure-Azure-files" class="headerlink" title="Configure Azure files"></a>Configure Azure files</h4><pre><code>1. Create Azure file share
+2. Create Azure File Sync service
+3. Create Azure sync group
+4. Troubleshoot Azure File Sync
+</code></pre><h4 id="Implement-Azure-backup"><a href="#Implement-Azure-backup" class="headerlink" title="Implement Azure backup"></a>Implement Azure backup</h4><pre><code>1. Configure and review backup reports
+2. Perform backup operation
+3. Create Recovery Services Vault
+4. Create and configure backup policy
+5. Perform a restore operation
+</code></pre><h3 id="Deploy-and-manage-virtual-machines-VMs-20-25"><a href="#Deploy-and-manage-virtual-machines-VMs-20-25" class="headerlink" title="Deploy and manage virtual machines (VMs) (20-25%)"></a>Deploy and manage virtual machines (VMs) (20-25%)</h3><h4 id="Create-and-configure-a-VM-for-Windows-and-Linux"><a href="#Create-and-configure-a-VM-for-Windows-and-Linux" class="headerlink" title="Create and configure a VM for Windows and Linux"></a>Create and configure a VM for Windows and Linux</h4><pre><code>1. Configure high availabilty
+2. Configure monitoring, networking, storage, and virtual machine size
+3. deploy and configure scale sets
+</code></pre><h4 id="Automate-deployment-of-VMs"><a href="#Automate-deployment-of-VMs" class="headerlink" title="Automate deployment of VMs"></a>Automate deployment of VMs</h4><pre><code>1. Modify Azure Resource Manager(ARM) template
+2. Configure location of new VMs
+3. Configure VHD template
+4. Deploy from template
+5. Save a deployment as an ARM template
+6. Deploy Windows and Linux VMs
+</code></pre><h4 id="Manage-Azure-VM"><a href="#Manage-Azure-VM" class="headerlink" title="Manage Azure VM"></a>Manage Azure VM</h4><pre><code>1. Add data discs
+2. Add network interfaces
+3. Automate configuration management by using PowerShell Desired State Configuration (DSC) and VM Agent by using custom script extensions
+4. Manage VM sizes
+5. Move VMs from one resource group to another
+6. Redeploy VMs
+</code></pre><h4 id="Manage-VM-backups"><a href="#Manage-VM-backups" class="headerlink" title="Manage VM backups"></a>Manage VM backups</h4><pre><code>1. Configure VM backup
+2. Define backup policies
+3. Implement backup policies
+4. Perform VM restore
+</code></pre><h3 id="Configure-and-manage-virtual-networks-20-25"><a href="#Configure-and-manage-virtual-networks-20-25" class="headerlink" title="Configure and manage virtual networks (20-25%)"></a>Configure and manage virtual networks (20-25%)</h3><h4 id="Create-connectivity-between-virtual-networks"><a href="#Create-connectivity-between-virtual-networks" class="headerlink" title="Create connectivity between virtual networks"></a>Create connectivity between virtual networks</h4><pre><code>1. Create and configure VNET peering
+2. Create and configure VNET to VNET
+3. Verify virtual network connectivity
+4. Create virtual network gateway
+</code></pre><h4 id="Impement-and-manage-virtual-networking"><a href="#Impement-and-manage-virtual-networking" class="headerlink" title="Impement and manage virtual networking"></a>Impement and manage virtual networking</h4><pre><code>1. Configure provate and public IP addresses
+2. Network routes
+3. Network interface, subnets, and virtual network
+</code></pre><h4 id="Configure-name-resolution"><a href="#Configure-name-resolution" class="headerlink" title="Configure name resolution"></a>Configure name resolution</h4><pre><code>1. Configure Azure DNS
+2. Configure custom DNS settings
+3. Configure private and public DNS zones
+</code></pre><h4 id="Create-and-configure-a-Network-Security-Group-NSG"><a href="#Create-and-configure-a-Network-Security-Group-NSG" class="headerlink" title="Create and configure a Network Security Group (NSG)"></a>Create and configure a Network Security Group (NSG)</h4><pre><code>1. Create security rules
+2. associate NSG to a subnet or network interface
+3. identify required ports
+4. evaluate effective security rules
+</code></pre><h3 id="Manage-identities-15-20"><a href="#Manage-identities-15-20" class="headerlink" title="Manage identities (15-20%)"></a>Manage identities (15-20%)</h3><h4 id="Manage-Azure-Active-Directory-AD"><a href="#Manage-Azure-Active-Directory-AD" class="headerlink" title="Manage Azure Active Directory (AD)"></a>Manage Azure Active Directory (AD)</h4><pre><code>1. Add custom domains
+2. Configure Azure AD Identity Protection
+3. Azure AD Join, and Enterprise State Roaming
+4. Configure self-service password reset
+5. Implement conditional access policies
+6. Manage multiple directories
+7. Perform an access review
+</code></pre><h4 id="Manage-Azure-AD-objects-usres-groups-and-devices"><a href="#Manage-Azure-AD-objects-usres-groups-and-devices" class="headerlink" title="Manage Azure AD objects (usres, groups, and devices)"></a>Manage Azure AD objects (usres, groups, and devices)</h4><pre><code>1. Create users and groups
+2. Manage user and group properties
+3. Manage device settings
+4. Perform bulk user updates
+</code></pre><h4 id="Implement-and-manage-hybrid-identites"><a href="#Implement-and-manage-hybrid-identites" class="headerlink" title="Implement and manage hybrid identites"></a>Implement and manage hybrid identites</h4><pre><code>1. Install and configure Azure AD Connect
+2. Configure federation and single sign-on
+3. Manage Azure AD Connect
+4. Manage password sync and writeback
+</code></pre>
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持forsigner</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/02/07/design-ood/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/03/05/microsoft-az900/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '277317290454635afa73',
+  clientSecret: '78223c859304da5e8d71bfce136d436c6ff95c37',
+  repo: 'blog-comment',
+  owner: 'forsigner',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: location.pathname,
+  admin: ['forsigner'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

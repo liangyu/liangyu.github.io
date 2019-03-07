@@ -1,7 +1,254 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 101 Introduction to System Design · Liang Yu's Website</title><meta name="description" content="101 Introduction to System Design - Liang Yu"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.yuliang.xyz/atom.xml" title="Liang Yu's Website"></head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="http://weibo.com/sunchongsheng" target="_blank" class="nav-list-link">WEIBO</a></li><li class="nav-list-item"><a href="https://github.com/pinggod" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/atom.xml" target="_self" class="nav-list-link">RSS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">101 Introduction to System Design</h1><div class="post-info">Jan 5, 2018</div><div class="post-content"><h1 id="What-is-the-System-Design"><a href="#What-is-the-System-Design" class="headerlink" title="What is the System Design"></a>What is the System Design</h1><h1 id="System-Design-101"><a href="#System-Design-101" class="headerlink" title="System Design 101"></a>System Design 101</h1><h1 id="What-kinds-of-Question-You-Should-Expect-in-the-Interview"><a href="#What-kinds-of-Question-You-Should-Expect-in-the-Interview" class="headerlink" title="What kinds of Question You Should Expect in the Interview"></a>What kinds of Question You Should Expect in the Interview</h1><p>interviewee  v.s. interviewer</p>
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>101 Introduction to System Design | Liang Yu&#39;s Website</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="CS183C," />
+  
+
+  <meta name="description" content="What is the System Design系统设计没有标准答案，通过分析的过程展示知识储备，权衡各种设计方式的利弊先设计一个基本能工作的系统，然后逐步优化不要总想着设计最牛的系统，要设计够用的系统问清楚再动手，不要做关键词大师系统设计中不要过度优化 System Design 101What kinds of Question You Should Expect in the Interv">
+<meta name="keywords" content="CS183C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="101 Introduction to System Design">
+<meta property="og:url" content="http://www.yuliang.xyz/2018/01/05/system-design-101/index.html">
+<meta property="og:site_name" content="Liang Yu&#39;s Website">
+<meta property="og:description" content="What is the System Design系统设计没有标准答案，通过分析的过程展示知识储备，权衡各种设计方式的利弊先设计一个基本能工作的系统，然后逐步优化不要总想着设计最牛的系统，要设计够用的系统问清楚再动手，不要做关键词大师系统设计中不要过度优化 System Design 101What kinds of Question You Should Expect in the Interv">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://www.yuliang.xyz/2018/01/05/system-design-101/radar_chart.png">
+<meta property="og:updated_time" content="2019-02-19T05:04:09.934Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="101 Introduction to System Design">
+<meta name="twitter:description" content="What is the System Design系统设计没有标准答案，通过分析的过程展示知识储备，权衡各种设计方式的利弊先设计一个基本能工作的系统，然后逐步优化不要总想着设计最牛的系统，要设计够用的系统问清楚再动手，不要做关键词大师系统设计中不要过度优化 System Design 101What kinds of Question You Should Expect in the Interv">
+<meta name="twitter:image" content="http://www.yuliang.xyz/2018/01/05/system-design-101/radar_chart.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-38189205-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#What-is-the-System-Design"><span class="toc-text">What is the System Design</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#System-Design-101"><span class="toc-text">System Design 101</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#What-kinds-of-Question-You-Should-Expect-in-the-Interview"><span class="toc-text">What kinds of Question You Should Expect in the Interview</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Common-System-Design-Question"><span class="toc-text">Common System Design Question</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Common-Errors"><span class="toc-text">Common Errors</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#What-You-should-Achieve-in-30-Minutes"><span class="toc-text">What You should Achieve in 30 Minutes</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#How-to-Crack-the-Question-with-4S-Method"><span class="toc-text">How to Crack the Question with 4S Method</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Give-a-Scenario"><span class="toc-text">1. Give a Scenario</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-List-possible-Service"><span class="toc-text">2. List possible Service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Analyze-required-Storage"><span class="toc-text">3. Analyze required Storage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Leave-space-for-Scale"><span class="toc-text">4. Leave space for Scale</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Commone-Design-Questions"><span class="toc-text">Commone Design Questions:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么Google三驾马车（MapReduce-BigTable-GFS-奠定了云计算的基础？"><span class="toc-text">为什么Google三驾马车（MapReduce, BigTable, GFS)奠定了云计算的基础？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Prepare-for-System-Design"><span class="toc-text">Prepare for System Design</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#套路五步"><span class="toc-text">套路五步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进阶"><span class="toc-text">进阶</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-system-design-101" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">101 Introduction to System Design</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.01.05</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Liang Yu</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/System-Design/">System_Design</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="What-is-the-System-Design"><a href="#What-is-the-System-Design" class="headerlink" title="What is the System Design"></a>What is the System Design</h1><p>系统设计没有标准答案，通过分析的过程展示知识储备，权衡各种设计方式的利弊<br>先设计一个基本能工作的系统，然后逐步优化<br>不要总想着设计最牛的系统，要设计够用的系统<br>问清楚再动手，不要做关键词大师<br>系统设计中不要过度优化</p>
+<h1 id="System-Design-101"><a href="#System-Design-101" class="headerlink" title="System Design 101"></a>System Design 101</h1><h1 id="What-kinds-of-Question-You-Should-Expect-in-the-Interview"><a href="#What-kinds-of-Question-You-Should-Expect-in-the-Interview" class="headerlink" title="What kinds of Question You Should Expect in the Interview"></a>What kinds of Question You Should Expect in the Interview</h1><p>interviewee  v.s. interviewer</p>
 <ol>
 <li>a web facing service</li>
-<li>a RESTfule API</li>
+<li>a RESTful API</li>
 <li>a peer-to-peer desktop app</li>
 <li>Design a URL shortening service like bit.ly.</li>
 <li>How would you implement the Google search?</li>
@@ -69,18 +316,17 @@
 </ul>
 <h1 id="What-You-should-Achieve-in-30-Minutes"><a href="#What-You-should-Achieve-in-30-Minutes" class="headerlink" title="What You should Achieve in 30 Minutes"></a>What You should Achieve in 30 Minutes</h1><p>By strategy we mean a way to approach the problem at an interview. </p>
 <ul>
-<li>Work Solution 可行解 25%</li>
-<li>Special Case 特殊情况 20%</li>
-<li>Analysis 分析能力 25%</li>
-<li>Tradeoff 权衡利弊 15%</li>
-<li>Knowledge Base 知识储备 15%</li>
+<li>Work Solution   可行解 25%</li>
+<li>Special Case    特殊情况 20%</li>
+<li>Analysis        分析能力 25%</li>
+<li>Tradeoff        权衡利弊 15%</li>
+<li>Knowledge Base  知识储备 15%</li>
 </ul>
 <img src="/2018/01/05/system-design-101/radar_chart.png" title="[]">
 <h1 id="How-to-Crack-the-Question-with-4S-Method"><a href="#How-to-Crack-the-Question-with-4S-Method" class="headerlink" title="How to Crack the Question with 4S Method"></a>How to Crack the Question with 4S Method</h1><h3 id="1-Give-a-Scenario"><a href="#1-Give-a-Scenario" class="headerlink" title="1. Give a Scenario"></a>1. Give a <strong>Scenario</strong></h3><p>需要设计哪些功能？要设计得有多牛？<br>Ask | Features| QPS| DAU | Interface</p>
-<p>The very first thing you should do with any system design question is to clarify the system’s constraints and to identify what use cases the system needs to satisfy.</p>
+<p>The very first thing you should do with any system design question is<br>to clarify the system’s constraints and to identify what use cases<br>the system needs to satisfy.</p>
 <p>– 问面试官，体现交流的能力<br>– 根据面试官的回复，做出合理的分析</p>
-<p>Usually, part of what the interviewer wants to see is if you can gather the requirements about the problem at hand, and design a solution that covers them well.</p>
-<p>写在一条一条写在纸上</p>
+<p>Usually, part of what the interviewer wants to see is if you can gather<br>the requirements about the problem at hand, and design a solution that<br>covers them well.</p>
 <h3 id="2-List-possible-Service"><a href="#2-List-possible-Service" class="headerlink" title="2. List possible Service"></a>2. List possible <strong>Service</strong></h3><p>将大系统拆分成小服务<br>Split | Application | Module</p>
 <h3 id="3-Analyze-required-Storage"><a href="#3-Analyze-required-Storage" class="headerlink" title="3. Analyze required Storage"></a>3. Analyze required <strong>Storage</strong></h3><p>数据如何存储与访问<br>Schema | Data | SQL V.S. NoSQL | File System</p>
 <h3 id="4-Leave-space-for-Scale"><a href="#4-Leave-space-for-Scale" class="headerlink" title="4. Leave space for Scale"></a>4. Leave space for <strong>Scale</strong></h3><p>解决缺陷，处理可能遇到的问题<br>Sharding | Optimize | Special Cases</p>
@@ -429,4 +675,233 @@ Write: 1
 <li>Thrift(cross language interface and RPC)</li>
 <li>Storm(realtime streaming processing, 应对类似统计过去1分钟的count一类的题目), spark</li>
 </ul>
-</div></article></div></main><footer><div class="paginator"><a href="/2018/01/06/news-feed-system/" class="prev">PREV</a><a href="/2017/11/04/ios-objective-c-runtime/" class="next">NEXT</a></div><div class="copyright"><p>© 2015 - 2019 <a href="http://www.yuliang.xyz">Liang Yu</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持forsigner</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2017/11/04/ios-objective-c-runtime/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/01/06/news-feed-system/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '277317290454635afa73',
+  clientSecret: '78223c859304da5e8d71bfce136d436c6ff95c37',
+  repo: 'blog-comment',
+  owner: 'forsigner',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: location.pathname,
+  admin: ['forsigner'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
