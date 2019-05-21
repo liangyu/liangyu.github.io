@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>Liang Yu&#39;s Website</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="forsigner,前端,设计,Hexo主题,前端开发,用户体验,设计,frontend,design,nodejs,JavaScript" />
+  
+
+  <meta name="description" content="互联网通信安全两大主题：身份认证和数据安全  身份认证: 对方要能证明其身份 （数字签名和数字证书） 数据安全: 如何保证密码传输过程中不会被别人窃取 （加解密）  一些基本概念SSL/TLS, OpenSSL, HTTPS SSL/TLSSSL是在客户端和服务器之间建立一条SSL安全通道的安全协议 OpenSSLOpenSSL是TLS/SSL协议的开源实现，提供开发库和命令行程序 HTTPS常说">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Liang Yu&#39;s Website">
+<meta property="og:url" content="http://www.yuliang.xyz/2019/03/25/network-security-101a/index.html">
+<meta property="og:site_name" content="Liang Yu&#39;s Website">
+<meta property="og:description" content="互联网通信安全两大主题：身份认证和数据安全  身份认证: 对方要能证明其身份 （数字签名和数字证书） 数据安全: 如何保证密码传输过程中不会被别人窃取 （加解密）  一些基本概念SSL/TLS, OpenSSL, HTTPS SSL/TLSSSL是在客户端和服务器之间建立一条SSL安全通道的安全协议 OpenSSLOpenSSL是TLS/SSL协议的开源实现，提供开发库和命令行程序 HTTPS常说">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-03-25T04:32:50.971Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Liang Yu&#39;s Website">
+<meta name="twitter:description" content="互联网通信安全两大主题：身份认证和数据安全  身份认证: 对方要能证明其身份 （数字签名和数字证书） 数据安全: 如何保证密码传输过程中不会被别人窃取 （加解密）  一些基本概念SSL/TLS, OpenSSL, HTTPS SSL/TLSSSL是在客户端和服务器之间建立一条SSL安全通道的安全协议 OpenSSLOpenSSL是TLS/SSL协议的开源实现，提供开发库和命令行程序 HTTPS常说">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-38189205-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/atom.xml"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            RSS
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#互联网通信安全"><span class="toc-text">互联网通信安全</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一些基本概念"><span class="toc-text">一些基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SSL-TLS-OpenSSL-HTTPS"><span class="toc-text">SSL/TLS, OpenSSL, HTTPS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PKI-CA-和-Certificate"><span class="toc-text">PKI, CA 和 Certificate</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加密算法"><span class="toc-text">加密算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#内容：数字证书，HTTPS，SSL-TLS-协议"><span class="toc-text">内容：数字证书，HTTPS，SSL/TLS 协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是OpenSSL"><span class="toc-text">什么是OpenSSL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Openssl-操作指南"><span class="toc-text">Openssl 操作指南</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#直接加解密"><span class="toc-text">直接加解密</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenSSL-CA-配置文件与格式"><span class="toc-text">OpenSSL CA 配置文件与格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成密钥对"><span class="toc-text">生成密钥对</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数字证书的基础知识"><span class="toc-text">数字证书的基础知识</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Certificate-Authority-CA"><span class="toc-text">Certificate Authority (CA)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生成自签证书"><span class="toc-text">生成自签证书</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#颁发证书-（-其他用户用OpenSSL-申请证书）"><span class="toc-text">颁发证书 （ 其他用户用OpenSSL 申请证书）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建目录"><span class="toc-text">创建目录</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#生成公钥-扩展名随便取"><span class="toc-text">生成公钥 扩展名随便取</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#提取公钥"><span class="toc-text">提取公钥</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#session的恢复"><span class="toc-text">session的恢复</span></a></li></ol></li></ol></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-network-security-101a" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">(no title)</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.03.25</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Liang Yu</span>
+        </span>
+      
+
+      
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="互联网通信安全"><a href="#互联网通信安全" class="headerlink" title="互联网通信安全"></a>互联网通信安全</h1><p>两大主题：身份认证和数据安全</p>
+<ul>
+<li>身份认证: 对方要能证明其身份 （数字签名和数字证书）</li>
+<li>数据安全: 如何保证密码传输过程中不会被别人窃取 （加解密）</li>
+</ul>
+<h2 id="一些基本概念"><a href="#一些基本概念" class="headerlink" title="一些基本概念"></a>一些基本概念</h2><h3 id="SSL-TLS-OpenSSL-HTTPS"><a href="#SSL-TLS-OpenSSL-HTTPS" class="headerlink" title="SSL/TLS, OpenSSL, HTTPS"></a>SSL/TLS, OpenSSL, HTTPS</h3><ol>
+<li>SSL/TLS<br>SSL是在客户端和服务器之间建立一条SSL安全通道的安全协议</li>
+<li>OpenSSL<br>OpenSSL是TLS/SSL协议的开源实现，提供开发库和命令行程序</li>
+<li><p>HTTPS<br>常说的HTTPS是HTTP的加密版，底层使用的加密协议是SSL</p>
+<h3 id="PKI-CA-和-Certificate"><a href="#PKI-CA-和-Certificate" class="headerlink" title="PKI, CA 和 Certificate"></a>PKI, CA 和 Certificate</h3></li>
+<li><p>PKI (Public Key Infrastructure)<br>PKI 就是 Public Key Infrastructure 的缩写，翻译过来就是公开密钥基础设施。它是利用公开密钥技术所构建的，解决网络安全问题的，<br>普遍适用的一种基础设  施;是一种遵循既定标准的密钥管理平台,它能够为所有网络应用提供加密和数字签名等密码服务及所必需的密钥和证书管理体系。</p>
+<p>PKI既不是一个协议，也不是一个软件，它是一个标准，在这个标准之下发展出的为了实现安全基础服务目的的技术统称为PKI。可以说CA(认证中心)是<br>PKI的核心，而数字证书是PKI的最基本元素，还有如apache等服务器、浏览器等客户端、银行等应用，都是pki的组件。</p>
+</li>
+<li><p>CA<br>CA 机构，又称为证书认证中心 (Certificate Authority) 中心，是一个负责发放和管理数字证书的第三方权威机构，它负责管理PKI结构下的<br>所有用户(包括各种应用程序)的证书，把用户的公钥和用户的其他信息捆绑在一起，在网上验证用户的身份。CA机构的数字签名使得攻击者不能伪造和篡改证书。</p>
+<p>认证中心主要有以下5个功能：</p>
+<p>证书的颁发：接收、验证用户(包括下级认证中心和最终用户)的数字证书的申请。可以受理或拒绝<br>证书的更新：认证中心可以定期更新所有用户的证书，或者根据用户的请求来更新用户的证书<br>证书的查询：查询当前用户证书申请处理过程；查询用户证书的颁发信息，这类查询由目录服务器ldap来完成<br>证书的作废：由于用户私钥泄密等原因，需要向认证中心提出证书作废的请求；证书已经过了有效期，认证中心自动将该证书作废。</p>
+<pre><code>认证中心通过维护证书作废列表 (Certificate Revocation List,CRL) 来完成上述功能。
+</code></pre><p>证书的归档：证书具有一定的有效期，证书过了有效期之后就将作废，但是我们不能将作废的证书简单地丢弃，因为有时我们可能需要</p>
+<pre><code>验证以前的某个交易过程中产生的数字签名，这时我们就需要查询作废的证书。
+</code></pre></li>
+<li><p>Certificate<br>3.1 X.509 标准<br>PKI的标准规定了PKI的设计、实施和运营，规定了PKI各种角色的”游戏规则”，提供数据语法和语义的共同约定。<br>x.509是PKI中最重要的标准，它定义了公钥证书的基本结构，可以说PKI是在X.509标准基础上发展起来的。</p>
+<ul>
+<li>SSL公钥证书</li>
+<li>证书废除列表CRL(Certificate revocation lists 证书黑名单)</li>
+</ul>
+<p>另外一个常用的标准是PKCS#12，通常采用pfx,p12作为文件扩展名，openssl和java的keytool工具都可以用作<br>生产此类格式的证书。</p>
+<p>3.2 SSL/TLS 公钥证书格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line">Certificate:</span><br><span class="line">    Data:</span><br><span class="line">	Version: 3 (0x2)</span><br><span class="line">	1. 证书版本号(Version)</span><br><span class="line">	版本号指明X.509证书的格式版本，现在的值可以为:</span><br><span class="line">	    1) 0: v1</span><br><span class="line">	    2) 1: v2</span><br><span class="line">	    3) 2: v3</span><br><span class="line">	也为将来的版本进行了预定义</span><br><span class="line">	</span><br><span class="line">	Serial Number: 9 (0x9)</span><br><span class="line">	2. 证书序列号(Serial Number)</span><br><span class="line">               序列号指定由CA分配给证书的唯一的&quot;数字型标识符&quot;。当证书被取消时，实际上是将此证书的序列号放入由CA签发的CRL中，</span><br><span class="line">               这也是序列号唯一的原因。</span><br><span class="line">	</span><br><span class="line">        Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">        3. 签名算法标识符(Signature Algorithm)</span><br><span class="line">	签名算法标识用来指定由CA签发证书时所使用的&quot;签名算法&quot;。算法标识符用来指定CA签发证书时所使用的:</span><br><span class="line">	    1) 公开密钥算法</span><br><span class="line">	    2) hash算法</span><br><span class="line">	example: sha256WithRSAEncryption</span><br><span class="line">	须向国际知名标准组织(如ISO)注册</span><br><span class="line">	</span><br><span class="line">	Issuer: C=CN, ST=GuangDong, L=ShenZhen, O=COMPANY Technologies Co., Ltd, OU=IT_SECTION, CN=registry.example.com.net/emailAddress=zhouxiao@example.com.net</span><br><span class="line">	4. 签发机构名(Issuer)</span><br><span class="line">	此域用来标识签发证书的CA的X.500 DN(DN-Distinguished Name)名字。包括:</span><br><span class="line">	    1) 国家(C)</span><br><span class="line">	    2) 省市(ST)</span><br><span class="line">	    3) 地区(L)</span><br><span class="line">	    4) 组织机构(O)</span><br><span class="line">	    5) 单位部门(OU)</span><br><span class="line">	    6) 通用名(CN)</span><br><span class="line">	    7) 邮箱地址</span><br><span class="line"></span><br><span class="line">	Validity</span><br><span class="line">	    Not Before: Feb 11 06:04:56 2015 GMT</span><br><span class="line">	    Not After : Feb  8 06:04:56 2025 GMT</span><br><span class="line">	    </span><br><span class="line">	    </span><br><span class="line">	5. 有效期(Validity)</span><br><span class="line">	指定证书的有效期，包括:</span><br><span class="line">	    1) 证书开始生效的日期时间</span><br><span class="line">	    2) 证书失效的日期和时间</span><br><span class="line">	每次使用证书时，需要检查证书是否在有效期内。</span><br><span class="line"></span><br><span class="line">	Subject: C=CN, ST=GuangDong, L=ShenZhen, O=TP-Link Co.,Ltd., OU=Network Management, CN=172.31.1.210</span><br><span class="line">	6. 证书用户名(Subject)</span><br><span class="line">	指定证书持有者的X.500唯一名字。包括:</span><br><span class="line">	    1) 国家(C)</span><br><span class="line">	    2) 省市(ST)</span><br><span class="line">	    3) 地区(L)</span><br><span class="line">	    4) 组织机构(O)</span><br><span class="line">	    5) 单位部门(OU)</span><br><span class="line">	    6) 通用名(CN)</span><br><span class="line">	    7) 邮箱地址</span><br><span class="line">	</span><br><span class="line">	Subject Public Key Info:</span><br><span class="line">	    Public Key Algorithm: rsaEncryption</span><br><span class="line">		Public-Key: (2048 bit)</span><br><span class="line">		Modulus:</span><br><span class="line">		    00:a4:b0:dd:eb:c1:cf:5d:47:61:a6:ea:ef:8b:aa:</span><br><span class="line">		    4b:f0:b4:2c:d8:96:c7:7c:ac:fa:c7:35:88:53:d0:</span><br><span class="line">		    ...</span><br><span class="line">		    8a:76:dc:8f:8c:44:c8:0b:3c:36:88:5f:01:f0:44:</span><br><span class="line">		    4e:81:e6:7a:2b:ff:ba:da:33:a5:27:11:c6:f0:08:</span><br><span class="line">		    6e:f3</span><br><span class="line">		Exponent: 65537 (0x10001)</span><br><span class="line">	7. 证书持有者公开密钥信息(Subject Public Key Info)</span><br><span class="line">	证书持有者公开密钥信息域包含两个重要信息:</span><br><span class="line">	    1) 证书持有者的公开密钥的值</span><br><span class="line">	    2) 公开密钥使用的算法标识符。此标识符包含公开密钥算法和hash算法。				</span><br><span class="line">   </span><br><span class="line">	X509v3 extensions:</span><br><span class="line">	8. 扩展项(extension)</span><br><span class="line">	X.509 V3证书是在v2的基础上一标准形式或普通形式增加了扩展项，以使证书能够附带额外信息。标准扩展是指</span><br><span class="line">	由X.509 V3版本定义的对V2版本增加的具有广泛应用前景的扩展项，任何人都可以向一些权威机构，如ISO，来</span><br><span class="line">	注册一些其他扩展，如果这些扩展项应用广泛，也许以后会成为标准扩展项。</span><br><span class="line"></span><br><span class="line">	    X509v3 Basic Constraints: </span><br><span class="line">		CA:FALSE</span><br><span class="line">		</span><br><span class="line">	    Netscape Comment: </span><br><span class="line">		OpenSSL Generated Certificate</span><br><span class="line">		</span><br><span class="line">		10. 证书持有者唯一标识符(Subject Unique Identifier)</span><br><span class="line">		持有证书者唯一标识符在第2版的标准中加入X.509证书定义。此域用在当同一个X.500名字用于多个证书持有者时，</span><br><span class="line">		用一比特字符串来唯一标识证书持有者的X.500名字。可选。</span><br><span class="line">	    X509v3 Subject Key Identifier: </span><br><span class="line">		07:C6:87:B7:C1:1E:28:E8:96:3F:EB:40:1E:82:41:45:CA:81:B6:3D</span><br><span class="line">		</span><br><span class="line">		9. 签发者唯一标识符(Issuer Unique Identifier)</span><br><span class="line">		签发者唯一标识符在第2版加入证书定义中。此域用在当同一个X.500名字用于多个认证机构时，用一比特字符串</span><br><span class="line">		来唯一标识签发者的X.500名字。可选。</span><br><span class="line">	    X509v3 Authority Key Identifier: </span><br><span class="line">		keyid:A4:C2:14:6A:39:D1:95:1E:BD:DF:3B:92:4A:5C:12:42:1B:BC:53:B8</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">    11. 签名算法(Signature Algorithm)</span><br><span class="line">           证书签发机构对证书上述内容的签名算法</span><br><span class="line">    </span><br><span class="line">    12. 签名值(Issuer&apos;s Signature)</span><br><span class="line">           证书签发机构对证书上述内容的签名值</span><br><span class="line">	 0c:c6:81:70:cd:0a:2d:94:4f:cb:a4:1d:ef:9e:8e:e4:73:ae:</span><br><span class="line">	 50:62:a8:9c:64:ef:56:0f:41:fe:6b:b4:d3:07:37:39:2c:ed:</span><br><span class="line">	 ...</span><br><span class="line">	 6f:62:61:b8:03:d7:97:31:ab:05:44:20:07:65:8b:ad:e2:cc:</span><br><span class="line">	 ad:65:73:f6:82:0f:9e:65:d0:ae:b7:1e:fd:9f:c1:d7:41:6c:</span><br><span class="line">	 0f:06:95:ee</span><br><span class="line">	 </span><br><span class="line"></span><br><span class="line">-----BEGIN CERTIFICATE-----</span><br><span class="line">MIIEMDCCAxigAwIBAgIBCTANBgkqhkiG9w0BAQsFADCBtTELMAkGA1UEBhMCQ04x</span><br><span class="line">EjAQBgNVBAgMCUd1YW5nRG9uZzERMA8GA1UEBwwIU2hlblpoZW4xJjAkBgNVBAoM</span><br><span class="line">...</span><br><span class="line">ujwwRar6pPzusO95WuS93HsNmL2ZFZ63DS4LcW9iYbgD15cxqwVEIAdli63izK1l</span><br><span class="line">c/aCD55l0K63Hv2fwddBbA8Gle4=</span><br><span class="line">-----END CERTIFICATE-----</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>用在HTTPS加密</p>
+<p>HASH 算法：SHA1， SHA2， MD5， SHA256</p>
+<h2 id="加密算法"><a href="#加密算法" class="headerlink" title="加密算法"></a>加密算法</h2><ol>
+<li>对称加密(双向加密): 加密与解密使用同一密码，对明文使用密码加密后，对方可以通过同一密码进行反向解密.</li>
+</ol>
+<p>常见的加密算法有 DES(56bits)、3DES、AES(128bits)、Blowfish、Twofish、IDEA、RC6、CAST5、Serpent等等.<br>AES，RC4， 3DES</p>
+<p>此种加密一般都是 将原文分割成固定大小的数据块，对这些块进行加密(ECB，CBC).<br>此种方式加密容易遭受 字典攻击，同时解密方需要得到加密密码，中间可能涉及密码传输泄露问题.</p>
+<ol>
+<li><p>非对称加密<br>非对称加密与对称加密相反，其加密解密可使用不同的密码，常见的如 RSA、EIGmal、DSA/DSS 等. 在非对称加密中，有一种比较特殊的加密叫做单向加密，<br>单向机密也称消息摘要算法，其主要目的是提取消息特征码，加密后的密文不可逆。常见的单向加密算法有 : MD5、SHA1、SHA512、CRC-32(循环冗余校验码)<br>等；单向加密有两个重要的特性 : 定长输出、雪崩效应；定长输出可以理解为 无论消息体多大，最终输出加密后结果长度一致，雪崩效应顾名思义，即消息体的<br>微小变化，会导致加密结果的巨大变化。</p>
+</li>
+<li><p>公钥加密<br>公钥加密时会有两个文件，即一个公钥一个私钥；并且公钥与私钥成对出现，其特性是 使用公钥加密的内容必须使用与其匹配的私钥解密，反之亦然。</p>
+</li>
+</ol>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><ol>
+<li><p>证明自己身份的文件<br>身份认证问题，即 “支付宝要能证明他是支付宝”；纵观以上3中加密算法，比较适合做身份认证的就是 公钥加密，即在互联网上从未通讯过的主机想向对方<br>证明自己的身份，只需先生成一对密钥，然后将公钥放在互联网上大家可任意获取，私钥自己保留；需要证明身份时只需用自己的私钥加密一段信息发给<br>对方，对方若能使用其公钥解密，就能证明其身份。</p>
+</li>
+<li><p>证明用来证明自己身份的文件是真实的<br>如何保证从互联网上获取的公钥就是对方的，而不是别人恶意放到互联网上的假冒公钥？<br>解决方案就是 大家找一个公认的知名机构，把公钥全部放到这个机构那，然后谁需要谁从那里下载，此时这个机构称之为 CA，CA 为每个使用者颁发一个<br>证书，证书中包含使用者的公钥和CA 的私钥签名，以及一些使用者信息；同时证书具有级联信任关系，即 我们信任了一家 CA 的根证书，那么由其颁发的<br>其他证书将都被信任，类似于一棵树的结构，一旦我们信任了根节点那么以下所有子节点将全部被信任。</p>
+</li>
+</ol>
+<ol>
+<li>数据传输过程中的加密问题<br>传输数据，那么数据内容肯定需要双向加密才可以被接收方解密读取，但是很大的问题是 双向加密时，解密方需要知道解密密码；而将密码在互联网上<br>传输明显是不明智的，此时出现了另一种解决方案，即 密钥交换算法（Diffie-Hellman 算法），专门用于在互联网上传输密钥信息。</li>
+</ol>
+<ol>
+<li>数据完整性<br>对于完整性最好的应用就是采用单向加密即消息摘要算法，提取数据的特征码；简单地说就是每发送一段数据，就对发送的数据做一次数据特征提取，<br>然后将特征码一并发送，接收方接收到数据并解密后可对其使用同样的算法进行特征码提取比对，如果计算结果不一致则证明数据被篡改，直接丢弃即可。</li>
+</ol>
+<h3 id="内容：数字证书，HTTPS，SSL-TLS-协议"><a href="#内容：数字证书，HTTPS，SSL-TLS-协议" class="headerlink" title="内容：数字证书，HTTPS，SSL/TLS 协议"></a>内容：数字证书，HTTPS，SSL/TLS 协议</h3><ol>
+<li>HTTPS为什么安全？HTTPS是如何保证安全的？<br>使用非对称加密来交换一个密钥来进行对称加密，这个过程称为SSL/TLS的四次握手。用对称加密算法来进行通信<br>master_secret = PRF(pre_master_secret, “master secret”, ClientHello.random + ServerHello.random)[0 .. 47]</li>
+</ol>
+<p><strong>随机数为什么是三个？</strong><br>这是由于SSL/TLS设计，就假设服务器不相信所有客户端都能够提供完全随机数，假如某个客户端提供的随机数不随机的话，就大大增加了“对话密钥”<br>被破解的风险，所以由三组随机数组成的最后的随机数，保证了随机数的随机性，以此来保证每次生成的“对话密钥”安全性</p>
+<ol>
+<li><p>如何保证非对称加密时的安全性？<br>服务器端发送证书来传递非对称加密的公钥，保证了公钥和私钥的保密性</p>
+</li>
+<li><p>客户端怎么知道服务器端证书是不是真的？/ 客户端具体是如何验证SSL证书的？<br>客户端根据CA证书的公钥校验证书的数字签名来保证其合法性。</p>
+</li>
+</ol>
+<p>为了抵御中间人 man-in-the-middle 攻击，SSL证书需要由可信的SSL证书颁发机构颁发，形成一个证书链<br>（比如Gmail的证书链为：最底层为网域 mail.google.com，上一层为Thawte SGC CA证书颁发机构，<br>最顶层为很有名的VeriSign证书颁发机构）。</p>
+<p>那么，浏览器除了需要验证域和有效期外，还要检查证书链中的上级证书公钥是否有效，上级的上级证书公钥是否有效，直至根证书公钥为止。这样就可以有效避免中间人攻击了.</p>
+<p>根证书公钥都是预装在操作系统中的，黑客如果不是暴力破解，无法得到根证书的私钥。如果黑客自己生成一个私钥，浏览器验证根证书公钥的时候发现无法通过操作系统中预装的公钥加密数据后使用这个私钥进行解密，从而判定这个公钥是无效的。这个方案也是现在https通讯通常的方案。</p>
+<p>现在所有的浏览器正在使用的https通讯方案就无懈可击了吗？答案仍是否定的。我们可以看到，在后一个方案中，https的安全性需要在证书颁发机构公信力的强有力保障前提下才能发挥作用。如果证书颁发机构在没有验证黑客为mail.google.com的持游者的情况下，给黑客颁发了网域为mail.google.com的证书，那么黑客的中间人攻击又可以顺利实施然而，不验证域名持有者就颁发证书的情况在国外几乎不会发生，但是在国内就不一定了。针对破解目标，国内证书颁发机构WoSign（在此只是举例国内比较有名的证书颁发机构WoSign，并不代表WoSign今后一定会这么做）很有可能为了上级要求颁发了证书给非域名持有者的黑客，从而使得破解目标的Gmail密码被黑客截取。</p>
+<p>证书验证失败的原因<br>1、SSL证书不是由受信任的CA机构颁发的(注意这种情况并不一定说明有SSL劫持发生)<br>2、证书过期<br>3、访问的网站域名与证书绑定的域名不一致</p>
+<ol>
+<li>证书内容被篡改</li>
+<li>客户端没有保存认证服务器端证书的根证书</li>
+<li><p>客户端拥有认证服务器证书的根证书，但是服务器被防火墙隔离，防火墙在收到来自客户端的SSL连接请求时候返回<br>防火墙的证书，需要查看根证书内容 openssl x509 -text -in rootCA.pem, 查看到根证书签发者信息  Issuer: O=Equifax</p>
+</li>
+<li><p>客户端的CA证书不会被伪造或泄露么？<br>CA证书时默认预装到浏览器和操作系统中的，所以CA证书的公钥是安全的。</p>
+</li>
+</ol>
+<p>为什么证书是安全的？<br>什么是证书<br>数字证书就是互联网通讯中标志通讯各方身份信息的一串数字，提供了一种在Internet上验证通信实体身份的方式，数字证书不是数字身份证，而是身份认证机构盖在数字身份证上的一个章或印（或者说加在数字身份证上的一个签名）。它是由权威机构——CA机构，又称为证书授权（Certificate Authority）中心发行的，人们可以在网上用它来识别对方的身份。<br>数字证书的格式普遍采用的是X.509V3国际标准，一个标准的X.509数字证书包含以下一些内容：</p>
+<p>证书的版本信息；<br>证书的序列号，每个证书都有一个唯一的证书序列号；<br>证书所使用的签名算法；<br>证书的发行机构名称，命名规则一般采用X.500格式；<br>证书的有效期，通用的证书一般采用UTC时间格式，它的计时范围为1950-2049；<br>证书所有人的名称，命名规则一般采用X.500格式；<br>证书所有人的公开密钥；<br>证书发行者对证书的签名。<br>证书里的公钥的作用？<br>证书里的签名的作用？<br>数字证书的签发机构CA，在接收到申请者的资料后进行核对并确定信息的真实有效，然后就会制作一份符合X.509标准的文件。证书中的证书内容包含的持有者信息和公钥等都是由申请者提供的，而数字签名则是CA机构对证书内容进行hash加密后得到的，而这个数字签名就是我们验证证书是否是有可信CA签发的数据。</p>
+<p>CA.png</p>
+<p>证书的产生</p>
+<p>certification_production.png</p>
+<p>证书的类型<br>实际上，我们使用的证书分很多种类型，SSL证书只是其中的一种。证书的格式是由X.509标准定义。SSL证书负责传输公钥，是一种PKI（Public Key Infrastructure，公钥基础结构）证书。<br>我们常见的证书根据用途不同大致有以下几种：<br>1、SSL证书，用于加密HTTP协议，也就是HTTPS。<br>2、代码签名证书，用于签名二进制文件，比如Windows内核驱动，Firefox插件，Java代码签名等等。<br>3、客户端证书，用于加密邮件。<br>4、双因素证书，网银专业版使用的USB Key里面用的就是这种类型的证书。<br>这些证书都是由受认证的证书颁发机构——我们称之为CA（Certificate Authority）机构来颁发，针对企业与个人的不同，可申请的证书的类型也不同，价格也不同。CA机构颁发的证书都是受信任的证书，对于SSL证书来说，如果访问的网站与证书绑定的网站一致就可以通过浏览器的验证而不会提示错误。</p>
+<p>证书的安全问题<br>如果让证书安全，那么就需要让客户端拿到的证书是真正想要的证书，即不能让证书被冒充或者被篡改。<br>那么如何保证这一点呢？</p>
+<p>如果证书自己有一个id<br>证书的这个id无法被伪造<br>客户端知道自己想要的证书id是多少<br>如果做到了这三点就能保证证书的安全性了。上面说提到的id就是证书的数字签名。那么什么是数字签名？</p>
+<p>数字签名（digital signature）<br>数字签名是证书的防伪标签，是将待签名内容通过哈希和私钥加密处理后生成的。目前使用最广泛的 SHA-RSA 数字签名的制作和验证过程如下：</p>
+<p>数字签名的签发。首先是使用哈希函数对待签名内容进行安全哈希，生成数字摘要，然后使用CA自己的私钥对数字摘要进行加密。<br>数字签名的校验。使用CA的公钥解密签名，然后使用相同的签名函数对待签名证书内容进行签名并和服务端数字签名里的签名内容进行比较，如果相同就认为校验成功。<br>签发：待签名内容 -&gt; 哈希 -&gt; 数字摘要 -&gt; CA私钥加密 -&gt; 数字签名<br>校验：</p>
+<p>数字签名 -&gt; CA公钥解密 -&gt; 数字摘要1<br>待签名内容 -&gt; 哈希 -&gt; 数字摘要2<br>比较「数字摘要1」和「数字摘要2」是否相等</p>
+<p>CerValiate.png</p>
+<p>这里有几点需要说明：</p>
+<p>数字签名签发和校验使用的密钥对是 CA 自己的公私密钥，跟证书申请者提交的公钥没有关系。<br>数字签名的签发过程跟公钥加密的过程刚好相反，即是用私钥加密，公钥解密。<br>现在大的 CA 都会有证书链，证书链的好处一是安全，保持根 CA 的私钥离线使用。第二个好处是方便部署和撤销，即如果证书出现问题，只需要撤销相应级别的证书，根证书依然安全。<br>根 CA 证书都是自签名，即用自己的公钥和私钥完成了签名的制作和验证。而证书链上的证书签名都是使用上一级证书的密钥对完成签名和验证的。<br>那么问题又来了。<br>CA的私钥和公钥是安全的吗？可以被冒充吗？</p>
+<p>CA的安全性<br>从根CA开始到直接给客户发放证书的各层次CA，都有其自身的密钥对。CA中心的密钥对一般由硬件加密服务器在机器内直接产生，并存储于加密硬件内，或以一定的加密形式存放于密钥数据库内。加密备份于IC卡或其他存储介质中，并以高等级的物理安全措施保护起来。密钥的销毁要以安全的密钥冲写标准，彻底清除原有的密钥痕迹。需要强调的是，根CA密钥的安全性至关重要，它的泄露意味着整个公钥信任体系的崩溃，所以CA的密钥保护必须按照最高安全级 的保护方式来进行设置和管理。</p>
+<p>CA的私钥是自己靠上述方法保管的，不对外公开。<br>CA的公钥是厂商跟浏览器和操作系统合作，把公钥默认装到浏览器或者操作系统环境里。比如firefox 就自己维护了一个可信任的 CA 列表，而chrome 和 IE 使用的是操作系统的 CA 列表。</p>
+<ol>
+<li>分析HTTPS连接建立全过程</li>
+<li><p>理解HTTPS</p>
+<ol>
+<li>什么是https<br>浏览器和网站之间的通信，浏览器要验证颁发证书的机构是否合法，证书中包含的网站地址是否和正在访问的地址一致等，如果<br>证书受信任，浏览器里面会显示一个小锁头， 否则会给出证书不守信的提示。</li>
+<li>什么是SSL/TLS</li>
+<li><p>为什么要有https</p>
+<ol>
+<li>http 和 https 协议的区别</li>
+</ol>
+<p>Https协议需要用到CA申请证书，<br>Http是超文本传输协议，信息是明文传输，https 则是具有安全性的ssl加密传输协议<br>http和https用的接口不一样，http是80， https 是443<br>http的链接是无状态的，<br>https是由ssl + http协议构成的可以进行加密传输，身份认证的网络协议，比 http协议要安全</p>
+</li>
+</ol>
+</li>
+</ol>
+<p>不加密的通行带来了三大风险：</p>
+<ol>
+<li>窃听风险 eavesdropping ： 第三方可以获知通信内容</li>
+<li>篡改风险 tampering： 第三方可以修改通信内容</li>
+<li><p>冒充风险 pertending： 第三方可以冒充他人身份参与通信</p>
+<ol>
+<li>https保证安全的原理</li>
+</ol>
+</li>
+</ol>
+<p>SSL/TLS协议就是为了解决这三大风险而设计的，希望达到：</p>
+<ol>
+<li>所有信息都机密传播，第三方无法窃听</li>
+<li>具有校验机制，一旦被篡改，通信双方会立刻发现</li>
+<li><p>配备身份证书，防止身份被冒充</p>
+<ol>
+<li>为什么证书是安全的？<br> 5.1. 什么是证书<br> 5.2. 证书的产生<br> 5.3. 证书的类型<br> 5.4. 证书的安全问题<br> 5.4.1. 数字签名（digital signature）<br> 5.4.2. CA的安全性<br> 5.5. 证书验证失败的原因</li>
+<li>客户端具体是如何验证SSL证书的</li>
+<li>涉及到的算法</li>
+<li>总结</li>
+<li>Reference</li>
+</ol>
+</li>
+</ol>
+<ol>
+<li>SSL/TLS 原理详解</li>
+</ol>
+<p>SSL/TLS</p>
+<ol>
+<li>The first few milliseconds of an HTTPS connection</li>
+</ol>
+<h2 id="什么是OpenSSL"><a href="#什么是OpenSSL" class="headerlink" title="什么是OpenSSL"></a>什么是OpenSSL</h2><p>  OpenSSL是一个安全套接字层密码库，其包括常用的密码算法、常用的密钥生成和证书封装管理功能及SSL协议，并提供了丰富的应用程序以供测试。</p>
+<p>  OpenSSL 是一个开源项目，其组成主要包括一下三个组件：<br>    openssl：多用途的命令行工具。<br>      openssl命令工具有两种运行模式：交换模式和批处理模式。<br>      直接输入openssl回车即可进入交互模式，<br>      而输入带命令选项的openssl命令则进行批处理模式。<br>    libcrypto：加密算法库<br>    libssl：加密模块应用库，实现了ssl及tls<br>    openssl可以实现：秘钥证书管理、对称加密和非对称加密</p>
+<p>  术语<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">*.key：  私有的密钥</span><br><span class="line">*.csr：   证书签名请求（证书请求文件），含有公钥信息，certificate signing request的缩写</span><br><span class="line">*.crt：   证书文件，certificate的缩写</span><br><span class="line">*.crl：   证书吊销列表，Certificate Revocation List的缩写</span><br><span class="line">*.pem：用于导出，导入证书时候的证书的格式，有证书开头，结尾的格式</span><br></pre></td></tr></table></figure></p>
+<p>  公钥私钥的核心功能<br>    加密: 公钥用于对数据进行加密，私钥用于对数据进行解密<br>    签名: 私钥用于对数据进行签名，公钥用于对签名进行验证</p>
+<h2 id="Openssl-操作指南"><a href="#Openssl-操作指南" class="headerlink" title="Openssl 操作指南"></a>Openssl 操作指南</h2><h4 id="直接加解密"><a href="#直接加解密" class="headerlink" title="直接加解密"></a>直接加解密</h4><p>  OpenSSL 使用子命令 enc 实现加密，命令格式如下</p>
+<p>  openssl enc -算法 -salt -a -salt -in 输入文件 -out 输出文件 -k passwd<br>  如下为加密一个文件示例</p>
+<p>  openssl enc -aes-256-ecb  -a -salt -in /etc/profile -out ~/test -k test123<br>  -a 选项用于将加密后内容以 base64 格式输出，加密后内容如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">U2FsdGVkX1/tVWQ7cGR5rTLU9Phnx7csis12ukuGpZTWx7sDiJ8Qdb4Jn8hvShnW</span><br><span class="line">7gPouyOwJlKufoDHXT2hqOnw/i8Rf5QisLc+EOXgUWDFun3AqHte6YmNbelDFchu</span><br><span class="line">hDsph4Vq7TNBmZ/C1LHSCnMoA39qHBWxyrIstpOWs5TWkdPjDgEVZkIXNiWIwoRF</span><br><span class="line">CDVv7AuZXO9qF3sMb4fLWPF9cM7FkbvGkkhzBJZ0dAdq8DetKaZyjOX4UfeWPSav</span><br><span class="line">U61t9s7hlmjEPmXpUSSfnO8/7u0B/EEnujpkwyNZXbQBcQ9QFDh7x1vdzQIAuMRw</span><br><span class="line">0SLsVm1OSOifvMOpOAJCmvhExrKsznWgQlQabLOWsr29yrs0YBuwSl6oUSf8Qx1S</span><br><span class="line">3z/GC7l13zzmHwXJTgPRe0WzdLYsy6GMj2/0DveLvcXT/cXGid69tzIf4JaczIEX</span><br><span class="line">zSS4N12C3CFS/60poXZmiwoNsC3n6ESBf3dZum6LKA9sNPdxveb/RTZ4KYl/iw9S</span><br><span class="line">NgAqNGa9Yp1xdyl2NBaruvDxVAGbwC+rGn9UjbIYbEdT7ZjKPjJ6BP8yzwv6jnOU</span><br><span class="line">3E58UVIuIEVWJY3kF77+Vk99JuQepFRGX9sHYdafQR7AISiS88eipn6qkMMDmrkT</span><br><span class="line">kwZtebWyhvmWTZABOa7tckzzYxJ/Ke1jkBudasUJr9RUEiNNmSASdRr0dlZvM/tS</span><br><span class="line">COuPeNo8ZU7ad/yd/OpvPKShn9Hh9oXCKSB4vl/DQVefVXWAaTp49FFAGFrQThiQ</span><br><span class="line">rAwHwrJ/N2ab0Do0iArctNTqz5u7MtEHwVtFsV45YJfAGQRwTg06Y6qKjhgWmBjX</span><br><span class="line">EGNGbP7c0A1SiI/g8maKl3ciTwWPWXCcpf14MFcYBvjpA7EVYSYTh7hSxzUtY0gk</span><br><span class="line">l3EUVrqnY0M8u+0LBgAcrA==</span><br></pre></td></tr></table></figure></p>
+<p>  4.2.2、解密操作<br>  解密操作与加密基本相同，只不过需要加上 -d 选项，代表解密，命令格式如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl enc -算法 -salt -d -a -in 输入文件 -out 输出文件 -k passwd</span><br></pre></td></tr></table></figure></p>
+<p>  如下为解密一个文件的示例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl enc -aes-256-ecb -salt -d -a -in test -out test1 -k test123</span><br></pre></td></tr></table></figure></p>
+<p>  解密后文件即为原来的 /etc/profile 文件内容</p>
+<h3 id="OpenSSL-CA-配置文件与格式"><a href="#OpenSSL-CA-配置文件与格式" class="headerlink" title="OpenSSL CA 配置文件与格式"></a>OpenSSL CA 配置文件与格式</h3><h3 id="生成密钥对"><a href="#生成密钥对" class="headerlink" title="生成密钥对"></a>生成密钥对</h3><p>  生成密钥对<br>  生成私钥: openssl genrsa -out private.key 2048</p>
+<p>  genrsa       产生RSA密钥命令。<br>  -out         输出路径,这里指private/server.key.pem。<br>  2048         指RSA密钥长度位数，默认长度为512位。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">lyu@ovm_h2o-lyu:~/Desktop$ openssl genrsa -out server.key 2048</span><br><span class="line">Generating RSA private key, 2048 bit long modulus</span><br><span class="line">.......................+++</span><br><span class="line">...........+++</span><br><span class="line">e is 65537 (0x10001)</span><br><span class="line"></span><br><span class="line">lyu@ovm_h2o-lyu:~/Desktop$ cat server.key </span><br><span class="line">-----BEGIN RSA PRIVATE KEY-----</span><br><span class="line">MIIEpQIBAAKCAQEA6vT9Z//kaSEEC5X3ngZUmzcXIMfBdGN1AOM8UANANDiD3kPm</span><br><span class="line">Pdc4oVogxEs1n3zDWr1ltdxoFnqLws9DYaqsbuuej+ZO3ZEFrhq7ElzdQGuvkSNa</span><br><span class="line">vqUOZvMlDFixdrn6hep5na2KtEP+q2aPTsA2/aRvXYhNeKhfjLhChWIbXknTj7UJ</span><br><span class="line">XVXDX0bWDJlm9/eNScCJWuJ6Krfe+nmfdcfAKlOK+OU+rXjCoETv6rYgyLuLxHJP</span><br><span class="line">qj8g6c6wv1f7s9g9J83HegjvqICRf25abfrAh+9pnAQ9+/CKHvu3BtHz0Xv7lMsh</span><br><span class="line">AlnRegBlDeGcrv/OZ9+qPsrnewjhTNJn9bxFeQIDAQABAoIBAEdt+6wma3ZahzRO</span><br><span class="line">f10XZ5lYgjuA/xs3MVb3vlpE4rv9gnmMAu9CAwFquRN0GfVGpM1tTwKe4zYSQ3MS</span><br><span class="line">N9X1YT7HewkcZ1WMxUFM9xp6CPmQw2tIaEoVO++oc9bxD+KcX8Feq2J4Y/axxTau</span><br><span class="line">k1rJrO4nk4PH8GWCKqpJSk/qp49eJUgWueOmV4FfRcjLCsKffUM/8jCeWu+iWwKV</span><br><span class="line">lJh/jhShSOpk9x2k8ObYRk+U8yBWi6K+roPFdKrwE/wragOtX+ULB+44jk1xV6sc</span><br><span class="line">9snkOKkdmRrBloG+F2REfyf8PNypndxyeveyT3ywlsQkcCK52vYIpLamw/tBoK3S</span><br><span class="line">AARqZgECgYEA9ZzSXa4a8wvwssGVKaQJaQqt3DN3UGElfKfNAmVceumeFysu15Y0</span><br><span class="line">k/OwR4AS03y9Nxta722ganaDztpVYPUg1t+c6B0eUPcW8NZQk9U+aPgtNz/pbkNt</span><br><span class="line">pdmkBYO4vAnvQL7wL3YYMw9OlOGs3TknLUvrePefEopBA+csJUlTIXECgYEA9OTN</span><br><span class="line">krosiWdYTqt5lK2wXavPVH1lXH0uilkKKdxNYHBB8n9CVSv6WJBmpOxrqE0ncoEt</span><br><span class="line">xKG3BFxPKXwr5fKvVgKQZ2PmZhTDqGpawe8yASYcugnwwPqZFHMIzxwPB94Ulin8</span><br><span class="line">JwW9B4hzlJib5QqB2jX3CQtnuZKARaJC8OyFYIkCgYEA3fbymlzM2BdTWIjf37jy</span><br><span class="line">FC7lfpo4Wrjgou4WtPKbiCz2hSOueoCxVYAmMAfLe7tAWLvtC3H8RhqC9f6UqEH/</span><br><span class="line">gpClgZNHIY6b+d0FBwTxGPYoDsVAlTh0sCynMaCf47fqs42bDJliN0q/DoeArJCJ</span><br><span class="line">GkOBM1o9NQkixn81gyDn8tECgYEAy7BbREVRsd+hVZ3OfFmTLfYvdojt++WrBitV</span><br><span class="line">BshUG3iDgZ1ToN/5VByXI2n5iXzS6KyFUt1nClt1BH5hTNtz9sgfL7+p7RIsQzJi</span><br><span class="line">1peLMeVvU1XdR8Wn+ZhMpWcjIVoYKWY2coaVWWSnLdtZH0KECumD1aQE3Bb8Ve7G</span><br><span class="line">Wvl/XnECgYEAvGwAMZUP3KZjIZ6EsdZU2JEuA9nLymeUEAB5oDlntHu3hFqv6jja</span><br><span class="line">BB7SIP8DKOwQJiqNlq7MC1iAUkDdSKk0tOod4IBj8fBDOBNrdMM/4nLnWUSfZLG1</span><br><span class="line">tTtIXXrXhU0KxDh1h01LXgOBRkfSBOM/evuCaOruWZi9iexGHJbik/s=</span><br><span class="line">-----END RSA PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+<p>  导出私钥对应的公钥: openssl rsa -in private.key -pubout -out public.key<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">lyu@ovm_h2o-lyu:~/Desktop$ openssl rsa -pubout -in server.key </span><br><span class="line">writing RSA key</span><br><span class="line">-----BEGIN PUBLIC KEY-----</span><br><span class="line">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6vT9Z//kaSEEC5X3ngZU</span><br><span class="line">mzcXIMfBdGN1AOM8UANANDiD3kPmPdc4oVogxEs1n3zDWr1ltdxoFnqLws9DYaqs</span><br><span class="line">buuej+ZO3ZEFrhq7ElzdQGuvkSNavqUOZvMlDFixdrn6hep5na2KtEP+q2aPTsA2</span><br><span class="line">/aRvXYhNeKhfjLhChWIbXknTj7UJXVXDX0bWDJlm9/eNScCJWuJ6Krfe+nmfdcfA</span><br><span class="line">KlOK+OU+rXjCoETv6rYgyLuLxHJPqj8g6c6wv1f7s9g9J83HegjvqICRf25abfrA</span><br><span class="line">h+9pnAQ9+/CKHvu3BtHz0Xv7lMshAlnRegBlDeGcrv/OZ9+qPsrnewjhTNJn9bxF</span><br><span class="line">eQIDAQAB</span><br><span class="line">-----END PUBLIC KEY-----</span><br></pre></td></tr></table></figure></p>
+<h3 id="数字证书的基础知识"><a href="#数字证书的基础知识" class="headerlink" title="数字证书的基础知识"></a>数字证书的基础知识</h3><p>问题两个：</p>
+<ol>
+<li>证书的安全性，Client端是如何验证证书合法性的，这个证书第三方无论如何都伪造不了吗？</li>
+<li><p>对称加密密钥的安全性，生成的master secret密钥第三方为什么拿不到？</p>
+<h2 id="Certificate-Authority-CA"><a href="#Certificate-Authority-CA" class="headerlink" title="Certificate Authority (CA)"></a>Certificate Authority (CA)</h2><p>CA是专门签发证书的权威机构，处于证书的最顶端。自签是用自己的私钥给证书签名，CA签发则是用CA的私钥给自己的证书签名来保证证书的可靠性</p>
+<p>CA根证书的生成步骤：<br> 生成CA私钥（.key）–&gt;生成CA证书请求（.csr）–&gt;自签名得到根证书（.crt）（CA给自已颁发的证书）。</p>
+<p>生成私钥:   openssl genrsa -out ca.key 2048<br>生成证书请求: openssl req -new -key ca.key -out ca.csr<br>自签名:  openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt</p>
+<p>以上操作合并操作如下：<br>openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ca.key -out ca.crt</p>
+</li>
+</ol>
+<p>重要参数含义如下：<br>  req<br> -x509<br> -nodes 本option被set的话,生成的私有密钥文件将不会被加密<br> -days 365</p>
+<p>   查看自签名CA证书：openssl x509 -text -in ca.cert</p>
+<h3 id="生成自签证书"><a href="#生成自签证书" class="headerlink" title="生成自签证书"></a>生成自签证书</h3><p>   e.g.<br>   lyu@test:~/root-ca$ openssl req -nodes -config conf/openssl-root.cnf -days 1826<br>   -x509 -newkey rsa:1024 -out public/ca-root-cert.pem -outform PEM<br>   -keyout private/ca-root-key.pem</p>
+<pre><code>Generating a 1024 bit RSA private key
+................++++++
+...............................++++++
+writing new private key to &apos;private/ca-root-key.pem&apos;
+</code></pre><h2 id="颁发证书-（-其他用户用OpenSSL-申请证书）"><a href="#颁发证书-（-其他用户用OpenSSL-申请证书）" class="headerlink" title="颁发证书 （ 其他用户用OpenSSL 申请证书）"></a>颁发证书 （ 其他用户用OpenSSL 申请证书）</h2><p>颁发证书就是用CA的秘钥给其他人签名证书，输入需要证书请求，CA的私钥及CA的证书，输出的是签名好的还给用户的证书.<br>用户的证书请求信息填写的国家省份等需要与CA配置一致，否则颁发的证书将会无效。</p>
+<p>用户证书的生成步骤<br>生成私钥（.key）–&gt;生成证书请求（.csr）–&gt;CA的私钥及CA的证书签名得到用户证书（.crt）</p>
+<p>e.g.</p>
+<p>同样，先生成一对密钥</p>
+<h1 id="创建目录"><a href="#创建目录" class="headerlink" title="创建目录"></a>创建目录</h1><p>mkdir mycrt</p>
+<h1 id="生成公钥-扩展名随便取"><a href="#生成公钥-扩展名随便取" class="headerlink" title="生成公钥 扩展名随便取"></a>生成公钥 扩展名随便取</h1><p>openssl genrsa -out mritd.key 2048</p>
+<h1 id="提取公钥"><a href="#提取公钥" class="headerlink" title="提取公钥"></a>提取公钥</h1><p>openssl rsa -in mritd.key -pubout &gt; mritd.public.key<br>接下来要申请一个证书签署请求，信息要保证与 CA 创建时一致(具体可调整 openssl.cnf 配置文件)，密码直接回车默认为空密码<br>openssl req -new -key mritd.key -out mritd.csr<br>最后使用 CA 进行签署即可(注意，要回到 demoCA 上一级目录)，提示是否确认全部 y 即可<br>openssl ca -in mycrt/mritd.csr -out mycrt/mritd.crt -days 3655<br>最终生成的 mritd.crt 即为可用的证书</p>
+<p>生成密钥： openssl genrsa -out client.key 2048<br>生成请求: openssl req -new -subj -key client.key -out client.csr<br>签发证书:<br>openssl x509 -req -days 3650 -sha1 -extensions v3_req<br>-CA ca.cert -CAkey ca.key -CAserial ca.srl -CAcreateserial<br>-in client.csr -out client.cert</p>
+<p>req          产生证书签发申请命令<br>-new         表示新请求。<br>-key         密钥,这里为client.key文件<br>-out         输出路径,这里为client.csr文件<br>-subj        指定用户信息</p>
+<p>x509           签发X.509格式证书命令。<br>-req            表示证书输入请求。<br>-days          表示有效天数,这里为3650天。<br>-sha1           表示证书摘要算法,这里为SHA1算法。<br>-extensions    表示按OpenSSL配置文件v3_req项添加扩展<br>-CA            表示CA证书,这里为ca.cert<br>-CAkey         表示CA证书密钥,这里为ca.key<br>-CAserial      表示CA证书序列号文件,这里为ca.srl<br>-CAcreateserial表示创建CA证书序列号<br>-in            表示输入文件,这里为private/server.csr<br>-out           表示输出文件,这里为certs/server.cer</p>
+<p>验证CA颁发的证书提取的公钥和私钥导出的公钥是否一致 openssl x509 -in server.cert -pubkey<br>验证server证书openssl verify -CAfile ca.cert server.cert<br>生成pem格式证书有时需要用到pem格式的证书，可以用以下方式合并证书文件（crt）和私钥文件（key）来生成 cat client.crt client.key &gt; client.pem</p>
+<h4 id="session的恢复"><a href="#session的恢复" class="headerlink" title="session的恢复"></a>session的恢复</h4><p>session ID:<br>每次对话都有一个编号 session ID， 如果对话中断，下次重新连接的时候，只要客户端给出这个编号，而且服务器有这个编号的记录（现在都用集群集中管理session），<br>双方就可以重新使用已有的“对话密钥”， 而不必重新生成一把。双方就不再进行握手阶段剩余的步骤。 </p>
+<p>优点是所有浏览器都支持，但是缺点在于session ID 往往只保留在一台服务器上。所以，如果客户端请求发送到另外一台服务器，就无法恢复对话。</p>
+<p>session ticket：就是解决session id 不足的问题，<br>客户端不在发送session ID，而是发送一个服务器在上一次对话中发送过来的session ticket。 这个session ticket是加密的，只有服务器才能解谜，<br>其中包括本次对话的主要信息，比如对话密钥和加密方法。当服务器收到session ticket 后，解谜后就不必重新生成对话密钥了。</p>
+<ol>
+<li>附：数据加密的基础知识<br>对称密钥加密<br>对称密钥加密（一个密钥），也叫做共享密钥加密或机密密钥加密，使用发件人和收件人共同拥有的单个密钥。这种密钥既用于加密，也用于解密，叫做机密密钥。对称密钥加密是加密大量数据的一种行之有效的方法。</li>
+</ol>
+<p>对称密钥加密有许多种算法如DES,RC4,IDEA等，但所有这些算法都有一个共同的目的：以可还原的方式将明文 （未加密的数据转换为暗文。暗文使用加密密钥编码，对于没有解密密钥的任何人来说它都是没有意义的。由于对称密钥加密在加密和解密时使用相同的密钥，所以这种加密过程的安全性取决于是否有未经授权的人获得了对称密钥。</p>
+<p>衡量对称算法优劣的主要尺度是其密钥的长度。密钥越长，在找到解密数据所需的正确密钥之前必须测试的密钥数量就越多。需要测试的密钥越多，破解这种算法就越困难。</p>
+<p>公钥加密<br>公钥加密使用两个密钥:一个公钥和一个私钥，这两个密钥在数学上是相关的。为了与对称密钥加密相对照，公钥加密有时也叫做不对称密钥加密。在公钥加密中，公钥可在通信双方之间公开传递，或在公用储备库中发布，但相关的私钥是保密的。只有使用私钥才能解密用公钥加密的数据。使用私钥加密的数据只能用公钥解密。下图中，发件人拥有收件人的公钥，并用它加密了一封邮件，但只有收件人掌握解密该邮件的有关私钥。<br>openssl-encrpt01</p>
+<p>公钥算法的主要局限在于，这种加密形式的速度相对较低。实际上，通常仅在关键时刻才使用公钥算法，如在实体之间交换对称密钥时，或者在签署一封邮件的散列时（散列是通过应用一种单向数学函数获得的一个定长结果，对于数据而言，叫做散列算法）。将公钥加密与其它加密形式（如对称密钥加密）结合使用，可以优化性能，如数字签名和密钥交换。</p>
+<p>常用公钥算法：</p>
+<p>RSA：适用于数字签名和密钥交换。 是目前应用最广泛的公钥加密算法，特别适用于通过 Internet 传送的数据，RSA算法以它的三位发明者的名字命名。<br>DSA：仅适用于数字签名。 数字签名算法 (Digital Signature Algorithm, DSA) 由美国国家安全署 (United States National Security Agency, NSA) 发明，已作为数字签名的标准。DSA 算法的安全性取决于自计算离散算法的困难。这种算法，不适用于数据加密。<br>Diffie-Hellman：仅适用于密钥交换。 Diffie-Hellman 是发明的第一个公钥算法，以其发明者 Whitfield Diffie 和 Martin Hellman 的名字命名。Diffie-Hellman 算法的安全性取决于在一个有限字段中计算离散算法的困难。<br>单向散列算法<br>散列，也称为散列值或消息摘要 ，是一种与基于密钥（对称密钥或公钥）的加密不同的数据转换类型。散列就是通过把一个叫做散列算法的单向数学函数应用于数据，将任意长度的一块数据转换为一个定长的、不可逆转的数字，其长度通常在128～256位之间。所产生的散列值的长度应足够长，因此使找到两块具有相同散列值的数据的机会很少。如发件人生成邮件的散列值并加密它，然后将它与邮件本身一起发送。而收件人同时解密邮件和散列值，并由接收到的邮件产生另外一个散列值，然后将两个散列值进行比较。如果两者相同，邮件极有可能在传输期间没有发生任何改变。</p>
+<p>下面是几个常用的散列函数：</p>
+<p>MD5：是RSA数据安全公司开发的一种单向散列算法，MD5被广泛使用，可以用来把不同长度的数据块进行暗码运算成一个128位的数值。<br>SHA-1：与 DSA 公钥算法相似，安全散列算法1（SHA-1）也是由 NSA 设计的，并由 NIST 将其收录到 FIPS 中，作为散列数据的标准。它可产生一个 160 位的散列值。SHA-1 是流行的用于创建数字签名的单向散列算法。<br>MAC（Message Authentication Code）：消息认证代码，是一种使用密钥的单向函数，可以用它们在系统上或用户之间认证文件或消息，常见的是HMAC（用于消息认证的密钥散列算法）。<br>CRC（Cyclic Redundancy Check）：循环冗余校验码，CRC校验由于实现简单，检错能力强，被广泛使用在各种数据校验应用中。占用系统资源少，用软硬件均能实现，是进行数据传输差错检测地一种很好的手段（CRC 并不是严格意义上的散列算法，但它的作用与散列算法大致相同，所以归于此类）。<br>数字签名：结合使用公钥与散列算法<br>数字签名是邮件、文件或其它数字编码信息的发件人将他们的身份与信息绑定在一起（即为信息提供签名）的方法。对信息进行数字签名的过程，需要将信息与由发件人掌握的秘密信息一起转换（使用私钥）为叫做签名的标记。数字签名用于公钥环境（任何人都可以拥有）中，它通过验证发件人确实是他或她所声明的那个人，并确认收到的邮件与发送的邮件完全相同。</p>
+<p>散列算法处理数据的速度比公钥算法快得多。散列数据还缩短了要签名的数据的长度，因而加快了签名过程。</p>
+<p>密钥交换：结合使用对称密钥与公钥<br>对称密钥算法非常适合于快速并安全地加密数据。但其缺点是，发件人和收件人必须在交换数据之前先交换机密密钥。结合使用加密数据的对称密钥算法与交换机密密钥的公钥算法可产生一种既快速又灵活的解决方案。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持forsigner</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/03/08/learning-russian/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/05/16/java-se-11-programmer-i/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/atom.xml"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              RSS
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '277317290454635afa73',
+  clientSecret: '78223c859304da5e8d71bfce136d436c6ff95c37',
+  repo: 'blog-comment',
+  owner: 'forsigner',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: location.pathname,
+  admin: ['forsigner'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
